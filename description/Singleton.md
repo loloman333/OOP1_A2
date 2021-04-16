@@ -1,6 +1,6 @@
 # Singleton
 
-Ziel dieser Seite ist es, den Befriff Singleton für das Assignement so weit zu erklären, dass Singletons verstanden und für den gewünschten Zweck verwendet werden können. Genauere Infos über Singletons in C++, können selbständig in Büchern oder im Internet recherchiert werden.
+Ziel dieser Seite ist es, den Begriff Singleton für das Assignement so weit zu erklären, dass Singletons verstanden und für den gewünschten Zweck verwendet werden können. Genauere Infos über Singletons in C++, können selbständig in Büchern oder im Internet recherchiert werden.
 
 ## Algemein
 
