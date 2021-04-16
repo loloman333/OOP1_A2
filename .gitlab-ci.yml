@@ -1,0 +1,9 @@
+test:
+  stage: test
+  script: "cd ./runner && bash ./gitlab-runner.sh"
+  artifacts:
+    when: always
+    paths:
+      - gitreport.html
+      - testreport.html
+      - valgrind_logs/

@@ -1,0 +1,53 @@
+Welcome to the Wild OOP Labyrinth!!!
+Player Count (2-4): Wrong Input only a Number from 2 to 4 is allowed!
+Player Count (2-4): Wrong Input only a Number from 2 to 4 is allowed!
+Player Count (2-4): Wrong Input only a Number from 2 to 4 is allowed!
+Player Count (2-4): Wrong Input only a Number from 2 to 4 is allowed!
+Player Count (2-4): Wrong Input only a Number from 2 to 4 is allowed!
+Player Count (2-4): Wrong Input only a Number from 2 to 4 is allowed!
+Player Count (2-4): Wrong Input only a Number from 2 to 4 is allowed!
+Player Count (2-4): Wrong Input only a Number from 2 to 4 is allowed!
+Player Count (2-4): Wrong Input only a Number from 2 to 4 is allowed!
+Player Count (2-4): Wrong Input only a Number from 2 to 4 is allowed!
+Player Count (2-4): Wrong Input only a Number from 2 to 4 is allowed!
+Player Count (2-4): Player Red(R)    |                 |                 |    Player Yellow(Y)
+Treasure: 0/8    V                 V                 V    Treasure: 0/8
+        1        2        3        4        5        6        7    
+    ███████████     █████████████     █████████████     ███████████
+    ██                                ██                ██       ██
+   1██ (R)      T13      T01      T23 ██   T02      T24 ██   (Y) ██
+    ██ PR                             ██                ██   PY  ██
+    ██     █████████████     ████     ████     ████     ████     ██
+    ██     ████     ████     ████     ████     █████████████     ██
+    ██              ██       ████     ██       ██                ██
+-->2██          T18 ██   T22 ████     ██       ██            T15 ██<--
+    ██              ██       ████     ██       ██                ██
+    ███████████     ████     ████     ██████████████████████     ██
+    ██     ████     ████     ████     █████████████     ████     ██
+    ██       ██     ████              ██                ██       ██
+   3██ T03   ██     ████ T04          ██   T05      T17 ██   T06 ██
+    ██       ██     ████              ██                ██       ██
+    ██     ████     ████     █████████████     ████     ████     ██
+    ████████████████████     ████     ████     █████████████     ██
+                             ██       ████     ██                ██
+-->4                         ██   T14 ████     ██            T19 ██<--
+                             ██       ████     ██                ██
+    █████████████████████████████     ████     █████████████     ██
+    ██     ████     ████     ████     ████     █████████████     ██
+    ██              ██                ██       ██                ██
+   5██ T07      T21 ██   T08      T16 ██   T09 ██            T10 ██
+    ██              ██                ██       ██                ██
+    ██     ████     █████████████     ████     █████████████     ██
+    ██     ████     ████     ████     ████     ████████████████████
+    ██       ██       ██     ██       ██       ██       ██       ██
+-->6██       ██       ██     ██   T20 ██       ██       ██       ██<--
+    ██       ██       ██     ██       ██       ██       ██       ██
+    ████████████████████     ████     █████████████     ████     ██
+    ██     ████     ████     ████     ████     ████     ████     ██
+    ██              ██                ██         ██     ██       ██
+   7██ (G)          ██   T11          ██   T12   ██     ██   (B) ██
+    ██ PG           ██                ██         ██     ██       ██
+    ███████████████████████████████████████████████     ███████████
+Player Green(G)  Ʌ                 Ʌ                 Ʌ
+Treasure: 0/8    |                 |                 |
+RED > 

@@ -1,0 +1,52 @@
+# Testcase Structure:
+#    name: String, // The name of the testcase
+#    subname: Option<String>, // used for unittests later
+#    testcase_type: String, //Only IO supported now
+#    description: Option<String>, // optional description
+#    args: Option<String>, // command line arguments
+#    cflags: Option<String>, // compile flags
+#    tags: Option<Tags>, // tags for unit tests
+#    in_file: Option<String>, // stdin file
+#    exp_file: Option<String>, // stdout file
+#    in_string: Option<String>, // stdin string (in_file has higher priority)
+#    exp_string: Option<String>, // stdout string (out_file has higher priority)
+#    exp_retvar: Option<i32>, // optional expected status code
+#    timeout: Option<i32>, // timeout in seconds .. default is 5 sec
+#    env_vars: Option<String>, // optional environment parameters RAND_SEED=123,foo=bar
+#    add_diff_mode: Option<String>, // diff-mode for additional file, can be "text" or "binary"
+#    add_out_file: Option<String>, // additional student file to diff,
+#    add_exp_file: Option<String>, // additional reference file to diff
+#    protected: Option<bool>, // optional boolean, set to true to mark a testcase as private, false by default
+
+[project_definition]
+project_name = "oop1"
+makefile_path = "."
+maketarget = "all"
+
+[[testcases]]
+name = 'valid_start_2_players'
+testcase_type = "IO"
+description = "2 players and EOF"
+env_vars = 'RAND_SEED=174813'
+exp_file = "tests/01/out"
+in_file = "tests/01/in"
+exp_retvar = 0
+
+[[testcases]]
+name = 'invalid_players_number'
+testcase_type = "IO"
+description = "Negative and too big input for number of players, at the end 3 players"
+env_vars = 'RAND_SEED=4483129'
+exp_file = "tests/02/out"
+in_file = "tests/02/in"
+exp_retvar = 0
+
+[[testcases]]
+name = 'cli_parameters'
+testcase_type = "IO"
+description = "Some cli parameters"
+env_vars = 'RAND_SEED=4483129'
+args = ['oop1', 'is', 'cool']
+exp_file = "tests/03/out"
+exp_retvar = 2
+
