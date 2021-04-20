@@ -65,3 +65,145 @@ std::string Tile::getTileTypeString()
     return nullptr;
   }
 }
+
+void Tile::fillWall(std::vector<Direction> directions, std::vector<std::string>& tile)
+{
+  std::vector<std::string> templateTile;
+  bool topWall = false;
+  bool leftWall = false;
+  bool botWall = false;
+  bool rightWall = false;
+  for(size_t i = 0; i < directions.size(); i++)
+  {
+    if(directions[i] == Direction::TOP)
+    {
+      topWall = true;
+    }
+    else if(directions[i] == Direction::LEFT)
+    {
+      leftWall = true;
+    }
+    else if(directions[i] == Direction::BOTTOM)
+    {
+      botWall = true;
+    }
+    else if(directions[i] == Direction::RIGHT)
+    {
+      rightWall = true;
+    }
+  }
+
+  for(size_t row = 0; row < 5 ; row++)
+  {
+    templateTile.push_back("");
+    for(size_t col = 0; col < 9 ; col++)
+    {
+      if((row == 0 || row == 4) && (col <= 1 || col >= 7))
+      {
+        templateTile[row].append(Wall);
+      }
+      else if(topWall && row == 0)
+      {
+        templateTile[row].append(Wall);
+      }
+      else if(leftWall && col <= 1)
+      {
+        templateTile[row].append(Wall);
+      }
+      else if(botWall && row == 4)
+      {
+        templateTile[row].append(Wall);
+      }
+      else if(rightWall && col >= 7)
+      {
+        templateTile[row].append(Wall);
+      }
+      else
+      {
+        templateTile[row].append(" ");
+      }
+    }
+    std::cout << templateTile[row] << std::endl;
+  }
+  tile = templateTile;
+}
+
+Direction Tile::calcDirection(Direction dir, Rotation rot)
+{
+  int dirValue = (int)dir;
+  int rotValue = (int)rot;
+  dirValue += rotValue;
+  if(dirValue >= 4)
+  {
+    dirValue -= 4;
+  }
+  return (Direction)dirValue;
+}
+
+void Tile::getRawTileString0(Rotation rotation, std::vector<Direction> directions, std::vector<std::string>& tile)
+{
+  for(size_t i = 0; i < directions.size(); i++)
+  {
+    directions[i] = calcDirection(directions[i],rotation);
+    switch (directions[i])
+    {
+    case Direction::TOP:
+      std::cout << "TOP" << std::endl;
+      break;
+    case Direction::LEFT:
+      std::cout << "Left" << std::endl;
+      break;
+    case Direction::BOTTOM:
+      std::cout << "Bot" << std::endl;
+      break;
+    case Direction::RIGHT:
+      std::cout << "Right" << std::endl;
+      break;
+    
+    default:
+      break;
+    }
+  }
+  fillWall(directions,tile);
+}
+
+std::vector<std::string> Tile::getRawTileString(TileType type, Rotation rotation)
+{
+  std::vector<std::string> tileVector;
+  std::vector<Direction> directions;
+  switch (type)
+  {
+  case TileType::T:
+    directions.push_back(Direction::TOP);
+    getRawTileString0(rotation,directions, tileVector);
+    return tileVector;
+  case TileType::L:
+    directions.push_back(Direction::LEFT);
+    directions.push_back(Direction::BOTTOM);
+    getRawTileString0(rotation,directions, tileVector);
+    return tileVector;
+  case TileType::I:
+    directions.push_back(Direction::LEFT);
+    directions.push_back(Direction::RIGHT);
+    getRawTileString0(rotation,directions, tileVector);
+    return tileVector;
+  case TileType::O:
+    directions.push_back(Direction::LEFT);
+    directions.push_back(Direction::RIGHT);
+    directions.push_back(Direction::BOTTOM);
+    directions.push_back(Direction::TOP);
+    getRawTileString0(rotation,directions, tileVector);
+    return tileVector;
+  case TileType::U:
+    directions.push_back(Direction::RIGHT);
+    directions.push_back(Direction::LEFT);
+    directions.push_back(Direction::BOTTOM);
+    getRawTileString0(rotation,directions, tileVector);
+    return tileVector;
+  case TileType::X:
+    getRawTileString0(rotation,directions, tileVector);
+    return tileVector;
+  default:
+    return tileVector;
+  }
+}
