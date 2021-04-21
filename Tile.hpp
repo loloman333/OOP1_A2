@@ -17,7 +17,6 @@
 
 const std::string Wall = "█";
 
-
 //Enums
 enum class TileType {T, L, I, O, U, X};
 enum class Rotation{DEG0 = 0, DEG90 = 1, DEG180 = 2, DEG270 = 3};
@@ -29,11 +28,11 @@ class Tile
     TileType type_;
     Rotation rotation_;
     std::vector<Player*> players_;
-    std::vector<std::string> generateTemplate();
+
     void fillWalls(std::vector<Direction>, std::vector<std::string>& tile);
     void generateTile(Rotation rotation, std::vector<Direction> directions, std::vector<std::string>& tile);
+    void addPlayersToTile(std::vector<std::string>& tileVector);
     Direction calcDirection(Direction dir, Rotation rot);
-    
 
   public:
     Tile() = default;
@@ -51,6 +50,7 @@ class Tile
     std::vector<std::string> getRawTileString();
     size_t getRotationValue();
     std::string getTileTypeString();
+    void addPlayer(Player* player);
 };
 
 #endif //A2_TILE_HPP

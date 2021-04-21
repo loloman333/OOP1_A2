@@ -162,34 +162,68 @@ std::vector<std::string> Tile::getRawTileString()
   case TileType::T:
     directions.push_back(Direction::TOP);
     generateTile(rotation_, directions, tileVector);
-    return tileVector;
+    break;
   case TileType::L:
     directions.push_back(Direction::LEFT);
     directions.push_back(Direction::BOTTOM);
     generateTile(rotation_, directions, tileVector);
-    return tileVector;
+      break;
   case TileType::I:
     directions.push_back(Direction::LEFT);
     directions.push_back(Direction::RIGHT);
     generateTile(rotation_, directions, tileVector);
-    return tileVector;
+      break;
   case TileType::O:
     directions.push_back(Direction::LEFT);
     directions.push_back(Direction::RIGHT);
     directions.push_back(Direction::BOTTOM);
     directions.push_back(Direction::TOP);
     generateTile(rotation_, directions, tileVector);
-    return tileVector;
+    break;
   case TileType::U:
     directions.push_back(Direction::RIGHT);
     directions.push_back(Direction::LEFT);
     directions.push_back(Direction::BOTTOM);
     generateTile(rotation_, directions, tileVector);
-    return tileVector;
+      break;
   case TileType::X:
     generateTile(rotation_, directions, tileVector);
-    return tileVector;
-  default:
-    return tileVector;
+    break;
   }
+
+  addPlayersToTile(tileVector);
+
+  return tileVector;
+}
+
+void Tile::addPlayersToTile(std::vector<std::string>& tileVector)
+{
+  if (!players_.empty())
+  {
+    int index = 3;
+    if (players_.size() == 4)
+    {
+      index = 2;
+    }
+
+    std::string player_string = "P";
+    for (Player* player : players_)
+    {
+      player_string += player->getPlayerColor();
+    }
+
+    if (tileVector[3][0] == ' ')
+    {
+      tileVector[3].replace(index, player_string.size(), player_string);
+    }
+    else
+    {
+      tileVector[3].replace(index + 4, player_string.size(), player_string);
+    }
+  }
+}
+
+void Tile::addPlayer(Player *player)
+{
+  players_.push_back(player);
 }
