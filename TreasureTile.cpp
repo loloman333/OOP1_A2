@@ -69,7 +69,7 @@ std::vector<std::string> TreasureTile::getTileString()
   }
   else
   {
-    tileString[2].replace(5, 3, treasure_id);
+    tileString[2].replace(7, 3, treasure_id);
   }
 
   return tileString;
