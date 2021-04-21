@@ -35,7 +35,7 @@ all: clean bin				## all of the above
 
 run: all					## runs the project with default config
 	@echo -e "[\033[36mINFO\033[0m] Executing binary..."
-	./$(ASSIGNMENT) ./config/config_02.bin
+	./$(ASSIGNMENT)
 
 test: clean					## runs public testcases on the project
 	@echo -e "[\033[36mINFO\033[0m] Executing testrunner..."
