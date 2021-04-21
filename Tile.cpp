@@ -30,6 +30,11 @@ void Tile::setRotation(Rotation r)
   rotation_ = r;
 }
 
+void Tile::setType(TileType type)
+{
+  type_ = type;
+}
+
 size_t Tile::getRotationValue()
 {
   switch (rotation_)
@@ -123,7 +128,6 @@ void Tile::fillWall(std::vector<Direction> directions, std::vector<std::string>&
         templateTile[row].append(" ");
       }
     }
-    std::cout << templateTile[row] << std::endl;
   }
   tile = templateTile;
 }
@@ -148,16 +152,12 @@ void Tile::getRawTileString0(Rotation rotation, std::vector<Direction> direction
     switch (directions[i])
     {
     case Direction::TOP:
-      std::cout << "TOP" << std::endl;
       break;
     case Direction::LEFT:
-      std::cout << "Left" << std::endl;
       break;
     case Direction::BOTTOM:
-      std::cout << "Bot" << std::endl;
       break;
     case Direction::RIGHT:
-      std::cout << "Right" << std::endl;
       break;
     
     default:

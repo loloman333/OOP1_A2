@@ -39,6 +39,7 @@ class Tile
     
 
   public:
+    Tile() = default;
     Tile(TileType type, Rotation rotation);
     virtual ~Tile() = default;
 
@@ -47,6 +48,7 @@ class Tile
     std::vector<Player*> getPlayers();
 
     void setRotation(Rotation r);
+    void setType(TileType type);
 
     std::vector<std::string> virtual getTileString() = 0;
     std::vector<std::string> getRawTileString(TileType type, Rotation rotation);
