@@ -65,7 +65,6 @@ std::vector<std::string> TreasureTile::getTileString()
   std::string treasure_id = getTreasureId();
   if (tileString[2][0] == ' ')
   {
-    std::cout << "yes" << std::endl;
     tileString[2].replace(3, 3, treasure_id);
   }
   else
