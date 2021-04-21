@@ -48,7 +48,7 @@ class Tile
     void setType(TileType type);
 
     std::vector<std::string> virtual getTileString() = 0;
-    std::vector<std::string> getRawTileString(TileType type, Rotation rotation);
+    std::vector<std::string> getRawTileString();
     size_t getRotationValue();
     std::string getTileTypeString();
 };

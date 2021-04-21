@@ -56,7 +56,7 @@ std::string TreasureTile::getTreasureId()
 
 std::vector<std::string> TreasureTile::getTileString()
 {
-  std::vector<std::string> tileString = getRawTileString(getType(), getRotation());
+  std::vector<std::string> tileString = getRawTileString();
   if (collected_)
   {
     return tileString;

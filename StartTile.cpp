@@ -44,7 +44,7 @@ char StartTile::getPlayerColor()
 
 std::vector<std::string> StartTile::getTileString()
 {
-  std::vector<std::string> tileString = getRawTileString(getType(), getRotation()); // TODO: remove parameters of getRawTileString?
+  std::vector<std::string> tileString = getRawTileString();
   std::string playerBase{"("};
   playerBase += getPlayerColor();
   playerBase += ")";

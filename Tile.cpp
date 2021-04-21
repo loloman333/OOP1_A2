@@ -153,41 +153,41 @@ void Tile::generateTile(Rotation rotation, std::vector<Direction> directions, st
   fillWalls(directions,tile);
 }
 
-std::vector<std::string> Tile::getRawTileString(TileType type, Rotation rotation)
+std::vector<std::string> Tile::getRawTileString()
 {
   std::vector<std::string> tileVector;
   std::vector<Direction> directions;
-  switch (type)
+  switch (type_)
   {
   case TileType::T:
     directions.push_back(Direction::TOP);
-    generateTile(rotation,directions, tileVector);
+    generateTile(rotation_, directions, tileVector);
     return tileVector;
   case TileType::L:
     directions.push_back(Direction::LEFT);
     directions.push_back(Direction::BOTTOM);
-    generateTile(rotation,directions, tileVector);
+    generateTile(rotation_, directions, tileVector);
     return tileVector;
   case TileType::I:
     directions.push_back(Direction::LEFT);
     directions.push_back(Direction::RIGHT);
-    generateTile(rotation,directions, tileVector);
+    generateTile(rotation_, directions, tileVector);
     return tileVector;
   case TileType::O:
     directions.push_back(Direction::LEFT);
     directions.push_back(Direction::RIGHT);
     directions.push_back(Direction::BOTTOM);
     directions.push_back(Direction::TOP);
-    generateTile(rotation,directions, tileVector);
+    generateTile(rotation_, directions, tileVector);
     return tileVector;
   case TileType::U:
     directions.push_back(Direction::RIGHT);
     directions.push_back(Direction::LEFT);
     directions.push_back(Direction::BOTTOM);
-    generateTile(rotation,directions, tileVector);
+    generateTile(rotation_, directions, tileVector);
     return tileVector;
   case TileType::X:
-    generateTile(rotation,directions, tileVector);
+    generateTile(rotation_, directions, tileVector);
     return tileVector;
   default:
     return tileVector;
