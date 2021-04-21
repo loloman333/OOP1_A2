@@ -57,18 +57,21 @@ std::string TreasureTile::getTreasureId()
 std::vector<std::string> TreasureTile::getTileString()
 {
   std::vector<std::string> tileString = getRawTileString(getType(), getRotation());
-  /*if (collected_)
+  if (collected_)
   {
     return tileString;
   }
 
   std::string treasure_id = getTreasureId();
-  std::cout << tileString[2] << std::endl;
-  for (char c : tileString[2])
+  if (tileString[2][0] == ' ')
   {
-    std::cout << c << std::endl;
+    std::cout << "yes" << std::endl;
+    tileString[2].replace(3, 3, treasure_id);
   }
-  std::cout << tileString[2].length() << std::endl;
-  tileString[2].replace(4, 3, treasure_id);*/
+  else
+  {
+    tileString[2].replace(5, 3, treasure_id);
+  }
+
   return tileString;
 }
