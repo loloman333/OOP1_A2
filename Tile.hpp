@@ -30,11 +30,8 @@ class Tile
     Rotation rotation_;
     std::vector<Player*> players_;
     std::vector<std::string> generateTemplate();
-    void fillWall(std::vector<Direction>, std::vector<std::string>& tile);
-    void getRawTileString0(Rotation rotation, std::vector<Direction> directions, std::vector<std::string>& tile);
-    void getRawTileString90(TileType type, std::vector<std::string>& tile);
-    void getRawTileString180(TileType type, std::vector<std::string>& tile);
-    void getRawTileString270(TileType type, std::vector<std::string>& tile);
+    void fillWalls(std::vector<Direction>, std::vector<std::string>& tile);
+    void generateTile(Rotation rotation, std::vector<Direction> directions, std::vector<std::string>& tile);
     Direction calcDirection(Direction dir, Rotation rot);
     
 
