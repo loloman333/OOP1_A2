@@ -105,23 +105,23 @@ void Tile::fillWalls(std::vector<Direction> directions, std::vector<std::string>
     {
       if((row == 0 || row == 4) && (col <= 1 || col >= 7))
       {
-        templateTile[row].append(Wall);
+        templateTile[row].append(WALL);
       }
       else if(topWall && row == 0)
       {
-        templateTile[row].append(Wall);
+        templateTile[row].append(WALL);
       }
       else if(leftWall && col <= 1)
       {
-        templateTile[row].append(Wall);
+        templateTile[row].append(WALL);
       }
       else if(botWall && row == 4)
       {
-        templateTile[row].append(Wall);
+        templateTile[row].append(WALL);
       }
       else if(rightWall && col >= 7)
       {
-        templateTile[row].append(Wall);
+        templateTile[row].append(WALL);
       }
       else
       {

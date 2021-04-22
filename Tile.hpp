@@ -15,7 +15,7 @@
 #include "Player.hpp"
 #include <iostream>
 
-const std::string Wall = "█";
+const std::string WALL = "█";
 
 //Enums
 enum class TileType {T, L, I, O, U, X};
