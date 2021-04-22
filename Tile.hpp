@@ -36,6 +36,7 @@ class Tile
 
   public:
     Tile() = default;
+    Tile(TileType type);
     Tile(TileType type, Rotation rotation);
     virtual ~Tile() = default;
 

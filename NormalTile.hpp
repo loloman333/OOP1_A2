@@ -18,6 +18,8 @@ class NormalTile : public Tile
 
   public:
     NormalTile(TileType type, Rotation rotation);
+    NormalTile(TileType type);
+
 
     std::vector<std::string> getTileString();
 

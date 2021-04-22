@@ -9,6 +9,7 @@
 #include "Tile.hpp"
 
 Tile::Tile(TileType type, Rotation rotation) : type_{type}, rotation_{rotation} {}
+Tile::Tile(TileType type) : type_{type} {}
 
 TileType Tile::getType()
 {
