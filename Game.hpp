@@ -11,20 +11,26 @@
 #define A2_GAME_HPP
 
 #include "Tile.hpp"
+#include "Random.hpp"
+#include <fstream>
 
 const size_t BOARD_SIZE = 7;
+const std::string TREASURE_PATH = "Treasures.txt";
 
 class Game
 {
   private:
 
     std::vector<std::vector<Tile*>> board_;
+    std::vector<Treasure*> treasures_;
+    std::vector<Player*> players_;
 
     Game();
     Game(const Game&); 
     Game& operator = (const Game&); 
 
     bool isCorner(size_t row_index, size_t col_index);
+    void fillTreasures();
 
   public:
     static Game& instance();
@@ -35,7 +41,9 @@ class Game
     void distributeTreasures();
     void fillBoard();
     void print();
-    void playRound();  
+    void playRound();
+
+    void addPlayer(Player* player);
 };
 
 #endif //A2_GAME_HPP

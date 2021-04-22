@@ -23,17 +23,17 @@ Game& Game::instance()
 
 void Game::run()
 {
-
-  gameStart(); //Nagy
+  fillTreasures();
+  // gameStart(); //Nagy
   distributeTreasures(); //Grill
-  fillBoard(); //Killer
+  // fillBoard(); //Killer
 
   // While something
-  while (true) 
-  {
-    print();
-    playRound();
-  }
+  // while (true)
+  // {
+  //  print();
+  //  playRound();
+  // }
 }
 
 void Game::fillBoard()
@@ -74,4 +74,38 @@ void Game::fillBoard()
 bool Game::isCorner(size_t row_index, size_t col_index)
 {
   return !(row_index % (BOARD_SIZE - 1)) && !(col_index % (BOARD_SIZE - 1));
+}
+
+void Game::fillTreasures()
+{
+  std::ifstream file(TREASURE_PATH);
+  std::string treasure;
+  size_t id = 1;
+  while (file >> treasure)
+  {
+    treasures_.push_back(new Treasure(treasure, id));
+    id++;
+  }
+}
+
+void Game::addPlayer(Player* player)
+{
+  players_.push_back(player);
+}
+
+void Game::distributeTreasures()
+{
+  std::vector<Treasure*> temp_treasures = treasures_;
+  for (size_t cards_dealt = 0; cards_dealt < treasures_.size(); cards_dealt++)
+  {
+    for (Player* player : players_)
+    {
+      size_t next_card_index = Oop::Random::getInstance().getRandomCard(temp_treasures.size());
+      player->getCoveredStackRef().push_back(temp_treasures[next_card_index - 1]);
+      std::cout << "Player: " << player->getPlayerColor() << "; Card: " << temp_treasures[next_card_index - 1]->getName() << std::endl;
+      temp_treasures.erase(temp_treasures.begin() + next_card_index - 1);
+      cards_dealt++;
+
+    }
+  }
 }
