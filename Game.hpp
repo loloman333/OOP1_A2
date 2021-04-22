@@ -12,15 +12,19 @@
 
 #include "Tile.hpp"
 
+const size_t BOARD_SIZE = 7;
+
 class Game
 {
   private:
 
-    std::vector<std::vector<Tile>> board_;
+    std::vector<std::vector<Tile*>> board_;
 
     Game();
     Game(const Game&); 
     Game& operator = (const Game&); 
+
+    bool isCorner(size_t row_index, size_t col_index);
 
   public:
     static Game& instance();
