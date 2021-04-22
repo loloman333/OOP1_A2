@@ -26,11 +26,6 @@ StartTile::StartTile(char player_color) : Tile{}, player_color_{player_color}
     case 'R':
       rot = Rotation::DEG270;
       break;
-    default:
-      //TODO: remove?
-      std::cerr << "Invalid player color!" << std::endl;
-      exit(-1);
-      break;
   }
 
   setType(TileType::L);
@@ -49,7 +44,6 @@ std::vector<std::string> StartTile::getTileString()
   playerBase += getPlayerColor();
   playerBase += ")";
 
-  //TODO: use wstring instead?
   if (tileString[2][0] == ' ')
   {
     tileString[2].replace(3, 3, playerBase);
