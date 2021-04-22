@@ -14,6 +14,11 @@
 
 Game::Game() {}
 
+Game::~Game()
+{
+  deleteBoard();
+}
+
 Game& Game::instance()
 {
   static Game instance_;
@@ -67,6 +72,8 @@ void Game::fillStaticTiles()
         {
           board_[row_index].push_back(new StartTile{player_colors.back()});
           player_colors.pop_back();
+
+          std::cout << board_[row_index][col_index] << std::endl;
         }
         else
         {
@@ -85,24 +92,22 @@ void Game::fillVariableTiles()
   addNewTilesToVector(tiles, TileType::I, 11);
   addNewTilesToVector(tiles, TileType::T, 12);
 
-  for (std::vector<Tile*>& row : board_)
+  for (size_t row_index = 0; row_index < board_.size(); row_index++)
   {
-    for (Tile*& tile : row)
+    for (size_t col_index = 0; col_index < board_[row_index].size(); col_index++)
     {
-      if (tile == nullptr)
+      if (board_[row_index][col_index] == nullptr)
       {
-        size_t random_index = Oop::Random::getInstance().getRandomCard(tiles.size());
-        tile = tiles[random_index];
+        size_t random_index = Oop::Random::getInstance().getRandomCard(tiles.size()) - 1;
+        board_[row_index][col_index] = tiles[random_index];
 
          size_t random_rotation = Oop::Random::getInstance().getRandomOrientation();
-        tile->setRotation((Rotation)random_rotation);
+        board_[row_index][col_index]->setRotation((Rotation)random_rotation);
 
-        tiles.erase(tiles.begin() + random_index - 1);
+        tiles.erase(tiles.begin() + random_index);
       }
     }
   }
-
-  std::cout << "Tiles Left: " << tiles.size() << std::endl;
 }
 
 void Game::addNewTilesToVector(std::vector<Tile*>& vector, TileType type, size_t count)
@@ -148,6 +153,17 @@ void Game::distributeTreasures()
       temp_treasures.erase(temp_treasures.begin() + next_card_index - 1);
       cards_dealt++;
 
+    }
+  }
+}
+
+void Game::deleteBoard()
+{
+  for (std::vector<Tile*> row : board_)
+  {
+    for (Tile* tile : row)
+    {
+      delete tile;
     }
   }
 }

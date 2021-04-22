@@ -34,7 +34,7 @@ class Game
 
   public:
     static Game& instance();
-    ~ Game() = default;
+    ~ Game();
 
     void run();
     void gameStart();
@@ -45,6 +45,8 @@ class Game
     void addNewTilesToVector(std::vector<Tile*>& vector, TileType type, size_t count);
     void print();
     void playRound();
+
+    void deleteBoard();
 
     void addPlayer(Player* player);
 };
