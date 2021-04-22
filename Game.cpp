@@ -72,8 +72,6 @@ void Game::fillStaticTiles()
         {
           board_[row_index].push_back(new StartTile{player_colors.back()});
           player_colors.pop_back();
-
-          std::cout << board_[row_index][col_index] << std::endl;
         }
         else
         {
