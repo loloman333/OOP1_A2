@@ -10,8 +10,6 @@
 #include "StartTile.hpp"
 #include "TreasureTile.hpp"
 #include "NormalTile.hpp"
-
-// TODO: remove?
 #include "Treasure.hpp"
 
 Game::Game() {}
@@ -50,7 +48,7 @@ void Game::fillBoard()
 
 void Game::fillStaticTiles()
 {
-  std::vector<char> player_colors = {'B', 'G', 'Y', 'R'}; // TODO use player array instead 
+  std::vector<char> player_colors = {'B', 'G', 'Y', 'R'};
   size_t treasure_index = 0;
 
   for (size_t row_index = 0; row_index < BOARD_SIZE; row_index++)
