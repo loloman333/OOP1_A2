@@ -202,6 +202,8 @@ Ein Schatz auf einer Karte wird mit `T` und der zweistelligen Schatz-ID angezeig
 Befindet sich auf einer Karte ein Schatz, so wird dies in der 3. Zeile der Karte angezeigt mit einem Abstand von 3 Zeichen von links.
 Wichtig: Wurde ein Schatz schon gefunden, das heißt `collected_` ist `true`, so wird der Schatz nicht mehr angezeigt.
 
+Bei den Startfeldern erfolgt die Anzeige zu welchem Spieler das jeweilige Feld gehört mit dem Anfangsbuchstaben der Spielerfarbe in Klammern z. B. `(B)` in der 3. Zeile mit dem Abstand von 3 Zeichen angezeigt.
+
 Die ASCII-Karten bestehen aus den Zeichen ``'█'`` und ``' '``.
 
 Folgende ASCII-Karten existieren: (Die Buchstaben zeigen dabei an, wo sich die Zeichen für einen Schatz / Player befinden sollen.)
@@ -315,13 +317,13 @@ Player Red(R)    |                 |                 |    Player Yellow(Y)
 Treasure: X/6    V                 V                 V    Treasure: X/6
         1        2        3        4        5        6        7    
     ███████████     █████████████     █████████████████████████████
-    ██ (R)   ██     ██         ██     ██                     (Y) ██
-   1██       ██     ██   T01   ██     ██   T02                   ██
     ██       ██     ██         ██     ██                         ██
+   1██ (R)   ██     ██   T01   ██     ██   T02               (Y) ██
+    ██ PR    ██     ██         ██     ██                     PY  ██
     ██     ████     ████     ████     ████     █████████████     ██
     ██     ████     ████     █████████████     ████     ████     ██
            ████     ████                       ██         ██       
--->2       ████     ████ T13               T14 ██   S15   ██        <--
+-->2       ████     ████ T13               T14 ██   T15   ██        <--
            ████     ████                       ██         ██       
     ███████████     ████████████████████████████████████████     ██
     ██     █████████████     ████     █████████████     ████     ██
@@ -345,9 +347,9 @@ Treasure: X/6    V                 V                 V    Treasure: X/6
            ██                ████     ██       ██                  
     ████████████████████     ████     █████████████████████████████
     ██     ████     ████     ████     ████     █████████████     ██
-    ██ (G)   ██                       ██                     (B) ██
-   7██       ██          T11      T24 ██   T12                   ██
     ██       ██                       ██                         ██
+   7██ (G)   ██          T11      T24 ██   T12               (B) ██
+    ██ PG    ██                       ██                     PB  ██
     ███████████     ███████████████████████████████     ███████████
 Player Green(G)  Ʌ                 Ʌ                 Ʌ    Player Blue(B)
 Treasure: X/6    |                 |                 |    Treasure: X/6
@@ -371,7 +373,7 @@ Dadurch ergibt sich der folgende vorgegebene Spielplan:
 █████████         █████████         █████████         █████████
 ██                                                           ██
 ██ (R)               T01               T02               (Y) ██
-██                                                           ██
+██ PR                                                    PY  ██
 ██     ██         ██     ██         ██     ██         ██     ██
 
 
@@ -401,7 +403,7 @@ Dadurch ergibt sich der folgende vorgegebene Spielplan:
 ██     ██         ██     ██         ██     ██         ██     ██
 ██                                                           ██
 ██ (G)               T11               T12               (B) ██
-██                                                           ██
+██ PG                                                    PB  ██
 █████████         █████████         █████████         █████████
 ```
 
