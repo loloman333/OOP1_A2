@@ -9,6 +9,7 @@
 #include "Game.hpp"
 #include "StartTile.hpp"
 #include "TreasureTile.hpp"
+#include "NormalTile.hpp"
 
 // TODO: remove?
 #include "Treasure.hpp"
@@ -24,9 +25,14 @@ Game& Game::instance()
 void Game::run()
 {
   fillTreasures();
+
+  // TODO: remove once gameStart works
+  addPlayer(new Player{'R'});
+  addPlayer(new Player{'Y'});
+  
   // gameStart(); //Nagy
   distributeTreasures(); //Grill
-  // fillBoard(); //Killer
+  fillBoard(); //Killer
 
   // While something
   // while (true)
@@ -38,11 +44,15 @@ void Game::run()
 
 void Game::fillBoard()
 {
+  fillStaticTiles();
+  fillVariableTiles();
+}
 
-  std::vector<char> player_colors = {'B', 'G', 'Y', 'R'};
+void Game::fillStaticTiles()
+{
+  std::vector<char> player_colors = {'B', 'G', 'Y', 'R'}; // TODO use player array instead 
   size_t treasure_index = 0;
 
-  //fillStaticTiles();
   for (size_t row_index = 0; row_index < BOARD_SIZE; row_index++)
   {
     board_.push_back(std::vector<Tile*>{});
@@ -62,12 +72,46 @@ void Game::fillBoard()
         }
         else
         {
-          /*TODO*/
-          board_[row_index].push_back(new TreasureTile{nullptr});
+          board_[row_index].push_back(new TreasureTile{treasures_[treasure_index]});
           treasure_index++;
         }
       }
     }
+  }
+}
+
+void Game::fillVariableTiles()
+{
+  std::vector<Tile*> tiles;
+  addNewTilesToVector(tiles, TileType::L, 11);
+  addNewTilesToVector(tiles, TileType::I, 11);
+  addNewTilesToVector(tiles, TileType::T, 12);
+
+  for (std::vector<Tile*>& row : board_)
+  {
+    for (Tile*& tile : row)
+    {
+      if (tile == nullptr)
+      {
+        size_t random_index = Oop::Random::getInstance().getRandomCard(tiles.size());
+        tile = tiles[random_index];
+
+         size_t random_rotation = Oop::Random::getInstance().getRandomOrientation();
+        tile->setRotation((Rotation)random_rotation);
+
+        tiles.erase(tiles.begin() + random_index - 1);
+      }
+    }
+  }
+
+  std::cout << "Tiles Left: " << tiles.size() << std::endl;
+}
+
+void Game::addNewTilesToVector(std::vector<Tile*>& vector, TileType type, size_t count)
+{
+  for (size_t i = 0; i < count; i++)
+  {
+    vector.push_back(new NormalTile{type});
   }
 }
 

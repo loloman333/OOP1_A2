@@ -40,6 +40,9 @@ class Game
     void gameStart();
     void distributeTreasures();
     void fillBoard();
+    void fillStaticTiles();
+    void fillVariableTiles();
+    void addNewTilesToVector(std::vector<Tile*>& vector, TileType type, size_t count);
     void print();
     void playRound();
 
