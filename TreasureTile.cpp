@@ -9,13 +9,13 @@
 
 #include "TreasureTile.hpp"
 
-TreasureTile::TreasureTile(Treasure& treasure, TileType type, Rotation rotation) : treasure_{treasure}, collected_{false}
+TreasureTile::TreasureTile(Treasure* treasure) : treasure_{treasure}, collected_{false}
 {
-  setType(type);
-  setRotation(rotation);
+  setType(TileType::T);
+  setRotation(calculateRotation(treasure.getTreasureId()));
 }
 
-Treasure& TreasureTile::getTreasure()
+Treasure* TreasureTile::getTreasure()
 {
   return treasure_;
 }
@@ -25,7 +25,7 @@ bool TreasureTile::getCollected()
   return collected_;
 }
 
-void TreasureTile::setTreasure(Treasure& treasure)
+void TreasureTile::setTreasure(Treasure* treasure)
 {
   treasure_ = treasure;
 }
@@ -73,4 +73,28 @@ std::vector<std::string> TreasureTile::getTileString()
   }
 
   return tileString;
+}
+
+Rotation TreasureTile::calculateRotation(size_t treasure_id)
+{
+  std::vector<size_t> deg_0 = {1, 2, 5};
+  std::vector<size_t> deg_90 = {3, 4, 7};
+  std::vector<size_t> deg_180 = {8, 11, 12};
+  std::vector<size_t> deg_270 = {6, 9, 10};
+  if (std::find(deg_0.begin(), deg_0.end(), treasure_id))
+  {
+    return Rotation::DEG0;
+  }
+  else if (std::find(deg_90.begin(), deg_90.end(), treasure_id))
+  {
+    return Rotation::DEG90;
+  }
+  else if (std::find(deg_180.begin(), deg_180.end(), treasure_id))
+  {
+    return Rotation::DEG180;
+  }
+  else
+  {
+    return Rotation::DEG270;
+  }
 }

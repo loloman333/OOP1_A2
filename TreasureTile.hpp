@@ -17,18 +17,19 @@
 class TreasureTile : public Tile
 {
   private:
-    Treasure& treasure_;
+    Treasure* treasure_;
     bool collected_;
 
     std::string getTreasureId();
+    Rotation calculateRotation(size_t treasure_id);
 
   public:
-    TreasureTile(Treasure& treasure, TileType type, Rotation rotation);
+    TreasureTile(Treasure* treasure);
 
-    Treasure& getTreasure();
+    Treasure* getTreasure();
     bool getCollected();
 
-    void setTreasure(Treasure& treasure);
+    void setTreasure(Treasure* treasure);
     void setCollected(bool collected);
 
     void collectTreasure();
