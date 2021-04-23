@@ -130,9 +130,11 @@ Wrong Input only a Number from 2 to 4 is allowed!\n
 Nun muss eine Instanz der `Random` Klasse, welche zur Verfügung gestellt wird, erstellt werden, um eine zufällige Verteilung der Karten und des Spielfeldes zu erhalten. Es muss unbedingt die von der LV-Leitung bereitgestellte Klasse verwendet werden – ansonsten funktionieren die automatischen Tests nicht! 
 Die Instanz sollte solange das Spiel läuft verfügbar sein. Sie sollte also nur einmal erstellt werden und dann immer genutzt werden, wenn eine Zufallszahl benötigt wird.
 
+Zuerst wird das Spielfeld belegt (wie unter "Belegen des Spielplans" beschrieben). 
+
 Danach werden die Schatzkarten verteilt (wie im Abschnitt "Verteilen der Schatzkarten" beschrieben).
 
-Nach dem Verteilen der Schatzkarten wird das Spielfeld belegt (wie unter "Belegen des Spielplans" beschrieben). 
+Wichtig ist das diese Reihenfolge eingehalten wird, um die Zuordnung gleich wie in Testcases sicher zustellen.
 
 Anschließend wird das Spielfeld ein Mal ausgegeben. Danach wird ein Prompt mit dem aktiven `Player` ausgegeben und auf den Input des/der Spielenden gewartet.
 
