@@ -44,7 +44,7 @@ namespace Oop
       size_t getRandomCard(size_t const number_of_cards_left);
 
       ///-----------------------------------------------------------------------------------------------------------------
-      /// Get the number of times the card should be rotated clock-wise.
+      /// Get the number of times the card should be rotated.
       ///
       /// @return A random number in range [0, 3]
       ///
