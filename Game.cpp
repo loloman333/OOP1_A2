@@ -16,6 +16,7 @@ Game::Game() {}
 
 Game::~Game()
 {
+  deleteFreeTile();
   deleteBoard();
   deleteTreasures();
 }
@@ -31,12 +32,14 @@ void Game::run()
   fillTreasures();
 
   // TODO: remove once gameStart works
-  addPlayer(new Player{'R'});
-  addPlayer(new Player{'Y'});
+  // addPlayer(new Player{'R'});
+  // addPlayer(new Player{'Y'});
   
   // gameStart(); //Nagy
   distributeTreasures(); //Grill
   fillBoard(); //Killer
+
+  print();
 
   // While something
   // while (true)
@@ -107,6 +110,7 @@ void Game::fillVariableTiles()
       }
     }
   }
+  free_tile_ = tiles[0];
 }
 
 void Game::addNewTilesToVector(std::vector<Tile*>& vector, TileType type, size_t count)
@@ -171,5 +175,31 @@ void Game::deleteTreasures()
   for (Treasure* treasure : treasures_)
   {
     delete treasure;
+  }
+}
+
+void Game::deleteFreeTile()
+{
+  delete free_tile_;
+}
+
+void Game::print()
+{
+  for (std::vector<Tile*> row : board_)
+  {
+    std::vector<std::vector<std::string>> tile_strings{};
+    for (Tile* tile : row)
+    {
+      tile_strings.push_back(tile->getTileString());
+    }
+
+    for (size_t tile_row_index = 0; tile_row_index < TILE_HEIGHT; tile_row_index++)
+    {
+      for (std::vector<std::string> tile_rows : tile_strings)
+      {
+        std::cout << tile_rows[tile_row_index];
+      }
+      std::cout << std::endl;
+    }
   }
 }

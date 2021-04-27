@@ -22,6 +22,7 @@ class Game
   private:
 
     std::vector<std::vector<Tile*>> board_;
+    Tile* free_tile_;
     std::vector<Treasure*> treasures_;
     std::vector<Player*> players_;
 
@@ -31,7 +32,10 @@ class Game
 
     bool isCorner(size_t row_index, size_t col_index);
     void fillTreasures();
+
     void deleteTreasures();
+    void deleteFreeTile();
+    void deleteBoard();
 
   public:
     static Game& instance();
@@ -45,9 +49,7 @@ class Game
     void fillVariableTiles();
     void addNewTilesToVector(std::vector<Tile*>& vector, TileType type, size_t count);
     void print();
-    void playRound();
-
-    void deleteBoard();
+    void playRound();    
 
     void addPlayer(Player* player);
 };

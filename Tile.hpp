@@ -16,6 +16,8 @@
 #include <iostream>
 
 const std::string WALL = "█";
+const std::size_t TILE_HEIGHT = 5;
+const std::size_t TILE_WIDTH = 9;
 
 //Enums
 enum class TileType {T, L, I, O, U, X};
