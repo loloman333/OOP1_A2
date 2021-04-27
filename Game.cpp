@@ -12,6 +12,8 @@
 #include "NormalTile.hpp"
 #include "Treasure.hpp"
 
+#include <algorithm>
+
 Game::Game() {}
 
 Game::~Game()
@@ -185,6 +187,20 @@ void Game::deleteFreeTile()
 
 void Game::print()
 {
+  size_t row_label_index = 2;
+  size_t line_index = 0;
+  size_t row_index = 1;
+
+  // Print the upper UI
+  std::cout << UI_LINE_1 << std::endl;
+
+  std::string ui_line_2 = UI_LINE_2;
+  std::replace( ui_line_2.begin(), ui_line_2.end(), 'X', 'X');
+  std::cout << ui_line_2 << std::endl;
+
+  std::cout << UI_LINE_3 << std::endl;
+
+  // Print the actual board
   for (std::vector<Tile*> row : board_)
   {
     std::vector<std::vector<std::string>> tile_strings{};
@@ -192,14 +208,52 @@ void Game::print()
     {
       tile_strings.push_back(tile->getTileString());
     }
-
-    for (size_t tile_row_index = 0; tile_row_index < TILE_HEIGHT; tile_row_index++)
+    
+    for (size_t tile_line_index = 0; tile_line_index < TILE_HEIGHT; tile_line_index++)
     {
+      bool print_arrow = false;
+
+      // Print the row labels
+      if (line_index == row_label_index)
+      {
+        row_label_index += 5;
+        if (row_index % 2 == 0)
+        {
+          print_arrow = true;
+          std::cout << UI_ARROW_RIGHT;
+        }
+        else
+        {
+          std::cout << "   ";
+        }
+        std::cout << row_index++;
+      }
+      else
+      {
+        std::cout << "    ";
+      }
+
+      // Print the tiles
       for (std::vector<std::string> tile_rows : tile_strings)
       {
-        std::cout << tile_rows[tile_row_index];
+        std::cout << tile_rows[tile_line_index];
+      }
+
+      // Print right arrows
+      if (print_arrow)
+      {
+        std::cout << " " << UI_ARROW_LEFT;
       }
       std::cout << std::endl;
-    }
+
+      line_index++;
+    } 
   }
+
+  // Print the lower UI
+  std::cout << UI_LINE_4 << std::endl;
+
+  std::string ui_line_5 = UI_LINE_5;
+  std::replace( ui_line_5.begin(), ui_line_5.end(), 'X', 'X');
+  std::cout << ui_line_5 << std::endl;
 }

@@ -17,6 +17,14 @@
 const size_t BOARD_SIZE = 7;
 const std::string TREASURE_PATH = "Treasures.txt";
 
+const std::string UI_LINE_1 = "Player Red(R)    |                 |                 |    Player Yellow(Y)";
+const std::string UI_LINE_2 = "Treasure: X/6    V                 V                 V    Treasure: X6";
+const std::string UI_LINE_3 = "        1        2        3        4        5        6        7    ";
+const std::string UI_LINE_4 = "Player Green(G)  Ʌ                 Ʌ                 Ʌ    Player Blue(B)";
+const std::string UI_LINE_5 = "Treasure: X/6    |                 |                 |    Treasure: X/6";
+const std::string UI_ARROW_RIGHT = "-->";
+const std::string UI_ARROW_LEFT = "<--";
+
 class Game
 {
   private:
