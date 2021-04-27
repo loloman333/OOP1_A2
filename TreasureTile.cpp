@@ -11,7 +11,7 @@
 
 #include <algorithm>
 
-TreasureTile::TreasureTile(Treasure* treasure) : treasure_{treasure}, collected_{false}
+TreasureTile::TreasureTile(Treasure* treasure) : treasure_{treasure}
 {
   setType(TileType::T);
   setRotation(calculateRotation(treasure->getTreasureId()));
@@ -22,9 +22,9 @@ Treasure* TreasureTile::getTreasure()
   return treasure_;
 }
 
-bool TreasureTile::getCollected()
+bool TreasureTile::getFound()
 {
-  return collected_;
+  return treasure_->getFound();
 }
 
 void TreasureTile::setTreasure(Treasure* treasure)
@@ -32,14 +32,14 @@ void TreasureTile::setTreasure(Treasure* treasure)
   treasure_ = treasure;
 }
 
-void TreasureTile::setCollected(bool collected)
+void TreasureTile::setFound(bool found)
 {
-  collected_ = collected;
+  treasure_->setFound(found);
 }
 
-void TreasureTile::collectTreasure()
+void TreasureTile::foundTreasure()
 {
-  collected_ = true;
+  treasure_->setFound(true);
 }
 
 std::string TreasureTile::getTreasureId()
@@ -59,7 +59,7 @@ std::string TreasureTile::getTreasureId()
 std::vector<std::string> TreasureTile::getTileString()
 {
   std::vector<std::string> tileString = getRawTileString();
-  if (collected_)
+  if (getFound())
   {
     return tileString;
   }
@@ -82,7 +82,6 @@ Rotation TreasureTile::calculateRotation(size_t treasure_id)
   std::vector<size_t> deg_0 = {1, 2, 5};
   std::vector<size_t> deg_90 = {3, 4, 7};
   std::vector<size_t> deg_180 = {8, 11, 12};
-  std::vector<size_t> deg_270 = {6, 9, 10};
 
   if (std::count(deg_0.begin(), deg_0.end(), treasure_id))
   {

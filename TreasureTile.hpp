@@ -18,7 +18,6 @@ class TreasureTile : public Tile
 {
   private:
     Treasure* treasure_;
-    bool collected_;
 
     std::string getTreasureId();
     Rotation calculateRotation(size_t treasure_id);
@@ -27,12 +26,12 @@ class TreasureTile : public Tile
     TreasureTile(Treasure* treasure);
 
     Treasure* getTreasure();
-    bool getCollected();
+    bool getFound();
 
     void setTreasure(Treasure* treasure);
-    void setCollected(bool collected);
+    void setFound(bool collected);
 
-    void collectTreasure();
+    void foundTreasure();
     std::vector<std::string> getTileString();
 };
 

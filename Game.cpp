@@ -17,6 +17,7 @@ Game::Game() {}
 Game::~Game()
 {
   deleteBoard();
+  deleteTreasures();
 }
 
 Game& Game::instance()
@@ -147,7 +148,6 @@ void Game::distributeTreasures()
     {
       size_t next_card_index = Oop::Random::getInstance().getRandomCard(temp_treasures.size());
       player->getCoveredStackRef().push_back(temp_treasures[next_card_index - 1]);
-      std::cout << "Player: " << player->getPlayerColor() << "; Card: " << temp_treasures[next_card_index - 1]->getName() << std::endl;
       temp_treasures.erase(temp_treasures.begin() + next_card_index - 1);
       cards_dealt++;
 
@@ -163,5 +163,13 @@ void Game::deleteBoard()
     {
       delete tile;
     }
+  }
+}
+
+void Game::deleteTreasures()
+{
+  for (Treasure* treasure : treasures_)
+  {
+    delete treasure;
   }
 }

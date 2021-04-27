@@ -31,6 +31,7 @@ class Game
 
     bool isCorner(size_t row_index, size_t col_index);
     void fillTreasures();
+    void deleteTreasures();
 
   public:
     static Game& instance();
