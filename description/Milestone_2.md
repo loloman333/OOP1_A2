@@ -114,5 +114,5 @@ So wird wenn ein Befehl eingegeben wurde zuerst überprüft ob es sich um einen 
 | ------------ | --------------------------------- |
 | 0            | Spiel per Kommando beendet, Spiel wurde gewonnen    |
 | 1            | Speicher konnte nicht alloziert werden.             |
-| 2            | Falsche oder zu viele Argumente mitgegeben.         |
+| 2            | Falsche oder zu viele Argumente mitgegeben. Fehlermeldung: `Wrong arguments!`       |
 
