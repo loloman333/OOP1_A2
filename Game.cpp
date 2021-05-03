@@ -39,8 +39,6 @@ void Game::run()
   distributeTreasures(); //Grill
   fillBoard(); //Killer
 
-  print();
-
   // While something
   while (true)
   {

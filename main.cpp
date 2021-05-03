@@ -1,9 +1,23 @@
-
+//---------------------------------------------------------------------------------------------------------------------
+// main.cpp
+//
+//
+// Authors: Triochter Bande (Grill Matthias, Killer Lorenz, Nagy Lukas)
+//---------------------------------------------------------------------------------------------------------------------
+//
 
 #include "Game.hpp"
 
-int main()
+int main(int argc)
 {
-  Game& game = Game::instance();
-  game.run();
+  if(argc == 1)
+  {
+    Game& game = Game::instance();
+    game.run();
+  }
+  else
+  {
+    std::cout << "Wrong arguments!" << std::endl;
+    return 2;
+  }
 }
