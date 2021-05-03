@@ -17,6 +17,9 @@
 const size_t BOARD_SIZE = 7;
 const std::string TREASURE_PATH = "Treasures.txt";
 
+const std::string UI_WELCOME = "Welcome to the Wild OOP Labyrinth!!!";
+const std::string UI_PLAYER_COUNT = "Player Count (2-4): ";
+const std::string UI_WRONG_COUNT = "Wrong Input only a Number from 2 to 4 is allowed!";
 const std::string UI_LINE_1 = "Player Red(R)    |                 |                 |    Player Yellow(Y)";
 const std::string UI_LINE_2 = "Treasure: X/6    V                 V                 V    Treasure: X6";
 const std::string UI_LINE_3 = "        1        2        3        4        5        6        7    ";
@@ -33,6 +36,7 @@ class Game
     Tile* free_tile_;
     std::vector<Treasure*> treasures_;
     std::vector<Player*> players_;
+    size_t currentPlayerIndex_ = 0;
 
     Game();
     Game(const Game&); 
@@ -44,6 +48,7 @@ class Game
     void deleteTreasures();
     void deleteFreeTile();
     void deleteBoard();
+    void deletePlayers();
 
   public:
     static Game& instance();
@@ -59,7 +64,9 @@ class Game
     void print();
     void playRound();    
 
-    void addPlayer(Player* player);
+    void addPlayer(char color);
+    void nextPlayer();
+    Player* getCurrentPlayer();
 };
 
 #endif //A2_GAME_HPP

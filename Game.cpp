@@ -21,6 +21,7 @@ Game::~Game()
   deleteFreeTile();
   deleteBoard();
   deleteTreasures();
+  deletePlayers();
 }
 
 Game& Game::instance()
@@ -33,22 +34,88 @@ void Game::run()
 {
   fillTreasures();
 
-  // TODO: remove once gameStart works
-  // addPlayer(new Player{'R'});
-  // addPlayer(new Player{'Y'});
   
-  // gameStart(); //Nagy
+  gameStart(); //Nagy
   distributeTreasures(); //Grill
   fillBoard(); //Killer
 
   print();
 
   // While something
-  // while (true)
-  // {
-  //  print();
-  //  playRound();
-  // }
+  while (true)
+  {
+    print();
+    playRound();
+  }
+}
+
+void Game::gameStart()
+{
+  std::cout << UI_WELCOME << std::endl;
+
+  std::string input;
+  size_t playerCount = 0;
+  while (playerCount == 0)
+  {
+    std::cout << UI_PLAYER_COUNT;
+    std::getline(std::cin, input);
+    if(input == "2")
+    {
+      playerCount = 2;
+    }
+    else if(input == "3")
+    {
+      playerCount = 3;
+    }
+    else if(input == "4")
+    {
+      playerCount = 4;
+    }
+    else
+    {
+      std::cout << UI_WRONG_COUNT << std::endl;
+    }
+  }
+  std::vector<char> player_colors = {'B', 'G', 'Y', 'R'};
+  for(size_t i = 0; i < playerCount; i++)
+  {
+    addPlayer(player_colors.back());
+    player_colors.pop_back();
+  }
+}
+
+void Game::playRound()
+{
+  Player* player = getCurrentPlayer();
+  std::string currentOutput = "";
+  
+  switch (player->getPlayerColor())
+  {
+  case 'R':
+    currentOutput = "Red >";
+    break;
+  case 'G':
+    currentOutput = "Green >";
+    break;
+  case 'B':
+    currentOutput = "Blue >";
+    break;
+  case 'Y':
+    currentOutput = "Yellow >";
+    break;
+  }
+
+  while(true)
+  {
+    std::cout << currentOutput;
+    std::string command;
+    std::cin >> command;
+    if(std::cin.eof())
+    {
+      exit(0);
+    }
+  }
+
 }
 
 void Game::fillBoard()
@@ -140,9 +207,20 @@ void Game::fillTreasures()
   }
 }
 
-void Game::addPlayer(Player* player)
+void Game::addPlayer(char color)
 {
+  Player* player = new Player(color);
   players_.push_back(player);
+}
+
+void Game::nextPlayer()
+{
+  currentPlayerIndex_++;
+}
+
+Player* Game::getCurrentPlayer()
+{
+  return players_[currentPlayerIndex_];
 }
 
 void Game::distributeTreasures()
@@ -183,6 +261,14 @@ void Game::deleteTreasures()
 void Game::deleteFreeTile()
 {
   delete free_tile_;
+}
+
+void Game::deletePlayers()
+{
+  for (Player* player : players_)
+  {
+    delete player;
+  }
 }
 
 void Game::print()
