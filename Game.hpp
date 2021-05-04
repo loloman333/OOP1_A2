@@ -15,7 +15,6 @@
 #include <fstream>
 
 const size_t BOARD_SIZE = 7;
-const std::string TREASURE_PATH = "Treasures.txt";
 
 const std::string UI_WELCOME = "Welcome to the Wild OOP Labyrinth!!!";
 const std::string UI_PLAYER_COUNT = "Player Count (2-4): ";

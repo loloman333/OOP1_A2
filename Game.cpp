@@ -212,13 +212,10 @@ bool Game::isCorner(size_t row_index, size_t col_index)
 
 void Game::fillTreasures()
 {
-  std::ifstream file(TREASURE_PATH);
-  std::string treasure;
   size_t id = 1;
-  while (file >> treasure)
+  for(std::string treasure_name : TREASURE_NAMES)
   {
-    std::cout << "Name: " << treasure << std::endl;
-    treasures_.push_back(new Treasure(treasure, id));
+    treasures_.push_back(new Treasure(treasure_name, id));
     id++;
   }
 }

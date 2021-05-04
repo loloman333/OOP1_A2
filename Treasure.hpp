@@ -11,6 +11,33 @@
 #define A2_TREASURE_HPP
 
 #include <string>
+#include <vector>
+
+const std::vector<std::string> TREASURE_NAMES{
+  "Totenkopf",
+  "Schwert",
+  "Goldsack",
+  "Schlüsselbund",
+  "Sombrero",
+  "Ritterhelm",
+  "Buch",
+  "Krone",
+  "Schatztruhe",
+  "Kerzenleuchte",
+  "Schatzkarte",
+  "Goldring",
+  "Eule",
+  "Hofnarr",
+  "Eidechse",
+  "Käfer",
+  "Flaschengeist",
+  "Kobold",
+  "Schlange",
+  "Geist",
+  "Fledermaus",
+  "Spinne",
+  "Ratte",
+  "Motte"};
 
 class Treasure
 {
