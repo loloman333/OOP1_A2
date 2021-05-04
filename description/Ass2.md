@@ -14,3 +14,7 @@ Hier wird die Grundstruktur des Spiels (welche zum Teil schon vorgegeben ist) un
 ## Milestone 2
 
 Hier wird vor allem die Spiellogik implementiert, um das Spiel über die Kommandozeilenumgebung spielbar zu machen.
+
+## Bonus
+
+Hier werden Items als Erweiterung zum Spiel hinzugefügt. [Bonus](Bonus.md)
