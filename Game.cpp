@@ -89,16 +89,16 @@ void Game::playRound()
   switch (player->getPlayerColor())
   {
   case 'R':
-    currentOutput = "Red >";
+    currentOutput = "RED > ";
     break;
   case 'G':
-    currentOutput = "Green >";
+    currentOutput = "GREEN > ";
     break;
   case 'B':
-    currentOutput = "Blue >";
+    currentOutput = "BLUE > ";
     break;
   case 'Y':
-    currentOutput = "Yellow >";
+    currentOutput = "YELLOW > ";
     break;
   }
 
