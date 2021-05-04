@@ -217,6 +217,7 @@ void Game::fillTreasures()
   size_t id = 1;
   while (file >> treasure)
   {
+    std::cout << "Name: " << treasure << std::endl;
     treasures_.push_back(new Treasure(treasure, id));
     id++;
   }
