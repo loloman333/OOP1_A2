@@ -24,6 +24,7 @@ class TreasureTile : public Tile
 
   public:
     TreasureTile(Treasure* treasure);
+    TreasureTile(TileType type, Treasure* treasure);
 
     Treasure* getTreasure();
     bool getFound();

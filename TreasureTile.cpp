@@ -17,6 +17,9 @@ TreasureTile::TreasureTile(Treasure* treasure) : treasure_{treasure}
   setRotation(calculateRotation(treasure->getTreasureId()));
 }
 
+TreasureTile::TreasureTile(TileType type, Treasure* treasure) 
+: Tile(type), treasure_{treasure} {}
+
 Treasure* TreasureTile::getTreasure()
 {
   return treasure_;
