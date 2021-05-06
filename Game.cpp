@@ -142,6 +142,11 @@ void Game::fillStaticTiles(size_t& treasure_index)
         if (isCorner(row_index, col_index))
         {
           Tile* tile = new StartTile{player_colors[player_index]};
+          if (!tile)
+          {
+            exit(1);
+          }
+
           board_[row_index].push_back(tile);
           
           if (player_index < players_.size())
@@ -153,7 +158,12 @@ void Game::fillStaticTiles(size_t& treasure_index)
         }
         else
         {
-          board_[row_index].push_back(new TreasureTile{treasures_[treasure_index]});
+          TreasureTile* treasure_tile = new TreasureTile{treasures_[treasure_index]};
+          if (!treasure_tile)
+          {
+            exit(1);
+          }
+          board_[row_index].push_back(treasure_tile);
           treasure_index++;
         }
       }
@@ -190,8 +200,13 @@ void Game::fillVariableTiles(size_t& treasure_index)
 void Game::addNewNormalTilesToVector(std::vector<Tile*>& vector, TileType type, size_t count)
 {
   for (size_t i = 0; i < count; i++)
-  { 
-    vector.push_back(new NormalTile{type});
+  {
+    NormalTile* normal_tile = new NormalTile{type};
+    if(!normal_tile)
+    {
+      exit(1);
+    }
+    vector.push_back(normal_tile);
   }
 }
 
@@ -200,6 +215,11 @@ void Game::addNewTreasureTilesToVector(std::vector<Tile*>& vector, TileType type
   for (size_t i = 0; i < count; i++)
   { 
     Tile* tile = new TreasureTile{type, treasures_[treasure_index]};
+    if(!tile)
+    {
+      exit(1);
+    }
+
     treasure_index++;
     vector.push_back(tile);
   }
@@ -215,7 +235,12 @@ void Game::fillTreasures()
   size_t id = 1;
   for(std::string treasure_name : TREASURE_NAMES)
   {
-    treasures_.push_back(new Treasure(treasure_name, id));
+    Treasure* treasure = new Treasure(treasure_name, id);
+    if(!treasure)
+    {
+      exit(1);
+    }
+    treasures_.push_back(treasure);
     id++;
   }
 }
@@ -223,6 +248,10 @@ void Game::fillTreasures()
 void Game::addPlayer(char color)
 {
   Player* player = new Player{color};
+  if(!player)
+  {
+    exit(1);
+  }
   players_.push_back(player);
 }
 
