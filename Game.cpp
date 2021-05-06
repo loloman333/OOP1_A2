@@ -46,6 +46,15 @@ void Game::run()
   }
 }
 
+void Game::setShowGamefield(bool show)
+{
+  showGamefield_ = show;
+}
+bool Game::getShowGamefield()
+{
+  return showGamefield_;
+}
+
 void Game::gameStart()
 {
   std::cout << UI_WELCOME << std::endl;
@@ -106,13 +115,81 @@ void Game::playRound()
   {
     std::cout << currentOutput;
     std::string command;
-    std::cin >> command;
-    if(std::cin.eof())
+    std::getline(std::cin, command);
+    std::vector<std::string> tokens = tokenize(command);
+    executeCommand(tokens);
+  }
+}
+
+std::vector<std::string> Game::tokenize(std::string input)
+{
+  std::vector<std::string> tokens;
+  std::string token = "";
+  for(size_t i = 0; i < input.size(); i++)
+  {
+    if(input[i] == ' ')
+    {
+      if(token.size() > 0)
+      {
+        tokens.push_back(token);
+        token = "";
+      }
+    }
+    else
+    {
+      token.push_back(input[i]);
+    }
+  }
+  if(token.size() > 0)
+  {
+    tokens.push_back(token);
+  }
+  return tokens;
+}
+
+void Game::executeCommand(std::vector<std::string>& tokens)
+{
+  std::string command = "";
+  if(tokens.size() > 0)
+  {
+    command = tokens[0];
+  }
+  if(std::cin.eof() || command == "quit" || command == "exit")
     {
       exit(0);
     }
-  }
-
+    else if(command == "showtreasure" || command == "st")
+    {
+      std::cout << "<shows treasure>" << std::endl;
+    }
+    else if(command == "hidetreasure" || command == "ht")
+    {
+      std::cout << "<hides treasure>" << std::endl;
+    }
+    else if(command == "showfreetile" || command == "sft")
+    {
+      std::cout << "<shows freetile>" << std::endl;
+    }
+    else if(command == "rotate")
+    {
+      std::cout << "<rotates>" << std::endl;
+    }
+    else if(command == "insert" || command == "i")
+    {
+      std::cout << "<inserts>" << std::endl;
+    }
+    else if(command == "gamefield" || command == "g")
+    {
+      std::cout << "<shows gamefield>" << std::endl;
+    }
+    else if(command == "finish" || command == "f")
+    {
+      std::cout << "<finishes turn>" << std::endl;
+    }
+    else if(std::find(playerMovement.begin(), playerMovement.end(), command) != playerMovement.end())
+    {
+      std::cout << "<moves player>" << std::endl;
+    }
 }
 
 void Game::fillBoard()

@@ -15,6 +15,7 @@
 #include <fstream>
 
 const size_t BOARD_SIZE = 7;
+const std::vector<std::string> playerMovement{"w", "\x1b[A", "a", "\x1b[D", "s", "\x1b[B", "d", "\x1b[C", "go"};
 
 const std::string UI_WELCOME = "Welcome to the Wild OOP Labyrinth!!!";
 const std::string UI_PLAYER_COUNT = "Player Count (2-4): ";
@@ -41,10 +42,14 @@ class Game
     std::vector<Treasure*> treasures_;
     std::vector<Player*> players_;
     size_t currentPlayerIndex_ = 0;
+    bool showGamefield_ = true;
 
     Game();
     Game(const Game&); 
     Game& operator = (const Game&); 
+
+    void setShowGamefield(bool show);
+    bool getShowGamefield();
 
     bool isCorner(size_t row_index, size_t col_index);
     void fillTreasures();
@@ -53,6 +58,8 @@ class Game
     void deleteFreeTile();
     void deleteBoard();
     void deletePlayers();
+    std::vector<std::string> tokenize(std::string input);
+    void executeCommand(std::vector<std::string>& tokens);
 
   public:
     static Game& instance();
