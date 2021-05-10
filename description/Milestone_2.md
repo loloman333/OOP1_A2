@@ -97,7 +97,7 @@ The Player RED has won the game!\n
 ### Fehlermeldungen
 
 - Wenn ein eingegebener Befehl nicht existiert, wird `Invalid command: "<command>"` ausgegeben, wobei `<command>` der ungültige Befehl ist. Beispiel: Wird `Hello World!` eingegeben, so lautet die Fehlermeldung `Invalid command: "Hello"`.
-- Wenn ein Command nicht ausgeführt werden darf, weil es gegen eine Spielregel verstößt (siehe Spielanleitung in Readme.md, speziell Unterpunkt "Spielablauf"), wird `"<command>" is currently not allowed` ausgegeben, wobei `<command>` der ungültige Befehl ist. (Beispiel: `go up` ist nicht erlaubt, bevor die Gangkarte eingefügt wurde)
+- Wenn ein Command nicht ausgeführt werden darf, weil es gegen eine Spielregel verstößt (siehe Spielanleitung in Readme.md, speziell Unterpunkt "Spielablauf"), wird `"<command>" is currently not allowed` ausgegeben, wobei `<command>` der ungültige Befehl ist. (Beispiel: `go up` ist nicht erlaubt, bevor die Gangkarte eingefügt wurde) Bei den Pfeiltastenbefehlen wird bei `<command>` die jeweilige Pfeiltaste mit `arrow up/down/left/right` benannt.
 - Ist ein Parameter nicht korrekt (z.B. "go right 2.5" oder "rotate up" oder "insert diagonal"), wird `Invalid parameter: "<parameter>"` ausgegeben werden. Beispiel für die Eingabe `rotate  World!` (Vorsicht, zwei Leerzeichen): `Invalid parameter: "World!"`  
 Wird bei einem Befehl ein Parameter eingegeben, obwohl der Befehl keine Parameter verwendet, wird `This command does not take any arguments!` ausgegeben. Wird bei einem Befehl mit Parametern eine falsche Anzahl an Parametern eingegeben wird `Wrong number of arguments!` ausgegeben.
 - Kann eine Bewegung nicht ausgeführt werden, wird `Impossible move!` ausgegeben.
