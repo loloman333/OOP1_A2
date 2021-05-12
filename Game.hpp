@@ -33,6 +33,10 @@ const std::string UI_PLAYER_YELLOW = "Player Yellow(Y)";
 const std::string UI_PLAYER_GREEN = "Player Green(G)";
 const std::string UI_PLAYER_BLUE = "Player Blue(B)";
 
+const std::string COMMAND_INVALID_PARAMETER = "Invalid parameter: ";
+const std::string COMMAND_WRONG_NUMBER_ARGUMENTS = "Wrong number of arguments!";
+const std::string COMMAND_TAKES_NO_ARGUMENTS = "This command does not take any arguments!";
+
 class Game
 {
   private:
@@ -46,40 +50,35 @@ class Game
 
     Game();
     Game(const Game&); 
-    Game& operator = (const Game&); 
+    Game& operator = (const Game&);
 
-    void setShowGamefield(bool show);
-    bool getShowGamefield();
-
-    bool isCorner(size_t row_index, size_t col_index);
-    void fillTreasures();
-
-    void deleteTreasures();
-    void deleteFreeTile();
-    void deleteBoard();
-    void deletePlayers();
-    std::vector<std::string> tokenize(std::string input);
-    void executeCommand(std::vector<std::string>& tokens);
-
-    // Commands
-    void showTreasure();
-    void hideTreasure();
-
-  public:
-    static Game& instance();
-    ~ Game();
-
-    void run();
+    // Preparations
     void gameStart();
+    void addPlayer(char color);
     void distributeTreasures();
     void fillBoard();
     void fillStaticTiles(size_t& treasure_index);
     void fillVariableTiles(size_t& treasure_index);
     void addNewNormalTilesToVector(std::vector<Tile*>& vector, TileType type, size_t count);
     void addNewTreasureTilesToVector(std::vector<Tile*>& vector, TileType type, size_t count, size_t& treasure_index);
-    void playRound();    
+    bool isCorner(size_t row_index, size_t col_index);
+    void fillTreasures();
 
-    // Print
+    // Free memory
+    void deleteTreasures();
+    void deleteFreeTile();
+    void deleteBoard();
+    void deletePlayers();
+
+    // Commands
+    std::vector<std::string> tokenize(std::string input);
+    void executeCommand(std::vector<std::string>& tokens);
+    void showTreasure(std::vector<std::string> tokens);
+    void hideTreasure(std::vector<std::string> tokens);
+    void showFreeTile(std::vector<std::string> tokens);
+    void rotateFreeTile(std::vector<std::string> tokens);
+
+    // Print board
     void print();
     void printBoard();
     void printBoardIfNecessary();
@@ -89,9 +88,15 @@ class Game
     void addArrowBasesToLine(std::string& line);
     void addArrowTipsToLine(std::string& line, Direction direction);
 
-    void addPlayer(char color);
+    void playRound();
     void nextPlayer();
     Player* getCurrentPlayer();
+
+  public:
+    static Game& instance();
+    ~ Game();
+
+    void run();
 };
 
 #endif //A2_GAME_HPP

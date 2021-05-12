@@ -228,3 +228,53 @@ void Tile::addPlayer(Player *player)
 {
   players_.push_back(player);
 }
+
+void Tile::print()
+{
+  std::vector<std::string> tile_string = getRawTileString();
+  for (std::string row : tile_string)
+  {
+    std::cout << row << std::endl;
+  }
+}
+
+void Tile::rotate(Direction dir)
+{
+  switch (dir)
+  {
+    case Direction::LEFT:
+      switch (rotation_)
+      {
+        case Rotation::DEG0:
+          rotation_ = Rotation::DEG90;
+          break;
+        case Rotation::DEG90:
+          rotation_ = Rotation::DEG180;
+          break;
+        case Rotation::DEG180:
+          rotation_ = Rotation::DEG270;
+          break;
+        case Rotation::DEG270:
+          rotation_ = Rotation::DEG0;
+          break;
+      }
+      break;
+    case Direction::RIGHT:
+      switch (rotation_)
+      {
+        case Rotation::DEG0:
+          rotation_ = Rotation::DEG270;
+          break;
+        case Rotation::DEG90:
+          rotation_ = Rotation::DEG0;
+          break;
+        case Rotation::DEG180:
+          rotation_ = Rotation::DEG90;
+          break;
+        case Rotation::DEG270:
+          rotation_ = Rotation::DEG180;
+          break;
+      }
+      break;
+  }
+}

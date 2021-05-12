@@ -54,6 +54,9 @@ class Tile
     size_t getRotationValue();
     std::string getTileTypeString();
     void addPlayer(Player* player);
+
+    void print();
+    void rotate(Direction dir);
 };
 
 #endif //A2_TILE_HPP

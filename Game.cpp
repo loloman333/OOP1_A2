@@ -125,19 +125,19 @@ void Game::executeCommand(std::vector<std::string>& tokens)
     }
     else if(command == "showtreasure" || command == "st")
     {
-      showTreasure();
+      showTreasure(tokens);
     }
     else if(command == "hidetreasure" || command == "ht")
     {
-      hideTreasure();
+      hideTreasure(tokens);
     }
     else if(command == "showfreetile" || command == "sft")
     {
-      std::cout << "<shows freetile>" << std::endl;
+      showFreeTile(tokens);
     }
     else if(command == "rotate")
     {
-      std::cout << "<rotates>" << std::endl;
+      rotateFreeTile(tokens);
     }
     else if(command == "insert" || command == "i")
     {
@@ -158,36 +158,87 @@ void Game::executeCommand(std::vector<std::string>& tokens)
     }
 }
 
-void Game::showTreasure()
+void Game::rotateFreeTile(std::vector<std::string> tokens)
 {
-  std::vector<Treasure*> covered_stack = getCurrentPlayer()->getCoveredStackRef();
-  if(covered_stack.empty())
+  if (tokens.size() == 2)
   {
-    std::cout << "All Treasures found, return to your startfield to win!" << std::endl;
+    std::string direction = tokens[1];
+    if(direction == "l" || direction == "left")
+    {
+      free_tile_->rotate(Direction::LEFT);
+    }
+    else if (direction == "r" || direction == "right")
+    {
+      free_tile_->rotate(Direction::RIGHT);
+    }
+    else
+    {
+      std::cout << COMMAND_INVALID_PARAMETER << direction << std::endl;
+    }
   }
   else
   {
-    Treasure* next_treasure = covered_stack.back();
-    std::string treasure_name = next_treasure->getName();
-    size_t treasure_id = next_treasure->getTreasureId();
-    std::string id_string= "";
-
-    if (treasure_id < 10)
-    {
-      id_string = "0";
-    }
-    id_string += std::to_string(treasure_id);
-
-    std::cout << "Current Treasure: " << treasure_name << " Nr.: " << id_string << std::endl;
+    std::cout << COMMAND_WRONG_NUMBER_ARGUMENTS << std::endl;
   }
 
-  printBoardIfNecessary();
 }
 
-void Game::hideTreasure()
+void Game::showFreeTile(std::vector<std::string> tokens)
 {
-  std::cout << "\x1b[2J";
-  print();
+  if (tokens.size() == 1)
+  {
+    std::cout << "Free Tile:" << std::endl;
+    free_tile_->print();
+  }
+  else if (tokens.size() > 1)
+  {
+    std::cout << COMMAND_TAKES_NO_ARGUMENTS << std::endl;
+  }
+}
+
+void Game::showTreasure(std::vector<std::string> tokens)
+{
+  if (tokens.size() > 1)
+  {
+    std::cout << COMMAND_TAKES_NO_ARGUMENTS << std::endl;
+  }
+  else
+  {
+    std::vector<Treasure*> covered_stack = getCurrentPlayer()->getCoveredStackRef();
+    if(covered_stack.empty())
+    {
+      std::cout << "All Treasures found, return to your startfield to win!" << std::endl;
+    }
+    else
+    {
+      Treasure* next_treasure = covered_stack.back();
+      std::string treasure_name = next_treasure->getName();
+      size_t treasure_id = next_treasure->getTreasureId();
+      std::string id_string= "";
+
+      if (treasure_id < 10)
+      {
+        id_string = "0";
+      }
+      id_string += std::to_string(treasure_id);
+
+      std::cout << "Current Treasure: " << treasure_name << " Nr.: " << id_string << std::endl;
+    }
+    printBoardIfNecessary();
+  }
+}
+
+void Game::hideTreasure(std::vector<std::string> tokens)
+{
+  if (tokens.size() == 1)
+  {
+    std::cout << "\x1b[2J";
+    print();
+  }
+  else
+  {
+    std::cout << COMMAND_TAKES_NO_ARGUMENTS << std::endl;
+  }
 }
 
 void Game::printBoardIfNecessary()
@@ -366,7 +417,14 @@ void Game::addPlayer(char color)
 
 void Game::nextPlayer()
 {
-  currentPlayerIndex_++;
+  if(currentPlayerIndex_++ < players_.size())
+  {
+    currentPlayerIndex_++;
+  }
+  else
+  {
+    currentPlayerIndex_ = 0;
+  }
 }
 
 Player* Game::getCurrentPlayer()
@@ -601,13 +659,4 @@ void Game::printBoard()
       line_index++;
     } 
   }
-}
-
-void Game::setShowGamefield(bool show)
-{
-  showGamefield_ = show;
-}
-bool Game::getShowGamefield()
-{
-  return showGamefield_;
 }
