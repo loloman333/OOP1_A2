@@ -61,6 +61,10 @@ class Game
     std::vector<std::string> tokenize(std::string input);
     void executeCommand(std::vector<std::string>& tokens);
 
+    // Commands
+    void showTreasure();
+    void hideTreasure();
+
   public:
     static Game& instance();
     ~ Game();
@@ -78,6 +82,7 @@ class Game
     // Print
     void print();
     void printBoard();
+    void printBoardIfNecessary();
     std::vector<std::string> generateUILines();
     void addPlayerTitlesToLine(std::string& line, size_t& player_index);
     void addTreasureCountersToLine(std::string& line, size_t& player_index);

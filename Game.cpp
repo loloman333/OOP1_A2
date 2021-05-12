@@ -46,15 +46,6 @@ void Game::run()
   }
 }
 
-void Game::setShowGamefield(bool show)
-{
-  showGamefield_ = show;
-}
-bool Game::getShowGamefield()
-{
-  return showGamefield_;
-}
-
 void Game::gameStart()
 {
   std::cout << UI_WELCOME << std::endl;
@@ -121,6 +112,92 @@ void Game::playRound()
   }
 }
 
+void Game::executeCommand(std::vector<std::string>& tokens)
+{
+  std::string command = "";
+  if(tokens.size() > 0)
+  {
+    command = tokens[0];
+  }
+  if(std::cin.eof() || command == "quit" || command == "exit")
+    {
+      exit(0);
+    }
+    else if(command == "showtreasure" || command == "st")
+    {
+      showTreasure();
+    }
+    else if(command == "hidetreasure" || command == "ht")
+    {
+      hideTreasure();
+    }
+    else if(command == "showfreetile" || command == "sft")
+    {
+      std::cout << "<shows freetile>" << std::endl;
+    }
+    else if(command == "rotate")
+    {
+      std::cout << "<rotates>" << std::endl;
+    }
+    else if(command == "insert" || command == "i")
+    {
+      std::cout << "<inserts>" << std::endl;
+    }
+    else if(command == "gamefield" || command == "g")
+    {
+      std::cout << "<shows gamefield>" << std::endl;
+    }
+    else if(command == "finish" || command == "f")
+    {
+      // Treasure soll auch versteckt werden? Siehe GitLab
+      std::cout << "<finishes turn>" << std::endl;
+    }
+    else if(std::find(playerMovement.begin(), playerMovement.end(), command) != playerMovement.end())
+    {
+      std::cout << "<moves player>" << std::endl;
+    }
+}
+
+void Game::showTreasure()
+{
+  std::vector<Treasure*> covered_stack = getCurrentPlayer()->getCoveredStackRef();
+  if(covered_stack.empty())
+  {
+    std::cout << "All Treasures found, return to your startfield to win!" << std::endl;
+  }
+  else
+  {
+    Treasure* next_treasure = covered_stack.back();
+    std::string treasure_name = next_treasure->getName();
+    size_t treasure_id = next_treasure->getTreasureId();
+    std::string id_string= "";
+
+    if (treasure_id < 10)
+    {
+      id_string = "0";
+    }
+    id_string += std::to_string(treasure_id);
+
+    std::cout << "Current Treasure: " << treasure_name << " Nr.: " << id_string << std::endl;
+  }
+
+  printBoardIfNecessary();
+}
+
+void Game::hideTreasure()
+{
+  std::cout << "\x1b[2J";
+  print();
+}
+
+void Game::printBoardIfNecessary()
+{
+  if(showGamefield_)
+  {
+    print();
+  }
+}
+
 std::vector<std::string> Game::tokenize(std::string input)
 {
   std::vector<std::string> tokens;
@@ -145,51 +222,6 @@ std::vector<std::string> Game::tokenize(std::string input)
     tokens.push_back(token);
   }
   return tokens;
-}
-
-void Game::executeCommand(std::vector<std::string>& tokens)
-{
-  std::string command = "";
-  if(tokens.size() > 0)
-  {
-    command = tokens[0];
-  }
-  if(std::cin.eof() || command == "quit" || command == "exit")
-    {
-      exit(0);
-    }
-    else if(command == "showtreasure" || command == "st")
-    {
-      std::cout << "<shows treasure>" << std::endl;
-    }
-    else if(command == "hidetreasure" || command == "ht")
-    {
-      std::cout << "<hides treasure>" << std::endl;
-    }
-    else if(command == "showfreetile" || command == "sft")
-    {
-      std::cout << "<shows freetile>" << std::endl;
-    }
-    else if(command == "rotate")
-    {
-      std::cout << "<rotates>" << std::endl;
-    }
-    else if(command == "insert" || command == "i")
-    {
-      std::cout << "<inserts>" << std::endl;
-    }
-    else if(command == "gamefield" || command == "g")
-    {
-      std::cout << "<shows gamefield>" << std::endl;
-    }
-    else if(command == "finish" || command == "f")
-    {
-      std::cout << "<finishes turn>" << std::endl;
-    }
-    else if(std::find(playerMovement.begin(), playerMovement.end(), command) != playerMovement.end())
-    {
-      std::cout << "<moves player>" << std::endl;
-    }
 }
 
 void Game::fillBoard()
@@ -569,4 +601,13 @@ void Game::printBoard()
       line_index++;
     } 
   }
+}
+
+void Game::setShowGamefield(bool show)
+{
+  showGamefield_ = show;
+}
+bool Game::getShowGamefield()
+{
+  return showGamefield_;
 }
