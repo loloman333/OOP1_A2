@@ -26,8 +26,8 @@ Die Befehle, die sich auf den aktuell gesuchten Schatz der/des ziehenden Spielen
 - `showtreasure`/`st`: Zeigt den gesuchten Schatz an. Die Ausgabe hat die Form `Current Treasure: Treasure Nr.: xx\n`. Dabei wird `Treasure` durch den Namen des Schatzes ersetzt und anstelle von `xx` wird die Nummer des Schatzes angezeigt. Beispiel: `Current Treasure: Goldsack Nr.: 03\n`. Sind alle Schätze gefunden, soll bei der Eingabe dieses Befehls folgende Nachricht ausgegeben werden: `All Treasures found, return to your startfield to win!` 
 - `hidetreasure`/`ht`: Versteckt den gesuchten Schatz wieder (Mitspielende sollen ja nicht wissen wo man hin muss) und löscht den Terminalinhalt (Cursorposition bleibt unverändert!). **Tipp:** Der Terminalinhalt kann mit `\x1b[2J` gelöscht werden. Das heißt zum Löschen des Terminals muss mit beispielsweise `std::cout << "\x1b[2J";` diese ANSI-Escapesequenz ausgegeben werden.
 
-Um den aktuellen Zustand des Spielfelds zu kennen soll es nach jeder Änderung (Karte einfügen, Bewegungen, Spielderwechsel und Schatz verstecken oder anzeigen) neu ausgegeben werden (sofern das nicht mit `gamefield off` ausgeschaltet wurde, siehe unten).
-Nach jedem `insert` und `hidetreasure` wird das Spielfeld jedoch immer neu ausgegeben. Wurde der gesuchte Schatz sichtbar gesetzt, so wird er bei jeder Spielfeldausgabe direkt danach ausgegeben. Bei der Eingabe von `finish` soll der Schatz auch versteckt werden und nicht weiter angezeigt werden.
+Um den aktuellen Zustand des Spielfelds zu kennen soll es nach jeder Änderung (Karte einfügen, Bewegungen, Spielerwechsel und Schatz verstecken) neu ausgegeben werden (sofern das nicht mit `gamefield off` ausgeschaltet wurde, siehe unten).
+Nach jedem `insert` und `hidetreasure` und Spielerwechsel wird das Spielfeld jedoch immer neu ausgegeben. Wurde der gesuchte Schatz sichtbar gesetzt, so wird er bei jeder Spielfeldausgabe direkt danach ausgegeben. Bei der Eingabe von `finish` soll der Schatz auch versteckt werden und nicht weiter angezeigt werden.
 
 #### Freie Spielfeldkarte ausgeben
 Mit dem Befehl `showfreetile` oder kurz `sft` lässt sich die Spielfeldkarte, welche sich im Moment nicht am Spielfeld befindet, anzeigen.
@@ -74,7 +74,7 @@ Bei den insert-Befehl ist darauf zu achten, dass nur eine der beweglichen Zeilen
 #### Ausgabe des Spielfelds
 `gamefield` / `g`: gibt das aktuelle Spielfeld aus (wie in Milestone 1 beschrieben).
 
-Als optionalen Parameter gibt es den String `on` oder `off`; `on` verursacht dass das Spielfeld nach jeder Änderung (z.B. gehen oder inserten) ausgegeben wird; default nach dem Spielstart ist `on`. Wenn `gamefield` mit einem Parameter aufgerufen wird soll das Spielfeld nicht ausgegeben werden.
+Als optionalen Parameter gibt es den String `on` oder `off`; `on` verursacht dass das Spielfeld nach jeder Bewegung eines Spielers ausgegeben wird; default nach dem Spielstart ist `on`. Wenn `gamefield` mit einem Parameter aufgerufen wird soll das Spielfeld nicht ausgegeben werden.
 
 #### Ende eines Zuges
 `finish` / `f`: Die/der Spielende beendet den Zug (und die/der nächste Spielende ist an der Reihe). (Erst wenn dieser Befehl ausgeführt wurde wird ein Schatz auf dem sich der/die Spielende gerade befindet eingesammelt - siehe README.md.)
