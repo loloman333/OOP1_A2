@@ -23,23 +23,27 @@ project_name = "oop1"
 makefile_path = "."
 maketarget = "all"
 
+
+# public M1
 [[testcases]]
 name = 'valid_start_2_players'
 testcase_type = "IO"
 description = "2 players and EOF"
 env_vars = 'RAND_SEED=174813'
-exp_file = "tests/01/out"
-in_file = "tests/01/in"
+exp_file = "tests/d1/01/out"
+in_file = "tests/d1/01/in"
 exp_retvar = 0
+protected = false
 
 [[testcases]]
 name = 'invalid_players_number'
 testcase_type = "IO"
 description = "Negative and too big input for number of players, at the end 3 players"
 env_vars = 'RAND_SEED=4483129'
-exp_file = "tests/02/out"
-in_file = "tests/02/in"
+exp_file = "tests/d1/02/out"
+in_file = "tests/d1/02/in"
 exp_retvar = 0
+protected = false
 
 [[testcases]]
 name = 'cli_parameters'
@@ -47,6 +51,99 @@ testcase_type = "IO"
 description = "Some cli parameters"
 env_vars = 'RAND_SEED=4483129'
 args = ['oop1', 'is', 'cool']
-exp_file = "tests/03/out"
+exp_file = "tests/d1/03/out"
 exp_retvar = 2
+protected = false
 
+
+# public M2
+[[testcases]]
+name = 'show/hidetreasure'
+testcase_type = "IO"
+description = "All possible version of show- and hidetreasure commands"
+env_vars = 'RAND_SEED=1543129'
+exp_file = "tests/d2/01/out"
+in_file = "tests/d2/01/in"
+exp_retvar = 0
+protected = false
+
+[[testcases]]
+name = 'directions'
+testcase_type = "IO"
+description = "Standard version of directional commands"
+env_vars = 'RAND_SEED=1543129'
+exp_file = "tests/d2/02/out"
+in_file = "tests/d2/02/in"
+exp_retvar = 0
+protected = false
+
+[[testcases]]
+name = 'directions_Advanced'
+testcase_type = "IO"
+description = "Directional commands with several fields"
+env_vars = 'RAND_SEED=1543129'
+exp_file = "tests/d2/03/out"
+in_file = "tests/d2/03/in"
+exp_retvar = 0
+protected = false
+
+[[testcases]]
+name = 'showfreetile'
+testcase_type = "IO"
+description = "All possible version of showfreetile command"
+env_vars = 'RAND_SEED=1543129'
+exp_file = "tests/d2/04/out"
+in_file = "tests/d2/04/in"
+exp_retvar = 0
+protected = false
+
+[[testcases]]
+name = 'rotate'
+testcase_type = "IO"
+description = "All possible version of rotate command"
+env_vars = 'RAND_SEED=1543129'
+exp_file = "tests/d2/05/out"
+in_file = "tests/d2/05/in"
+exp_retvar = 0
+protected = false
+
+[[testcases]]
+name = 'insert_valid'
+testcase_type = "IO"
+description = "All possible valid version of insert command"
+env_vars = 'RAND_SEED=1543129'
+exp_file = "tests/d2/06/out"
+in_file = "tests/d2/06/in"
+exp_retvar = 0
+protected = false
+
+[[testcases]]
+name = 'gamefield'
+testcase_type = "IO"
+description = "All version of gamefield command"
+env_vars = 'RAND_SEED=1543129'
+exp_file = "tests/d2/07/out"
+in_file = "tests/d2/07/in"
+exp_retvar = 0
+protected = false
+
+[[testcases]]
+name = 'go_direction_not_allowed'
+testcase_type = "IO"
+description = "Player wants to walk through a wall"
+env_vars = 'RAND_SEED=1543129'
+exp_file = "tests/d2/08/out"
+in_file = "tests/d2/08/in"
+exp_retvar = 0
+protected = false
+
+[[testcases]]
+name = 'playthrough_valid'
+testcase_type = "IO"
+description = "Full valid playthrough"
+timeout = 10
+env_vars = 'RAND_SEED=1543129'
+exp_file = "tests/d2/09/out"
+in_file = "tests/d2/09/in"
+exp_retvar = 0
+protected = false

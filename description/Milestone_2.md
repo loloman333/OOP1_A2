@@ -26,8 +26,8 @@ Die Befehle, die sich auf den aktuell gesuchten Schatz der/des ziehenden Spielen
 - `showtreasure`/`st`: Zeigt den gesuchten Schatz an. Die Ausgabe hat die Form `Current Treasure: Treasure Nr.: xx\n`. Dabei wird `Treasure` durch den Namen des Schatzes ersetzt und anstelle von `xx` wird die Nummer des Schatzes angezeigt. Beispiel: `Current Treasure: Goldsack Nr.: 03\n`. Sind alle Schätze gefunden, soll bei der Eingabe dieses Befehls folgende Nachricht ausgegeben werden: `All Treasures found, return to your startfield to win!` 
 - `hidetreasure`/`ht`: Versteckt den gesuchten Schatz wieder (Mitspielende sollen ja nicht wissen wo man hin muss) und löscht den Terminalinhalt (Cursorposition bleibt unverändert!). **Tipp:** Der Terminalinhalt kann mit `\x1b[2J` gelöscht werden. Das heißt zum Löschen des Terminals muss mit beispielsweise `std::cout << "\x1b[2J";` diese ANSI-Escapesequenz ausgegeben werden.
 
-Um den aktuellen Zustand des Spielfelds zu kennen soll es nach jeder Änderung (Karte einfügen, Bewegungen, Spielderwechsel und Schatz verstecken oder anzeigen) neu ausgegeben werden (sofern das nicht mit `gamefield off` ausgeschaltet wurde, siehe unten).
-Nach jedem `insert` und `hidetreasure` wird das Spielfeld jedoch immer neu ausgegeben. Wurde der gesuchte Schatz sichtbar gesetzt, so wird er bei jeder Spielfeldausgabe direkt danach ausgegeben. Bei der Eingabe von `finish` soll der Schatz auch versteckt werden und nicht weiter angezeigt werden.
+Um den aktuellen Zustand des Spielfelds zu kennen soll es nach jeder Änderung (Karte einfügen, Bewegungen, Spielerwechsel und Schatz verstecken) neu ausgegeben werden (sofern das nicht mit `gamefield off` ausgeschaltet wurde, siehe unten).
+Nach jedem `insert` und `hidetreasure` und Spielerwechsel wird das Spielfeld jedoch immer neu ausgegeben. Wurde der gesuchte Schatz sichtbar gesetzt, so wird er bei jeder Spielfeldausgabe direkt danach ausgegeben. Bei der Eingabe von `finish` soll der Schatz auch versteckt werden und nicht weiter angezeigt werden.
 
 #### Freie Spielfeldkarte ausgeben
 Mit dem Befehl `showfreetile` oder kurz `sft` lässt sich die Spielfeldkarte, welche sich im Moment nicht am Spielfeld befindet, anzeigen.
@@ -35,7 +35,7 @@ Mit dem Befehl `showfreetile` oder kurz `sft` lässt sich die Spielfeldkarte, we
 Beispielausgabe:
 
 ```
-Free Tile:
+Free tile:
 ██     ██
 ██     ██
 ██     ██
@@ -74,7 +74,7 @@ Bei den insert-Befehl ist darauf zu achten, dass nur eine der beweglichen Zeilen
 #### Ausgabe des Spielfelds
 `gamefield` / `g`: gibt das aktuelle Spielfeld aus (wie in Milestone 1 beschrieben).
 
-Als optionalen Parameter gibt es den String `on` oder `off`; `on` verursacht dass das Spielfeld nach jeder Änderung (z.B. gehen oder inserten) ausgegeben wird; default nach dem Spielstart ist `on`. Wenn `gamefield` mit einem Parameter aufgerufen wird soll das Spielfeld nicht ausgegeben werden.
+Als optionalen Parameter gibt es den String `on` oder `off`; `on` verursacht dass das Spielfeld nach jeder Bewegung eines Spielers ausgegeben wird; default nach dem Spielstart ist `on`. Wenn `gamefield` mit einem Parameter aufgerufen wird soll das Spielfeld nicht ausgegeben werden.
 
 #### Ende eines Zuges
 `finish` / `f`: Die/der Spielende beendet den Zug (und die/der nächste Spielende ist an der Reihe). (Erst wenn dieser Befehl ausgeführt wurde wird ein Schatz auf dem sich der/die Spielende gerade befindet eingesammelt - siehe README.md.)
@@ -97,7 +97,8 @@ The Player RED has won the game!\n
 ### Fehlermeldungen
 
 - Wenn ein eingegebener Befehl nicht existiert, wird `Invalid command: "<command>"` ausgegeben, wobei `<command>` der ungültige Befehl ist. Beispiel: Wird `Hello World!` eingegeben, so lautet die Fehlermeldung `Invalid command: "Hello"`.
-- Wenn ein Command nicht ausgeführt werden darf, weil es gegen eine Spielregel verstößt (siehe Spielanleitung in Readme.md, speziell Unterpunkt "Spielablauf"), wird `"<command>" is currently not allowed` ausgegeben, wobei `<command>` der ungültige Befehl ist. (Beispiel: `go up` ist nicht erlaubt, bevor die Gangkarte eingefügt wurde)
+- Wenn ein Command nicht ausgeführt werden darf, weil es gegen eine Spielregel verstößt (siehe Spielanleitung in Readme.md, speziell Unterpunkt "Spielablauf"), wird `"<command>" is currently not allowed` ausgegeben, wobei `<command>` der ungültige Befehl ist. (Beispiel: `go up` ist nicht erlaubt, bevor die Gangkarte eingefügt wurde) Bei den Pfeiltastenbefehlen wird bei `<command>` die jeweilige Pfeiltaste mit `arrow up/down/left/right` benannt.
+Das Zurückschieben von Gangkarten ist auch nicht erlaubt. Wurde vorher beispielsweise `insert top 4` eingegeben, so wird beim nächsten Spieler `"i b 4" is currently not allowed` ausgegeben, wenn versucht wurde dies einzugeben. Dabei werden überschüssige Leerzeichen aus dem Befehl entfernt.
 - Ist ein Parameter nicht korrekt (z.B. "go right 2.5" oder "rotate up" oder "insert diagonal"), wird `Invalid parameter: "<parameter>"` ausgegeben werden. Beispiel für die Eingabe `rotate  World!` (Vorsicht, zwei Leerzeichen): `Invalid parameter: "World!"`  
 Wird bei einem Befehl ein Parameter eingegeben, obwohl der Befehl keine Parameter verwendet, wird `This command does not take any arguments!` ausgegeben. Wird bei einem Befehl mit Parametern eine falsche Anzahl an Parametern eingegeben wird `Wrong number of arguments!` ausgegeben.
 - Kann eine Bewegung nicht ausgeführt werden, wird `Impossible move!` ausgegeben.

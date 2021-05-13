@@ -1,0 +1,319 @@
+2
+insert r 4
+s
+s
+s
+s
+s
+s
+d
+d
+d
+d
+
+
+
+w
+w
+w
+w
+d
+d
+f
+st
+sft
+rotate r
+insert b 2
+s
+s
+a
+a
+s
+s
+s
+s
+a
+a
+a
+a
+w
+w
+d
+w
+w
+f
+st
+sft
+rotate r
+rotate r
+i t 4
+a
+a
+a
+a
+w
+w
+f
+st
+sft
+i t 2 
+s
+a
+w
+w
+w
+w
+d
+d
+d
+s
+d
+w
+f
+st
+sft
+rotate r
+i t 6
+s
+a
+w
+a
+a
+a
+s
+s
+s
+s
+s
+s
+d
+d
+f
+st
+sft
+rotate l
+i t 6
+s
+a
+w
+a
+a
+a
+s
+f
+st
+sft
+rotate l
+i t 6
+a
+a
+w
+w
+w
+w
+w
+w
+d
+d
+d
+s
+d
+d
+w
+d
+s
+s
+a
+f
+st
+sft
+rotate r 
+i l 6
+w
+d
+d
+s
+s
+d
+d
+f
+st
+sft
+rotate l
+i l 6
+d
+w
+w
+a
+s
+a
+a
+w
+a
+a
+a
+s
+s
+s
+f
+st
+sft
+rotate l
+i l 6
+s
+s
+f
+st
+sft
+rotate l
+rotate l
+i l 6
+w
+w
+w
+d
+d
+d
+s
+d
+f
+st
+sft
+rotate r
+i t 6
+s
+s
+f
+st
+sft
+i r 4
+a
+w
+a
+a
+a
+s
+s
+f
+st
+sft
+rotate l
+i t 2
+w
+w
+w
+w
+a
+a
+w
+w
+a
+a
+s
+s
+d
+s
+s
+d
+f
+st
+sft
+i b 6
+s
+s
+f
+st
+sft
+i b 6
+a
+w
+w
+a
+w
+w
+d
+d
+s
+s
+d
+f
+st
+sft
+rotate r
+rotate r
+i b 6
+w
+w
+d
+f
+st
+sft
+i r 2
+d
+s
+s
+s
+s
+d
+f
+st
+sft
+i r 2
+a
+s
+s
+s
+f
+st
+sft
+i t 4
+d
+w
+w
+f
+st
+sft
+rotate r
+i l 4
+w
+w
+d
+s
+s
+d
+w
+w
+f
+st
+sft
+i b 4
+s
+f
+st
+sft
+i b 4
+s
+s
+a
+w
+a
+s
+s
+d
+f
+st
+sft
+i b 4
+f
+st
+sft
+i b 4
+a
+w
+w
+d
+w
+a
+w
+w
+f
