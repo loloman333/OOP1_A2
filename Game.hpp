@@ -15,7 +15,7 @@
 #include <fstream>
 
 const size_t BOARD_SIZE = 7;
-const std::vector<std::string> playerMovement{"w", "\x1b[A", "a", "\x1b[D", "s", "\x1b[B", "d", "\x1b[C", "go"};
+const std::vector<std::string> PLAYER_MOVEMENT{"w", "\x1b[A", "a", "\x1b[D", "s", "\x1b[B", "d", "\x1b[C", "go"};
 
 const std::string UI_WELCOME = "Welcome to the Wild OOP Labyrinth!!!";
 const std::string UI_PLAYER_COUNT = "Player Count (2-4): ";
@@ -33,6 +33,7 @@ const std::string UI_PLAYER_YELLOW = "Player Yellow(Y)";
 const std::string UI_PLAYER_GREEN = "Player Green(G)";
 const std::string UI_PLAYER_BLUE = "Player Blue(B)";
 
+const std::string COMMAND_INVALID = "Invalid command: ";
 const std::string COMMAND_INVALID_PARAMETER = "Invalid parameter: ";
 const std::string COMMAND_WRONG_NUMBER_ARGUMENTS = "Wrong number of arguments!";
 const std::string COMMAND_TAKES_NO_ARGUMENTS = "This command does not take any arguments!";

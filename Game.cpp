@@ -153,9 +153,13 @@ void Game::executeCommand(std::vector<std::string>& tokens)
     // Treasure soll auch versteckt werden? Siehe GitLab
     std::cout << "<finishes turn>" << std::endl;
   }
-  else if(std::find(playerMovement.begin(), playerMovement.end(), command) != playerMovement.end())
+  else if(std::find(PLAYER_MOVEMENT.begin(), PLAYER_MOVEMENT.end(), command) != PLAYER_MOVEMENT.end())
   {
     std::cout << "<moves player>" << std::endl;
+  }
+  else
+  {
+    std::cout << COMMAND_INVALID << "\"" << command << "\"" << std::endl;
   }
 }
 
@@ -176,7 +180,7 @@ void Game::gameField(std::vector<std::string> tokens)
       showGamefield_ = false;
     }
     else{
-      std::cout << COMMAND_INVALID_PARAMETER << tokens[1] << std::endl;
+      std::cout << COMMAND_INVALID_PARAMETER << "\"" << tokens[1] << "\"" << std::endl;
     }
   }
   else
@@ -200,7 +204,7 @@ void Game::rotateFreeTile(std::vector<std::string> tokens)
     }
     else
     {
-      std::cout << COMMAND_INVALID_PARAMETER << direction << std::endl;
+      std::cout << COMMAND_INVALID_PARAMETER << "\"" << direction << "\"" << std::endl;
     }
   }
   else
