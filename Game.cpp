@@ -378,15 +378,18 @@ void Game::fillVariableTiles(size_t& treasure_index)
         size_t random_index = Oop::Random::getInstance().getRandomCard(tiles.size()) - 1;
         board_[row_index][col_index] = tiles[random_index];
 
-         size_t random_rotation = Oop::Random::getInstance().getRandomOrientation();
+        size_t random_rotation = Oop::Random::getInstance().getRandomOrientation();
         board_[row_index][col_index]->setRotation((Rotation)random_rotation);
 
         tiles.erase(tiles.begin() + random_index);
       }
     }
   }
+  tiles[0]->setRotation(Rotation::DEG0);
+  // In case this ^ is wrong:
+  // size_t random_rotation = Oop::Random::getInstance().getRandomOrientation();
+  // tiles[0]->setRotation((Rotation) random_rotation);
   free_tile_ = tiles[0];
-  free_tile_->print(); // <- Stupid vallgrind errors pls fix lolo bussi
 }
 
 void Game::addNewNormalTilesToVector(std::vector<Tile*>& vector, TileType type, size_t count)
