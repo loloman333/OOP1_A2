@@ -119,43 +119,70 @@ void Game::executeCommand(std::vector<std::string>& tokens)
   {
     command = tokens[0];
   }
+
   if(std::cin.eof() || command == "quit" || command == "exit")
+  {
+    exit(0);
+  }
+  else if(command == "showtreasure" || command == "st")
+  {
+    showTreasure(tokens);
+  }
+  else if(command == "hidetreasure" || command == "ht")
+  {
+    hideTreasure(tokens);
+  }
+  else if(command == "showfreetile" || command == "sft")
+  {
+    showFreeTile(tokens);
+  }
+  else if(command == "rotate")
+  {
+    rotateFreeTile(tokens);
+  }
+  else if(command == "insert" || command == "i")
+  {
+    std::cout << "<inserts>" << std::endl;
+  }
+  else if(command == "gamefield" || command == "g")
+  {
+    gameField(tokens);
+  }
+  else if(command == "finish" || command == "f")
+  {
+    // Treasure soll auch versteckt werden? Siehe GitLab
+    std::cout << "<finishes turn>" << std::endl;
+  }
+  else if(std::find(playerMovement.begin(), playerMovement.end(), command) != playerMovement.end())
+  {
+    std::cout << "<moves player>" << std::endl;
+  }
+}
+
+void Game::gameField(std::vector<std::string> tokens)
+{
+  if (tokens.size() > 2)
+  {
+    std::cout << COMMAND_WRONG_NUMBER_ARGUMENTS << std::endl;
+  } 
+  else if (tokens.size() == 2)
+  {
+    if (tokens[1] == "on")
     {
-      exit(0);
+      showGamefield_ = true;
     }
-    else if(command == "showtreasure" || command == "st")
+    else if (tokens[1] == "off")
     {
-      showTreasure(tokens);
+      showGamefield_ = false;
     }
-    else if(command == "hidetreasure" || command == "ht")
-    {
-      hideTreasure(tokens);
+    else{
+      std::cout << COMMAND_INVALID_PARAMETER << tokens[1] << std::endl;
     }
-    else if(command == "showfreetile" || command == "sft")
-    {
-      showFreeTile(tokens);
-    }
-    else if(command == "rotate")
-    {
-      rotateFreeTile(tokens);
-    }
-    else if(command == "insert" || command == "i")
-    {
-      std::cout << "<inserts>" << std::endl;
-    }
-    else if(command == "gamefield" || command == "g")
-    {
-      std::cout << "<shows gamefield>" << std::endl;
-    }
-    else if(command == "finish" || command == "f")
-    {
-      // Treasure soll auch versteckt werden? Siehe GitLab
-      std::cout << "<finishes turn>" << std::endl;
-    }
-    else if(std::find(playerMovement.begin(), playerMovement.end(), command) != playerMovement.end())
-    {
-      std::cout << "<moves player>" << std::endl;
-    }
+  }
+  else
+  {
+    print();
+  }
 }
 
 void Game::rotateFreeTile(std::vector<std::string> tokens)

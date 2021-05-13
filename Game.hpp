@@ -77,6 +77,7 @@ class Game
     void hideTreasure(std::vector<std::string> tokens);
     void showFreeTile(std::vector<std::string> tokens);
     void rotateFreeTile(std::vector<std::string> tokens);
+    void gameField(std::vector<std::string> tokens);
 
     // Print board
     void print();
