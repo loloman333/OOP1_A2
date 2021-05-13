@@ -218,7 +218,7 @@ void Game::showFreeTile(std::vector<std::string> tokens)
 {
   if (tokens.size() == 1)
   {
-    std::cout << "Free Tile:" << std::endl;
+    std::cout << "Free tile:" << std::endl;
     free_tile_->print();
   }
   else if (tokens.size() > 1)
@@ -253,9 +253,9 @@ void Game::showTreasure(std::vector<std::string> tokens)
       }
       id_string += std::to_string(treasure_id);
 
+      printBoardIfNecessary();
       std::cout << "Current Treasure: " << treasure_name << " Nr.: " << id_string << std::endl;
     }
-    printBoardIfNecessary();
   }
 }
 
@@ -386,6 +386,7 @@ void Game::fillVariableTiles(size_t& treasure_index)
     }
   }
   free_tile_ = tiles[0];
+  free_tile_->print(); // <- Stupid vallgrind errors pls fix lolo bussi
 }
 
 void Game::addNewNormalTilesToVector(std::vector<Tile*>& vector, TileType type, size_t count)
@@ -466,7 +467,7 @@ Player* Game::getCurrentPlayer()
 void Game::distributeTreasures()
 {
   std::vector<Treasure*> temp_treasures = treasures_;
-  for (size_t cards_dealt = 0; cards_dealt < treasures_.size(); cards_dealt++)
+  for (size_t cards_dealt = 0; cards_dealt < treasures_.size();)
   {
     for (Player* player : players_)
     {
@@ -474,7 +475,6 @@ void Game::distributeTreasures()
       player->getCoveredStackRef().push_back(temp_treasures[next_card_index - 1]);
       temp_treasures.erase(temp_treasures.begin() + next_card_index - 1);
       cards_dealt++;
-
     }
   }
 }

@@ -157,7 +157,7 @@ void Tile::generateTile(Rotation rotation, std::vector<Direction> directions, st
 std::vector<std::string> Tile::getRawTileString()
 {
   std::vector<std::string> tileVector;
-  std::vector<Direction> directions;
+  std::vector<Direction> directions{};
   switch (type_)
   {
   case TileType::T:
