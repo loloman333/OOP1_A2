@@ -35,7 +35,7 @@ Mit dem Befehl `showfreetile` oder kurz `sft` lässt sich die Spielfeldkarte, we
 Beispielausgabe:
 
 ```
-Free Tile:
+Free tile:
 ██     ██
 ██     ██
 ██     ██
