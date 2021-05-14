@@ -1,10 +1,12 @@
 //---------------------------------------------------------------------------------------------------------------------
 // Game.cpp
 //
-//
+// // [FB] missing description
 // Authors: Triochter Bande (Grill Matthias, Killer Lorenz, Nagy Lukas)
 //---------------------------------------------------------------------------------------------------------------------
 //
+
+// [FB] I like that you keep you methods short and precise
 
 #include "Game.hpp"
 #include "StartTile.hpp"
@@ -18,7 +20,7 @@ Game::Game() {}
 
 Game::~Game()
 {
-  deleteFreeTile();
+  deleteFreeTile(); 
   deleteBoard();
   deleteTreasures();
   deletePlayers();
@@ -38,10 +40,10 @@ void Game::run()
   fillBoard(); //Killer
   distributeTreasures(); //Grill
 
-  // While something
+  // While something // [FB] important comment?
   while (true)
   {
-    print();
+    print(); // [FB] print what?
     playRound();
   }
 }
@@ -56,7 +58,7 @@ void Game::gameStart()
   {
     std::cout << UI_PLAYER_COUNT;
     std::getline(std::cin, input);
-    if(input == "2")
+    if(input == "2") // [FB] may have whitespaces before and after the input
     {
       playerCount = 2;
     }
@@ -73,8 +75,8 @@ void Game::gameStart()
       std::cout << UI_WRONG_COUNT << std::endl;
     }
   }
-  std::vector<char> player_colors = {'B', 'G', 'Y', 'R'};
-  for(size_t i = 0; i < playerCount; i++)
+  std::vector<char> player_colors = {'B', 'G', 'Y', 'R'}; // [FB] would it be better implemented as an enum? or as part of the player class? who is "in charge" of the colors?
+  for(size_t i = 0; i < playerCount; i++) // [FB] i is not a good name
   {
     addPlayer(player_colors.back());
     player_colors.pop_back();
@@ -88,7 +90,7 @@ void Game::playRound()
   
   switch (player->getPlayerColor())
   {
-  case 'R':
+  case 'R': // [FB] the game class shouldn't need to know the implementaton of the Player class or which colors exist
     currentOutput = "RED > ";
     break;
   case 'G':
@@ -109,7 +111,7 @@ void Game::playRound()
     std::cin >> command;
     if(std::cin.eof())
     {
-      exit(0);
+      exit(0); // [FB] a program should exit via a return from the main function
     }
   }
 
@@ -125,7 +127,7 @@ void Game::fillBoard()
 void Game::fillStaticTiles(size_t& treasure_index)
 {
   size_t player_index = 0;
-  std::vector<char> player_colors = {'R', 'Y', 'G', 'B'};
+  std::vector<char> player_colors = {'R', 'Y', 'G', 'B'}; // [FB] again the colors are repeated
 
   for (size_t row_index = 0; row_index < BOARD_SIZE; row_index++)
   {
@@ -133,18 +135,18 @@ void Game::fillStaticTiles(size_t& treasure_index)
 
     for (size_t col_index = 0; col_index < BOARD_SIZE; col_index++)
     {
-      if (row_index % 2 == 1 || col_index % 2 == 1)
+      if (row_index % 2 == 1 || col_index % 2 == 1) // [FB] maybe a even() or odd() function would make the condition easier to read
       {
-        board_[row_index].push_back(nullptr);
+        board_[row_index].push_back(nullptr); // [FB] prefer using the .at() method insted of [] -> container.at(index) thows an exception when an index is out of range, making error detection easier
       }
-      else
+      else // [FB] if nothing has to be done after the else statement, then the indentation can be reduced by adding a continue; statement a the end of the if code block and removing the else.
       {
         if (isCorner(row_index, col_index))
         {
           Tile* tile = new StartTile{player_colors[player_index]};
           if (!tile)
           {
-            exit(1);
+            exit(1); // [FB] a program should exit via a return from the main function
           }
 
           board_[row_index].push_back(tile);
@@ -156,12 +158,12 @@ void Game::fillStaticTiles(size_t& treasure_index)
 
           player_index++;
         }
-        else
+        else // [FB] again the indentation could be avoided
         {
           TreasureTile* treasure_tile = new TreasureTile{treasures_[treasure_index]};
           if (!treasure_tile)
           {
-            exit(1);
+            exit(1); // [FB] a program should exit via a return from the main function
           }
           board_[row_index].push_back(treasure_tile);
           treasure_index++;
@@ -174,7 +176,7 @@ void Game::fillStaticTiles(size_t& treasure_index)
 void Game::fillVariableTiles(size_t& treasure_index)
 {
   std::vector<Tile*> tiles;
-  addNewNormalTilesToVector(tiles, TileType::L, 11);
+  addNewNormalTilesToVector(tiles, TileType::L, 11); // [FB] very good and division into smaller methods and good method names!
   addNewNormalTilesToVector(tiles, TileType::I, 11);
   addNewTreasureTilesToVector(tiles, TileType::T, 12, treasure_index);
 
@@ -201,10 +203,11 @@ void Game::addNewNormalTilesToVector(std::vector<Tile*>& vector, TileType type, 
 {
   for (size_t i = 0; i < count; i++)
   {
-    NormalTile* normal_tile = new NormalTile{type};
+    NormalTile* normal_tile = new NormalTile{type}; // [FB] use always either () or {} to make it consistent
     if(!normal_tile)
     {
-      exit(1);
+      exit(1); // new will thow an std::out_of_memory exception if the program runs out of memory, the if statement will never get executed -> use a try catch block
+      // (where is the best place to put a try catch block so that you dont have to do it for every allocation seperately? is it possible to have only one try catch block to solve this?)
     }
     vector.push_back(normal_tile);
   }
@@ -225,7 +228,7 @@ void Game::addNewTreasureTilesToVector(std::vector<Tile*>& vector, TileType type
   }
 }
 
-bool Game::isCorner(size_t row_index, size_t col_index)
+bool Game::isCorner(size_t row_index, size_t col_index) // [FB] a good example of how a method can make the intention clear -> use it more often for condition and code snippets that have a particular meaning 
 {
   return !(row_index % (BOARD_SIZE - 1)) && !(col_index % (BOARD_SIZE - 1));
 }
@@ -257,7 +260,7 @@ void Game::addPlayer(char color)
 
 void Game::nextPlayer()
 {
-  currentPlayerIndex_++;
+  currentPlayerIndex_++; // [FB] would currentPlayerIndex_++ % number_of_players be helpful?
 }
 
 Player* Game::getCurrentPlayer()
@@ -354,9 +357,9 @@ std::vector<std::string> Game::generateUILines()
     {
       addArrowBasesToLine(line);
     }
-    else
+    else // [FB] avoid indentation by immediatelly continuing here with the if
     {
-      if (index == 1)
+      if (index == 1) 
       {
         addArrowTipsToLine(line, Direction::BOTTOM);
       }
@@ -396,7 +399,7 @@ void Game::addPlayerTitlesToLine(std::string& line, size_t& player_index)
       default:
         break;
       }
-      line.replace(58 * times, title.length(), title);
+      line.replace(58 * times, title.length(), title); // [FB] why 58?
       player_index++;
     }
   }
@@ -421,7 +424,7 @@ void Game::addTreasureCountersToLine(std::string& line, size_t& player_index)
 
 void Game::addArrowBasesToLine(std::string& line)
 {
-  line.replace(17, UI_ARROW_BASES.length(), UI_ARROW_BASES);
+  line.replace(17, UI_ARROW_BASES.length(), UI_ARROW_BASES); // [FB] why 17?
 }
 
 void Game::addArrowTipsToLine(std::string& line, Direction direction)
@@ -444,7 +447,7 @@ void Game::printBoard()
   size_t row_label_index = 2;
   size_t line_index = 0;
   size_t row_index = 1;
-  for (std::vector<Tile*> row : board_)
+  for (std::vector<Tile*> row : board_) // [FB] break down into printRow and printTile (or even more?) less indentation and easier reading
   {
     std::vector<std::vector<std::string>> tile_strings{};
     for (Tile* tile : row)
@@ -459,7 +462,7 @@ void Game::printBoard()
       // Print the row labels
       if (line_index == row_label_index)
       {
-        row_label_index += 5;
+        row_label_index += 5; // [FB] why +5?
         if (row_index % 2 == 0)
         {
           print_arrow = true;

@@ -12,7 +12,7 @@
 #include <cstdlib>
 #include <string>
 #include <vector>
-#include "Player.hpp"
+#include "Player.hpp" // [FB] is the include here necessary? would a forward decleration suffice? When is in necessary to include header files?
 #include <iostream>
 
 const std::string WALL = "█";

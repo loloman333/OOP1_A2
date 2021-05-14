@@ -10,8 +10,8 @@
 #ifndef A2_GAME_HPP
 #define A2_GAME_HPP
 
-#include "Tile.hpp"
-#include "Random.hpp"
+#include "Tile.hpp" // [FB] is the include here necessary? would a forward decleration suffice? When is in necessary to include header files?
+#include "Random.hpp" // [FB] is the include here necessary? would a forward decleration suffice? Is anthing from the header file even used in this file?
 #include <fstream>
 
 const size_t BOARD_SIZE = 7;
@@ -44,12 +44,12 @@ class Game
 
     Game();
     Game(const Game&); 
-    Game& operator = (const Game&); 
+    Game& operator = (const Game&); // [FB] no need to put spaces in the method name
 
     bool isCorner(size_t row_index, size_t col_index);
     void fillTreasures();
 
-    void deleteTreasures();
+    void deleteTreasures(); // [FB] missing deascriptions/headers
     void deleteFreeTile();
     void deleteBoard();
     void deletePlayers();
@@ -79,7 +79,7 @@ class Game
 
     void addPlayer(char color);
     void nextPlayer();
-    Player* getCurrentPlayer();
+    Player* getCurrentPlayer(); // [FB] how can you use the player class when you never declared it in the current file?
 };
 
 #endif //A2_GAME_HPP

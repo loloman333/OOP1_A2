@@ -72,7 +72,7 @@ std::string Tile::getTileTypeString()
   }
 }
 
-void Tile::fillWalls(std::vector<Direction> directions, std::vector<std::string>& tile)
+void Tile::fillWalls(std::vector<Direction> directions, std::vector<std::string>& tile) // [FB] possible to break down into shorter methods?
 {
   std::vector<std::string> templateTile;
   bool topWall = false;
@@ -81,7 +81,7 @@ void Tile::fillWalls(std::vector<Direction> directions, std::vector<std::string>
   bool rightWall = false;
   for(size_t i = 0; i < directions.size(); i++)
   {
-    if(directions[i] == Direction::TOP)
+    if(directions[i] == Direction::TOP) 
     {
       topWall = true;
     }
@@ -104,7 +104,7 @@ void Tile::fillWalls(std::vector<Direction> directions, std::vector<std::string>
     templateTile.push_back("");
     for(size_t col = 0; col < 9 ; col++)
     {
-      if((row == 0 || row == 4) && (col <= 1 || col >= 7))
+      if((row == 0 || row == 4) && (col <= 1 || col >= 7)) // [FB] what is this condition checking?
       {
         templateTile[row].append(WALL);
       }
@@ -135,12 +135,12 @@ void Tile::fillWalls(std::vector<Direction> directions, std::vector<std::string>
 
 Direction Tile::calcDirection(Direction dir, Rotation rot)
 {
-  int dirValue = (int)dir;
+  int dirValue = (int)dir; // [FB] use c++ style casts and no c style casts -> static_cast<int>(dir)
   int rotValue = (int)rot;
   dirValue += rotValue;
   if(dirValue >= 4)
   {
-    dirValue -= 4;
+    dirValue -= 4; // [FB] repeating numbers should be a constant
   }
   return (Direction)dirValue;
 }
@@ -201,7 +201,7 @@ void Tile::addPlayersToTile(std::vector<std::string>& tileVector)
 {
   if (!players_.empty())
   {
-    int index = 3;
+    int index = 3; // [FB] what does 3 mean?
     if (players_.size() == 4)
     {
       index = 2;

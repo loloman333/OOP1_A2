@@ -26,7 +26,7 @@ class TreasureTile : public Tile
     TreasureTile(Treasure* treasure);
     TreasureTile(TileType type, Treasure* treasure);
 
-    Treasure* getTreasure();
+    Treasure* getTreasure(); // [FB] how can you use Treasure when it is neither declared nor included?
     bool getFound();
 
     void setTreasure(Treasure* treasure);
