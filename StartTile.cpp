@@ -11,7 +11,7 @@
 
 StartTile::StartTile(char player_color) : Tile{}, player_color_{player_color} 
 {
-  Rotation rot; // [FB] avoid using abbreviation, they may not have the same meaning for everyone and can create missunderstandings
+  Rotation rot; // [FB] avoid using abbreviations, they may not have the same meaning for everyone and can create missunderstandings
   switch (player_color)
   {
     case 'G':
@@ -40,13 +40,13 @@ char StartTile::getPlayerColor()
 std::vector<std::string> StartTile::getTileString()
 {
   std::vector<std::string> tileString = getRawTileString();
-  std::string playerBase{"("}; // [FB] you can use "(" + std::string{getPlayerColor()} + td::string{")"} to make it one line -> two consecutive operand may not be a non-string type
+  std::string playerBase{"("}; // [FB] you can use "(" + std::string{getPlayerColor()} + td::string{")"} to make it one line -> at leat every second operand needs to be a string
   playerBase += getPlayerColor();
   playerBase += ")";
 
   if (tileString[2][0] == ' ')
   {
-    tileString[2].replace(3, 3, playerBase); // [FB] is it possible to make the mening of these number clearer?
+    tileString[2].replace(3, 3, playerBase); // [FB] is it possible to make the meaning of these number clearer?
   }
   else
   {

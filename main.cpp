@@ -8,7 +8,7 @@
 
 #include "Game.hpp"
 
-int main(int argc)
+int main(int argc) // [FB] main looks good so far. you could avoid having an if else, if you checked for (args != 1) and then returned in the if
 {
   if(argc == 1)
   {

@@ -10,8 +10,8 @@
 #ifndef A2_GAME_HPP
 #define A2_GAME_HPP
 
-#include "Tile.hpp" // [FB] is the include here necessary? would a forward decleration suffice? When is in necessary to include header files?
-#include "Random.hpp" // [FB] is the include here necessary? would a forward decleration suffice? Is anthing from the header file even used in this file?
+#include "Tile.hpp" // [FB] is the include here necessary? would a forward decleration suffice? When is in necessary to include header files in other header files?
+#include "Random.hpp" // [FB] is the include here necessary? would a forward decleration suffice? Is anthing from the header file even used in this file in other header files?
 #include <fstream>
 
 const size_t BOARD_SIZE = 7;
@@ -49,7 +49,7 @@ class Game
     bool isCorner(size_t row_index, size_t col_index);
     void fillTreasures();
 
-    void deleteTreasures(); // [FB] missing deascriptions/headers
+    void deleteTreasures(); // [FB] missing descriptions/headers
     void deleteFreeTile();
     void deleteBoard();
     void deletePlayers();

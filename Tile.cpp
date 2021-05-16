@@ -135,12 +135,12 @@ void Tile::fillWalls(std::vector<Direction> directions, std::vector<std::string>
 
 Direction Tile::calcDirection(Direction dir, Rotation rot)
 {
-  int dirValue = (int)dir; // [FB] use c++ style casts and no c style casts -> static_cast<int>(dir)
+  int dirValue = (int)dir; // [FB] use c++ style casts and not c style casts -> static_cast<int>(dir)
   int rotValue = (int)rot;
   dirValue += rotValue;
   if(dirValue >= 4)
   {
-    dirValue -= 4; // [FB] repeating numbers should be a constant
+    dirValue -= 4; // [FB] repeating numbers should be constants - if the number needed to be changed, you would need to find all of the occurances of the same number 
   }
   return (Direction)dirValue;
 }

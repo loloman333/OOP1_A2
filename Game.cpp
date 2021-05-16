@@ -40,10 +40,10 @@ void Game::run()
   fillBoard(); //Killer
   distributeTreasures(); //Grill
 
-  // While something // [FB] important comment?
+  // While something // [FB] important comment? :)
   while (true)
   {
-    print(); // [FB] print what?
+    print(); // [FB] print what? use clear naming
     playRound();
   }
 }
@@ -58,7 +58,7 @@ void Game::gameStart()
   {
     std::cout << UI_PLAYER_COUNT;
     std::getline(std::cin, input);
-    if(input == "2") // [FB] may have whitespaces before and after the input
+    if(input == "2") // [FB] may have whitespaces before and after the number
     {
       playerCount = 2;
     }
@@ -135,11 +135,11 @@ void Game::fillStaticTiles(size_t& treasure_index)
 
     for (size_t col_index = 0; col_index < BOARD_SIZE; col_index++)
     {
-      if (row_index % 2 == 1 || col_index % 2 == 1) // [FB] maybe a even() or odd() function would make the condition easier to read
+      if (row_index % 2 == 1 || col_index % 2 == 1) // [FB] maybe a isEvenRow() or isMovableRow() method would make the condition easier to read
       {
-        board_[row_index].push_back(nullptr); // [FB] prefer using the .at() method insted of [] -> container.at(index) thows an exception when an index is out of range, making error detection easier
+        board_[row_index].push_back(nullptr); // [FB] prefer using the .at() method instead of [] -> container.at(index) thows an exception when an index is out of range, making error detection easier
       }
-      else // [FB] if nothing has to be done after the else statement, then the indentation can be reduced by adding a continue; statement a the end of the if code block and removing the else.
+      else // [FB] if nothing has to be done after the else statement, then the indentation can be reduced by adding a continue; statement at the end of the if code block and then removing the else.
       {
         if (isCorner(row_index, col_index))
         {
@@ -176,7 +176,7 @@ void Game::fillStaticTiles(size_t& treasure_index)
 void Game::fillVariableTiles(size_t& treasure_index)
 {
   std::vector<Tile*> tiles;
-  addNewNormalTilesToVector(tiles, TileType::L, 11); // [FB] very good and division into smaller methods and good method names!
+  addNewNormalTilesToVector(tiles, TileType::L, 11); // [FB] very good division into smaller methods!
   addNewNormalTilesToVector(tiles, TileType::I, 11);
   addNewTreasureTilesToVector(tiles, TileType::T, 12, treasure_index);
 
@@ -206,8 +206,8 @@ void Game::addNewNormalTilesToVector(std::vector<Tile*>& vector, TileType type, 
     NormalTile* normal_tile = new NormalTile{type}; // [FB] use always either () or {} to make it consistent
     if(!normal_tile)
     {
-      exit(1); // new will thow an std::out_of_memory exception if the program runs out of memory, the if statement will never get executed -> use a try catch block
-      // (where is the best place to put a try catch block so that you dont have to do it for every allocation seperately? is it possible to have only one try catch block to solve this?)
+      exit(1); // new will thow an std::out_of_memory exception if the program runs out of memory - the if statement will never get executed -> use a try catch block
+      // (where is the best place to put a try catch block so that you don't have to do it for every allocation seperately? is it possible to have only one try catch block to solve this?)
     }
     vector.push_back(normal_tile);
   }
@@ -228,7 +228,7 @@ void Game::addNewTreasureTilesToVector(std::vector<Tile*>& vector, TileType type
   }
 }
 
-bool Game::isCorner(size_t row_index, size_t col_index) // [FB] a good example of how a method can make the intention clear -> use it more often for condition and code snippets that have a particular meaning 
+bool Game::isCorner(size_t row_index, size_t col_index) // [FB] a good example of how a method can make the intention clear -> use it more often for conditions and code snippets that have a particular meaning 
 {
   return !(row_index % (BOARD_SIZE - 1)) && !(col_index % (BOARD_SIZE - 1));
 }
@@ -447,8 +447,10 @@ void Game::printBoard()
   size_t row_label_index = 2;
   size_t line_index = 0;
   size_t row_index = 1;
-  for (std::vector<Tile*> row : board_) // [FB] break down into printRow and printTile (or even more?) less indentation and easier reading
+  for (std::vector<Tile*> row : board_)
   {
+    // [FB] break down into printRow and printTile - less indentation and easier reading. if you think something needs a comment,
+    //      try to fist explain it through code (names) - a comment should be the last resort to explain code
     std::vector<std::vector<std::string>> tile_strings{};
     for (Tile* tile : row)
     {

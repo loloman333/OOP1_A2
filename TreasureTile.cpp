@@ -14,9 +14,9 @@
 TreasureTile::TreasureTile(Treasure* treasure) : treasure_{treasure}
 {
   setType(TileType::T); // [FB] instead of assigning values after the object is constructed,
-  // the tile can be immediately constructed with the corresponding TileType, by addin the Tile constructor call to the initializer list -> Tile(TileType::T)
+  // the tile can be immediately constructed with the corresponding TileType, by adding the Tile constructor call to the initializer list -> Tile(TileType::T)
   setRotation(calculateRotation(treasure->getTreasureId()));
-  // [FB] the rotation cal also be added to the constructor call -> Tile(TileType::T, calculateRotation(treasure->getTreasureId()));
+  // [FB] the rotation can also be added to the constructor call -> Tile(TileType::T, calculateRotation(treasure->getTreasureId()));
 }
 
 TreasureTile::TreasureTile(TileType type, Treasure* treasure) 
@@ -52,7 +52,7 @@ std::string TreasureTile::getTreasureId()
   int treasure_id = treasure_->getTreasureId();
   std::string treasure = "T";
 
-  if (treasure_id < 10) // [FB] is it possible to make the mening of the condition clearer? perhaps isSingleDigit(treasure_id)?
+  if (treasure_id < 10) // [FB] is it possible to make the meaning of the condition clearer? perhaps isSingleDigit(treasure_id)?
   {
     treasure.append("0");
   }
