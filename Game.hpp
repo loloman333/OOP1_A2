@@ -76,7 +76,7 @@ class Game
 
     // Commands
     std::vector<std::string> tokenize(std::string input);
-    void executeCommand(std::vector<std::string>& tokens);
+    bool executeCommand(std::vector<std::string>& tokens);
     void showTreasure(std::vector<std::string> tokens);
     void hideTreasure(std::vector<std::string> tokens);
     void showFreeTile(std::vector<std::string> tokens);
@@ -93,7 +93,7 @@ class Game
     void addArrowBasesToLine(std::string& line);
     void addArrowTipsToLine(std::string& line, Direction direction);
 
-    void playRound();
+    int playRound();
     void nextPlayer();
     Player* getCurrentPlayer();
 
@@ -101,7 +101,7 @@ class Game
     static Game& instance();
     ~ Game();
 
-    void run();
+    int run();
 };
 
 #endif //A2_GAME_HPP
