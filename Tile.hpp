@@ -23,6 +23,11 @@ const std::size_t BOTTOM_ROW = 4;
 const std::size_t LEFT_COLUMN = 1;
 const std::size_t RIGHT_COLUMN = 7;
 
+const size_t TREASURE_TILE_ROW = 2;
+const size_t PLAYER_TILE_ROW = 2;
+const size_t INDEX_WITHOUT_WALL = 3;
+const size_t INDEX_WITH_WALL = 7;
+
 //Enums
 enum class TileType {T, L, I, O, U, X};
 enum class Rotation{DEG0 = 0, DEG90 = 1, DEG180 = 2, DEG270 = 3};

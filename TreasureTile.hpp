@@ -14,11 +14,6 @@
 #include <string>
 #include <vector>
 
-const size_t TREASURE_TILE_ROW = 2;
-const size_t TREASURE_STRING_LENGTH = 3;
-const size_t TREASURE_INDEX_WITHOUT_WALL = 3;
-const size_t TREASURE_INDEX_WITH_WALL = 7;
-
 class Treasure;
 
 class TreasureTile : public Tile

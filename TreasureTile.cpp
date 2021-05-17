@@ -69,11 +69,11 @@ std::vector<std::string> TreasureTile::getTileString()
   std::string treasure_id = getTreasureId();
   if (tileString[TREASURE_TILE_ROW][0] == ' ') // check if there is a wall
   {
-    tileString[TREASURE_TILE_ROW].replace(TREASURE_INDEX_WITHOUT_WALL, TREASURE_STRING_LENGTH, treasure_id);
+    tileString[TREASURE_TILE_ROW].replace(INDEX_WITHOUT_WALL, treasure_id.length(), treasure_id);
   }
   else
   {
-    tileString[TREASURE_TILE_ROW].replace(TREASURE_INDEX_WITH_WALL, TREASURE_STRING_LENGTH, treasure_id);
+    tileString[TREASURE_TILE_ROW].replace(INDEX_WITH_WALL, treasure_id.length(), treasure_id);
   }
 
   return tileString;
