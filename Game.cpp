@@ -41,16 +41,16 @@ int Game::run()
     distributeTreasures(); //Grill
 
     // While something
-    while (true)
+    while (!quit_)
     {
       print();
       playRound();
-      return 0;
     }
   } catch (std::bad_alloc)
   {
     return 1;
   }
+  return 0;
 }
 
 void Game::gameStart()
@@ -87,7 +87,7 @@ void Game::gameStart()
   }
 }
 
-int Game::playRound()
+void Game::playRound()
 {
   Player* player = getCurrentPlayer();
   std::string currentOutput = player->getPlayerColorAsString();
@@ -103,7 +103,6 @@ int Game::playRound()
     std::vector<std::string> tokens = tokenize(command);
     stop = executeCommand(tokens);
   }
-  return 0;
 }
 
 bool Game::executeCommand(std::vector<std::string>& tokens)
@@ -116,6 +115,7 @@ bool Game::executeCommand(std::vector<std::string>& tokens)
 
   if(std::cin.eof() || command == "quit" || command == "exit")
   {
+    quit_ = true;
     return true;
   }
   else if(command == "showtreasure" || command == "st")

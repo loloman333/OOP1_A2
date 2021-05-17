@@ -46,6 +46,7 @@ class Game
     std::vector<Player*> players_;
     size_t currentPlayerIndex_ = 0;
     bool showGamefield_ = true;
+    bool quit_ = false;
 
     Game();
     Game(const Game&); 
@@ -88,7 +89,7 @@ class Game
     void addArrowBasesToLine(std::string& line);
     void addArrowTipsToLine(std::string& line, Direction direction);
 
-    int playRound();
+    void playRound();
     void nextPlayer();
     Player* getCurrentPlayer();
 
