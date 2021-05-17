@@ -7,6 +7,7 @@
 //
 
 #include "Tile.hpp"
+#include "Player.hpp"
 
 Tile::Tile(TileType type, Rotation rotation) : type_{type}, rotation_{rotation} {}
 Tile::Tile(TileType type) : type_{type} {}
@@ -72,55 +73,67 @@ std::string Tile::getTileTypeString()
   }
 }
 
+bool Tile::isCorner(size_t row, size_t col)
+{
+  if((row == TOP_ROW || row == BOTTOM_ROW) && (col <= LEFT_COLUMN || col >= RIGHT_COLUMN))
+  {
+    return true;
+  }
+  return false;
+}
+
+std::vector<bool> Tile::setWalls(std::vector<Direction> directions)
+{
+  std::vector<bool> wallsToFill{false,false,false,false};
+  for(size_t index = 0; index < directions.size(); index++)
+  {
+    if(directions[index] == Direction::TOP)
+    {
+      wallsToFill[static_cast<int>(Direction::TOP)] = true;
+    }
+    else if(directions[index] == Direction::LEFT)
+    {
+      wallsToFill[static_cast<int>(Direction::LEFT)] = true;
+    }
+    else if(directions[index] == Direction::BOTTOM)
+    {
+      wallsToFill[static_cast<int>(Direction::BOTTOM)] = true;
+    }
+    else if(directions[index] == Direction::RIGHT)
+    {
+      wallsToFill[static_cast<int>(Direction::RIGHT)] = true;
+    }
+  }
+  return wallsToFill;
+}
+
 void Tile::fillWalls(std::vector<Direction> directions, std::vector<std::string>& tile)
 {
   std::vector<std::string> templateTile;
-  bool topWall = false;
-  bool leftWall = false;
-  bool botWall = false;
-  bool rightWall = false;
-  for(size_t i = 0; i < directions.size(); i++)
-  {
-    if(directions[i] == Direction::TOP)
-    {
-      topWall = true;
-    }
-    else if(directions[i] == Direction::LEFT)
-    {
-      leftWall = true;
-    }
-    else if(directions[i] == Direction::BOTTOM)
-    {
-      botWall = true;
-    }
-    else if(directions[i] == Direction::RIGHT)
-    {
-      rightWall = true;
-    }
-  }
+  std::vector<bool> wallsToFill = setWalls(directions);
 
-  for(size_t row = 0; row < 5 ; row++)
+  for(size_t row = 0; row < TILE_HEIGHT ; row++)
   {
     templateTile.push_back("");
-    for(size_t col = 0; col < 9 ; col++)
+    for(size_t col = 0; col < TILE_WIDTH ; col++)
     {
-      if((row == 0 || row == 4) && (col <= 1 || col >= 7))
+      if(isCorner(row,col))
       {
         templateTile[row].append(WALL);
       }
-      else if(topWall && row == 0)
+      else if(wallsToFill[static_cast<int>(Direction::TOP)] && row == TOP_ROW)
       {
         templateTile[row].append(WALL);
       }
-      else if(leftWall && col <= 1)
+      else if(wallsToFill[static_cast<int>(Direction::LEFT)] && col <= LEFT_COLUMN)
       {
         templateTile[row].append(WALL);
       }
-      else if(botWall && row == 4)
+      else if(wallsToFill[static_cast<int>(Direction::BOTTOM)] && row == BOTTOM_ROW)
       {
         templateTile[row].append(WALL);
       }
-      else if(rightWall && col >= 7)
+      else if(wallsToFill[static_cast<int>(Direction::RIGHT)] && col >= RIGHT_COLUMN)
       {
         templateTile[row].append(WALL);
       }
@@ -135,21 +148,21 @@ void Tile::fillWalls(std::vector<Direction> directions, std::vector<std::string>
 
 Direction Tile::calcDirection(Direction dir, Rotation rot)
 {
-  int dirValue = static_cast<int>(dir);
-  int rotValue = static_cast<int>(rot);
+  size_t dirValue = static_cast<size_t>(dir);
+  size_t rotValue = static_cast<size_t>(rot);
   dirValue += rotValue;
-  if(dirValue >= 4)
+  if(dirValue >= DIRECTION_AMOUNT)
   {
-    dirValue -= 4;
+    dirValue -= DIRECTION_AMOUNT;
   }
   return static_cast<Direction>(dirValue);
 }
 
 void Tile::generateTile(Rotation rotation, std::vector<Direction> directions, std::vector<std::string>& tile)
 {
-  for(size_t i = 0; i < directions.size(); i++)
+  for(size_t index = 0; index < directions.size(); index++)
   {
-    directions[i] = calcDirection(directions[i],rotation);
+    directions[index] = calcDirection(directions[index],rotation);
   }
   fillWalls(directions,tile);
 }
@@ -275,6 +288,8 @@ void Tile::rotate(Direction dir)
           rotation_ = Rotation::DEG180;
           break;
       }
+      break;
+    default:
       break;
   }
 }
