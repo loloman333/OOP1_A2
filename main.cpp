@@ -13,7 +13,7 @@ int main(int argc)
   if(argc == 1)
   {
     Game& game = Game::instance();
-    game.run();
+    return game.run();
   }
   else
   {
