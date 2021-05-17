@@ -54,6 +54,7 @@ class Game
     std::vector<Player*> players_;
     size_t currentPlayerIndex_ = 0;
     bool showGamefield_ = true;
+    bool quit_ = false;
 
     Game();
     Game(const Game&); 
@@ -101,7 +102,7 @@ class Game
     void printTilesOfLine(std::vector<std::vector<std::string>>& tile_strings, size_t tile_line_index);
     void printLeftUI(size_t& row_index, size_t line_index, size_t& row_label_index, bool& print_arrow);
 
-    int playRound();
+    void playRound();
     void nextPlayer();
     Player* getCurrentPlayer();
 

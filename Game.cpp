@@ -42,16 +42,16 @@ int Game::run()
     fillBoard();
     distributeTreasures();
 
-    while (true)
+    while (!quit_)
     {
       printGame();
       playRound();
-      return 0;
     }
   } catch (std::bad_alloc)
   {
     return 1;
   }
+  return 0;
 }
 
 void Game::gameStart()
@@ -59,22 +59,31 @@ void Game::gameStart()
   std::cout << UI_WELCOME << std::endl;
 
   std::string input;
+  std::vector<std::string> inputVector;
   size_t playerCount = 0;
   while (playerCount == 0)
   {
     std::cout << UI_PLAYER_COUNT;
     std::getline(std::cin, input);
-    if(input == "2")
+    inputVector = tokenize(input);
+    if(inputVector.size() == 1)
     {
-      playerCount = 2;
-    }
-    else if(input == "3")
-    {
-      playerCount = 3;
-    }
-    else if(input == "4")
-    {
-      playerCount = 4;
+      if(inputVector[0] == "2")
+      {
+        playerCount = 2;
+      }
+      else if(inputVector[0] == "3")
+      {
+        playerCount = 3;
+      }
+      else if(inputVector[0] == "4")
+      {
+        playerCount = 4;
+      }
+      else
+      {
+        std::cout << UI_WRONG_COUNT << std::endl;
+      }
     }
     else
     {
@@ -88,7 +97,7 @@ void Game::gameStart()
   }
 }
 
-int Game::playRound()
+void Game::playRound()
 {
   Player* player = getCurrentPlayer();
   std::string currentOutput = player->getPlayerColorAsString();
@@ -104,7 +113,6 @@ int Game::playRound()
     std::vector<std::string> tokens = tokenize(command);
     stop = executeCommand(tokens);
   }
-  return 0;
 }
 
 bool Game::executeCommand(std::vector<std::string>& tokens)
@@ -117,6 +125,7 @@ bool Game::executeCommand(std::vector<std::string>& tokens)
 
   if(std::cin.eof() || command == "quit" || command == "exit")
   {
+    quit_ = true;
     return true;
   }
   else if(command == "showtreasure" || command == "st")
@@ -427,14 +436,7 @@ void Game::addPlayer(PlayerColor color)
 
 void Game::nextPlayer()
 {
-  if(currentPlayerIndex_++ < players_.size())
-  {
-    currentPlayerIndex_++;
-  }
-  else
-  {
-    currentPlayerIndex_ = 0;
-  }
+  currentPlayerIndex_ = (currentPlayerIndex_ + 1) % players_.size();
 }
 
 Player* Game::getCurrentPlayer()
