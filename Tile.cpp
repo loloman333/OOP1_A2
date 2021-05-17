@@ -289,5 +289,7 @@ void Tile::rotate(Direction dir)
           break;
       }
       break;
+    default:
+      break;
   }
 }

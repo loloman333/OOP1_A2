@@ -104,9 +104,5 @@ Rotation TreasureTile::calculateRotation(size_t treasure_id)
 
 bool TreasureTile::isSingleDigit(size_t number)
 {
-  if (number < 10)
-  {
-    return true;
-  }
-  return false;
+  return (number < 10);
 }
