@@ -30,19 +30,26 @@ Game& Game::instance()
   return instance_;
 }
 
-void Game::run()
+int Game::run()
 {
-  fillTreasures();
-
-  gameStart(); //Nagy
-  fillBoard(); //Killer
-  distributeTreasures(); //Grill
-
-  // While something
-  while (true)
+  try
   {
-    print();
-    playRound();
+    fillTreasures();
+
+    gameStart(); //Nagy
+    fillBoard(); //Killer
+    distributeTreasures(); //Grill
+
+    // While something
+    while (true)
+    {
+      print();
+      playRound();
+      return 0;
+    }
+  } catch (std::bad_alloc)
+  {
+    return 1;
   }
 }
 
@@ -80,24 +87,26 @@ void Game::gameStart()
   }
 }
 
-void Game::playRound()
+int Game::playRound()
 {
   Player* player = getCurrentPlayer();
   std::string currentOutput = player->getPlayerColorAsString();
   std::transform(currentOutput.begin(), currentOutput.end(), currentOutput.begin(), ::toupper);
   currentOutput += " > ";
 
-  while(true)
+  bool stop = false;
+  while(!stop)
   {
     std::cout << currentOutput;
     std::string command;
     std::getline(std::cin, command);
     std::vector<std::string> tokens = tokenize(command);
-    executeCommand(tokens);
+    stop = executeCommand(tokens);
   }
+  return 0;
 }
 
-void Game::executeCommand(std::vector<std::string>& tokens)
+bool Game::executeCommand(std::vector<std::string>& tokens)
 {
   std::string command = "";
   if(tokens.size() > 0)
@@ -107,7 +116,7 @@ void Game::executeCommand(std::vector<std::string>& tokens)
 
   if(std::cin.eof() || command == "quit" || command == "exit")
   {
-    exit(0);
+    return true;
   }
   else if(command == "showtreasure" || command == "st")
   {
@@ -146,6 +155,7 @@ void Game::executeCommand(std::vector<std::string>& tokens)
   {
     std::cout << COMMAND_INVALID << "\"" << command << "\"" << std::endl;
   }
+  return false;
 }
 
 void Game::gameField(std::vector<std::string> tokens)
@@ -317,10 +327,6 @@ void Game::fillStaticTiles(size_t& treasure_index)
         if (isCorner(row_index, col_index))
         {
           Tile* tile = new StartTile{Player::player_colors_[player_index]};
-          if (!tile)
-          {
-            exit(1);
-          }
 
           board_[row_index].push_back(tile);
           
@@ -334,10 +340,7 @@ void Game::fillStaticTiles(size_t& treasure_index)
         else
         {
           TreasureTile* treasure_tile = new TreasureTile{treasures_[treasure_index]};
-          if (!treasure_tile)
-          {
-            exit(1);
-          }
+
           board_[row_index].push_back(treasure_tile);
           treasure_index++;
         }
@@ -381,10 +384,6 @@ void Game::addNewNormalTilesToVector(std::vector<Tile*>& vector, TileType type, 
   for (size_t i = 0; i < count; i++)
   {
     NormalTile* normal_tile = new NormalTile{type};
-    if(!normal_tile)
-    {
-      exit(1);
-    }
     vector.push_back(normal_tile);
   }
 }
@@ -394,10 +393,6 @@ void Game::addNewTreasureTilesToVector(std::vector<Tile*>& vector, TileType type
   for (size_t i = 0; i < count; i++)
   { 
     Tile* tile = new TreasureTile{type, treasures_[treasure_index]};
-    if(!tile)
-    {
-      exit(1);
-    }
 
     treasure_index++;
     vector.push_back(tile);
@@ -415,10 +410,7 @@ void Game::fillTreasures()
   for(std::string treasure_name : TREASURE_NAMES)
   {
     Treasure* treasure = new Treasure(treasure_name, id);
-    if(!treasure)
-    {
-      exit(1);
-    }
+
     treasures_.push_back(treasure);
     id++;
   }
@@ -427,10 +419,7 @@ void Game::fillTreasures()
 void Game::addPlayer(PlayerColor color)
 {
   Player* player = new Player{color};
-  if(!player)
-  {
-    exit(1);
-  }
+
   players_.push_back(player);
 }
 
