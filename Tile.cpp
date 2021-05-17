@@ -210,7 +210,7 @@ void Tile::addPlayersToTile(std::vector<std::string>& tileVector)
     std::string player_string = "P";
     for (Player* player : players_)
     {
-      player_string += player->getPlayerColor();
+      player_string += static_cast<char>(player->getPlayerColor());
     }
 
     if (tileVector[3][0] == ' ')

@@ -15,12 +15,12 @@
 class StartTile : public Tile
 {
   private:
-    char player_color_;
+    PlayerColor player_color_;
 
   public:
-    StartTile(char player_color);
+    StartTile(PlayerColor player_color);
 
-    char getPlayerColor();
+    PlayerColor getPlayerColor();
 
     std::vector<std::string> getTileString();
 };

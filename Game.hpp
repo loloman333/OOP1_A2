@@ -28,10 +28,7 @@ const std::string UI_UP_ARROWS = "Ʌ                 Ʌ                 Ʌ";
 const std::string UI_ARROW_BASES = "|                 |                 |";
 const std::string UI_COLUMN_LABELS = "        1        2        3        4        5        6        7    ";
 const std::string UI_TREASURE_COUNTER = "Treasure: ";
-const std::string UI_PLAYER_RED = "Player Red(R)";
-const std::string UI_PLAYER_YELLOW = "Player Yellow(Y)";
-const std::string UI_PLAYER_GREEN = "Player Green(G)";
-const std::string UI_PLAYER_BLUE = "Player Blue(B)";
+const std::string UI_PLAYER_BASE = "Player ";
 
 const std::string COMMAND_INVALID = "Invalid command: ";
 const std::string COMMAND_INVALID_PARAMETER = "Invalid parameter: ";
@@ -55,7 +52,7 @@ class Game
 
     // Preparations
     void gameStart();
-    void addPlayer(char color);
+    void addPlayer(PlayerColor color);
     void distributeTreasures();
     void fillBoard();
     void fillStaticTiles(size_t& treasure_index);

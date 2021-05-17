@@ -73,34 +73,19 @@ void Game::gameStart()
       std::cout << UI_WRONG_COUNT << std::endl;
     }
   }
-  std::vector<char> player_colors = {'B', 'G', 'Y', 'R'};
-  for(size_t i = 0; i < playerCount; i++)
+           
+  for(size_t index = 0; index < playerCount; index++)
   {
-    addPlayer(player_colors.back());
-    player_colors.pop_back();
+    addPlayer(Player::player_colors_[index]);
   }
 }
 
 void Game::playRound()
 {
   Player* player = getCurrentPlayer();
-  std::string currentOutput = "";
-  
-  switch (player->getPlayerColor())
-  {
-  case 'R':
-    currentOutput = "RED > ";
-    break;
-  case 'G':
-    currentOutput = "GREEN > ";
-    break;
-  case 'B':
-    currentOutput = "BLUE > ";
-    break;
-  case 'Y':
-    currentOutput = "YELLOW > ";
-    break;
-  }
+  std::string currentOutput = player->getPlayerColorAsString();
+  std::transform(currentOutput.begin(), currentOutput.end(), currentOutput.begin(), ::toupper);
+  currentOutput += " > ";
 
   while(true)
   {
@@ -316,7 +301,6 @@ void Game::fillBoard()
 void Game::fillStaticTiles(size_t& treasure_index)
 {
   size_t player_index = 0;
-  std::vector<char> player_colors = {'R', 'Y', 'G', 'B'};
 
   for (size_t row_index = 0; row_index < BOARD_SIZE; row_index++)
   {
@@ -332,7 +316,7 @@ void Game::fillStaticTiles(size_t& treasure_index)
       {
         if (isCorner(row_index, col_index))
         {
-          Tile* tile = new StartTile{player_colors[player_index]};
+          Tile* tile = new StartTile{Player::player_colors_[player_index]};
           if (!tile)
           {
             exit(1);
@@ -440,7 +424,7 @@ void Game::fillTreasures()
   }
 }
 
-void Game::addPlayer(char color)
+void Game::addPlayer(PlayerColor color)
 {
   Player* player = new Player{color};
   if(!player)
@@ -579,24 +563,12 @@ void Game::addPlayerTitlesToLine(std::string& line, size_t& player_index)
   {
     if (player_index < players_.size())
     {
-      std::string title;
-      switch (players_[player_index]->getPlayerColor())
-      {
-      case 'R':
-        title = UI_PLAYER_RED;
-        break;
-      case 'Y':
-        title = UI_PLAYER_YELLOW;
-        break;
-      case 'G':
-        title = UI_PLAYER_GREEN;
-        break;
-      case 'B':
-        title = UI_PLAYER_BLUE;
-        break;
-      default:
-        break;
-      }
+      std::string title = UI_PLAYER_BASE;
+      title += players_[player_index]->getPlayerColorAsString();
+      title += "(";
+      title += static_cast<char>(players_[player_index]->getPlayerColor());
+      title += ")";
+      
       line.replace(58 * times, title.length(), title);
       player_index++;
     }

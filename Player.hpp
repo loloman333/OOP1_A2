@@ -9,9 +9,12 @@
 #ifndef A2_PLAYER_HPP
 #define A2_PLAYER_HPP
 
-#include "Treasure.hpp"
-
 #include <vector>
+#include <string>
+
+class Treasure;
+
+enum class PlayerColor {RED = 'R', YELLOW = 'Y', BLUE = 'B', GREEN = 'G'};
 
 class Player
 {
@@ -19,17 +22,20 @@ class Player
   private:
     std::vector<Treasure*> covered_stack_;
     size_t nr_found_treasures_;
-    char player_color_;
+    PlayerColor player_color_;
 
   public: 
-    Player(char player_color);
+    Player(PlayerColor player_color);
 
     std::vector<Treasure*>& getCoveredStackRef();
     size_t getNrFoundTreasures();
-    char getPlayerColor();
+    PlayerColor getPlayerColor();
+    std::string getPlayerColorAsString();
+
+    static const std::vector<PlayerColor> player_colors_; 
 
     void setNrFoundTreasures(size_t nr_found_treasures);
-    void setPlayerColor(char player_color);
+    void setPlayerColor(PlayerColor player_color);
 };
 
 #endif //A2_PLAYER_HPP

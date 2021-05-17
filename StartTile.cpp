@@ -9,21 +9,21 @@
 
 #include "StartTile.hpp"
 
-StartTile::StartTile(char player_color) : Tile{}, player_color_{player_color} 
+StartTile::StartTile(PlayerColor player_color) : Tile{}, player_color_{player_color} 
 {
   Rotation rot;
   switch (player_color)
   {
-    case 'G':
+    case PlayerColor::GREEN:
       rot = Rotation::DEG0;
       break;
-    case 'B':
+    case PlayerColor::BLUE:
       rot = Rotation::DEG90;
       break;
-    case 'Y':
+    case PlayerColor::YELLOW:
       rot = Rotation::DEG180;
       break;
-    case 'R':
+    case PlayerColor::RED:
       rot = Rotation::DEG270;
       break;
   }
@@ -32,7 +32,7 @@ StartTile::StartTile(char player_color) : Tile{}, player_color_{player_color}
   setRotation(rot);
 }
 
-char StartTile::getPlayerColor()
+PlayerColor StartTile::getPlayerColor()
 {
   return player_color_;
 }
@@ -41,7 +41,7 @@ std::vector<std::string> StartTile::getTileString()
 {
   std::vector<std::string> tileString = getRawTileString();
   std::string playerBase{"("};
-  playerBase += getPlayerColor();
+  playerBase += static_cast<char>(getPlayerColor());
   playerBase += ")";
 
   if (tileString[2][0] == ' ')
