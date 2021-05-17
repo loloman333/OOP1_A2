@@ -11,11 +11,8 @@
 
 #include <algorithm>
 
-TreasureTile::TreasureTile(Treasure* treasure) : treasure_{treasure}
-{
-  setType(TileType::T);
-  setRotation(calculateRotation(treasure->getTreasureId()));
-}
+TreasureTile::TreasureTile(Treasure* treasure)
+: Tile(TileType::T, calculateRotation(treasure->getTreasureId())), treasure_{treasure}  {}
 
 TreasureTile::TreasureTile(TileType type, Treasure* treasure) 
 : Tile(type), treasure_{treasure} {}
@@ -50,7 +47,7 @@ std::string TreasureTile::getTreasureId()
   int treasure_id = treasure_->getTreasureId();
   std::string treasure = "T";
 
-  if (treasure_id < 10)
+  if (isSingleDigit(treasure_id))
   {
     treasure.append("0");
   }
@@ -67,14 +64,15 @@ std::vector<std::string> TreasureTile::getTileString()
     return tileString;
   }
 
+  // add missing treasure string to tile
   std::string treasure_id = getTreasureId();
-  if (tileString[2][0] == ' ')
+  if (tileString[TREASURE_TILE_ROW][0] == ' ') // check if there is a wall
   {
-    tileString[2].replace(3, 3, treasure_id);
+    tileString[TREASURE_TILE_ROW].replace(TREASURE_INDEX_WITHOUT_WALL, TREASURE_STRING_LENGTH, treasure_id);
   }
   else
   {
-    tileString[2].replace(7, 3, treasure_id);
+    tileString[TREASURE_TILE_ROW].replace(TREASURE_INDEX_WITH_WALL, TREASURE_STRING_LENGTH, treasure_id);
   }
 
   return tileString;
@@ -102,4 +100,13 @@ Rotation TreasureTile::calculateRotation(size_t treasure_id)
   {
     return Rotation::DEG270;
   }
+}
+
+bool TreasureTile::isSingleDigit(size_t number)
+{
+  if (number < 10)
+  {
+    return true;
+  }
+  return false;
 }
