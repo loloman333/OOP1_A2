@@ -8,6 +8,7 @@
 //
 
 #include "TreasureTile.hpp"
+#include "Treasure.hpp"
 
 #include <algorithm>
 

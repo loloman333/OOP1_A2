@@ -148,8 +148,8 @@ void Tile::fillWalls(std::vector<Direction> directions, std::vector<std::string>
 
 Direction Tile::calcDirection(Direction dir, Rotation rot)
 {
-  int dirValue = static_cast<int>(dir);
-  int rotValue = static_cast<int>(rot);
+  size_t dirValue = static_cast<size_t>(dir);
+  size_t rotValue = static_cast<size_t>(rot);
   dirValue += rotValue;
   if(dirValue >= DIRECTION_AMOUNT)
   {
