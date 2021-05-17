@@ -12,17 +12,23 @@
 #include <cstdlib>
 #include <string>
 #include <vector>
-#include "Player.hpp"
 #include <iostream>
 
 const std::string WALL = "█";
 const std::size_t TILE_HEIGHT = 5;
 const std::size_t TILE_WIDTH = 9;
+const std::size_t DIRECTION_AMOUNT = 4;
+const std::size_t TOP_ROW = 0;
+const std::size_t BOTTOM_ROW = 4;
+const std::size_t LEFT_COLUMN = 1;
+const std::size_t RIGHT_COLUMN = 7;
 
 //Enums
 enum class TileType {T, L, I, O, U, X};
 enum class Rotation{DEG0 = 0, DEG90 = 1, DEG180 = 2, DEG270 = 3};
 enum class Direction{TOP = 0, LEFT = 1, BOTTOM = 2, RIGHT = 3};
+
+class Player;
 
 class Tile
 {
@@ -35,6 +41,8 @@ class Tile
     void generateTile(Rotation rotation, std::vector<Direction> directions, std::vector<std::string>& tile);
     void addPlayersToTile(std::vector<std::string>& tileVector);
     Direction calcDirection(Direction dir, Rotation rot);
+    bool isCorner(size_t row, size_t col);
+    std::vector<bool> setWalls(std::vector<Direction> directions);
 
   public:
     Tile() = default;

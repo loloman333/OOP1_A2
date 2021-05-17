@@ -11,6 +11,7 @@
 #define A2_GAME_HPP
 
 #include "Tile.hpp"
+#include "Player.hpp"
 #include "Random.hpp"
 #include <fstream>
 
