@@ -11,6 +11,8 @@
 #include "TreasureTile.hpp"
 #include "NormalTile.hpp"
 #include "Treasure.hpp"
+#include "Random.hpp"
+#include "Player.hpp"
 
 #include <algorithm>
 

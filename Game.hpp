@@ -10,10 +10,15 @@
 #ifndef A2_GAME_HPP
 #define A2_GAME_HPP
 
-#include "Tile.hpp"
-#include "Player.hpp"
-#include "Random.hpp"
 #include <fstream>
+#include <vector>
+
+class Tile;
+class Player;
+class Treasure;
+enum class PlayerColor;
+enum class TileType;
+enum class Direction;
 
 const size_t BOARD_SIZE = 7;
 const std::vector<std::string> PLAYER_MOVEMENT{"w", "\x1b[A", "a", "\x1b[D", "s", "\x1b[B", "d", "\x1b[C", "go"};
@@ -49,7 +54,7 @@ class Game
 
     Game();
     Game(const Game&); 
-    Game& operator = (const Game&);
+    Game& operator=(const Game&);
 
     // Preparations
     void gameStart();
