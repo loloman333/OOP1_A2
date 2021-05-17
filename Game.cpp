@@ -38,14 +38,13 @@ int Game::run()
   {
     fillTreasures();
 
-    gameStart(); //Nagy
-    fillBoard(); //Killer
-    distributeTreasures(); //Grill
+    gameStart();
+    fillBoard();
+    distributeTreasures();
 
-    // While something
     while (true)
     {
-      print();
+      printGame();
       playRound();
       return 0;
     }
@@ -182,7 +181,7 @@ void Game::gameField(std::vector<std::string> tokens)
   }
   else
   {
-    print();
+    printGame();
   }
 }
 
@@ -250,7 +249,7 @@ void Game::showTreasure(std::vector<std::string> tokens)
       }
       id_string += std::to_string(treasure_id);
 
-      printBoardIfNecessary();
+      printGameIfNecessary();
       std::cout << "Current Treasure: " << treasure_name << " Nr.: " << id_string << std::endl;
     }
   }
@@ -261,7 +260,7 @@ void Game::hideTreasure(std::vector<std::string> tokens)
   if (tokens.size() == 1)
   {
     std::cout << "\x1b[2J";
-    print();
+    printGame();
   }
   else
   {
@@ -269,11 +268,11 @@ void Game::hideTreasure(std::vector<std::string> tokens)
   }
 }
 
-void Game::printBoardIfNecessary()
+void Game::printGameIfNecessary()
 {
   if(showGamefield_)
   {
-    print();
+    printGame();
   }
 }
 
@@ -320,7 +319,7 @@ void Game::fillStaticTiles(size_t& treasure_index)
 
     for (size_t col_index = 0; col_index < BOARD_SIZE; col_index++)
     {
-      if (row_index % 2 == 1 || col_index % 2 == 1)
+      if (isInMoveableLine(row_index, col_index))
       {
         board_[row_index].push_back(nullptr);
       }
@@ -341,7 +340,7 @@ void Game::fillStaticTiles(size_t& treasure_index)
         }
         else
         {
-          TreasureTile* treasure_tile = new TreasureTile{treasures_[treasure_index]};
+          TreasureTile* treasure_tile = new TreasureTile(treasures_[treasure_index]);
 
           board_[row_index].push_back(treasure_tile);
           treasure_index++;
@@ -374,10 +373,6 @@ void Game::fillVariableTiles(size_t& treasure_index)
       }
     }
   }
-  tiles[0]->setRotation(Rotation::DEG0);
-  // In case this ^ is wrong:
-  // size_t random_rotation = Oop::Random::getInstance().getRandomOrientation();
-  // tiles[0]->setRotation((Rotation) random_rotation);
   free_tile_ = tiles[0];
 }
 
@@ -385,7 +380,7 @@ void Game::addNewNormalTilesToVector(std::vector<Tile*>& vector, TileType type, 
 {
   for (size_t i = 0; i < count; i++)
   {
-    NormalTile* normal_tile = new NormalTile{type};
+    NormalTile* normal_tile = new NormalTile(type);
     vector.push_back(normal_tile);
   }
 }
@@ -394,7 +389,7 @@ void Game::addNewTreasureTilesToVector(std::vector<Tile*>& vector, TileType type
 {
   for (size_t i = 0; i < count; i++)
   { 
-    Tile* tile = new TreasureTile{type, treasures_[treasure_index]};
+    Tile* tile = new TreasureTile(type, treasures_[treasure_index]);
 
     treasure_index++;
     vector.push_back(tile);
@@ -404,6 +399,11 @@ void Game::addNewTreasureTilesToVector(std::vector<Tile*>& vector, TileType type
 bool Game::isCorner(size_t row_index, size_t col_index)
 {
   return !(row_index % (BOARD_SIZE - 1)) && !(col_index % (BOARD_SIZE - 1));
+}
+
+bool Game::isInMoveableLine(size_t row_index, size_t col_index)
+{
+  return (row_index % 2 == 1 || col_index % 2 == 1);
 }
 
 void Game::fillTreasures()
@@ -489,7 +489,7 @@ void Game::deletePlayers()
   }
 }
 
-void Game::print()
+void Game::printGame()
 {
   std::vector<std::string> ui_lines = generateUILines();
 
@@ -560,7 +560,7 @@ void Game::addPlayerTitlesToLine(std::string& line, size_t& player_index)
       title += static_cast<char>(players_[player_index]->getPlayerColor());
       title += ")";
       
-      line.replace(58 * times, title.length(), title);
+      line.replace(UI_PLAYER_TITLE_OFFSET * times, title.length(), title);
       player_index++;
     }
   }
@@ -577,7 +577,7 @@ void Game::addTreasureCountersToLine(std::string& line, size_t& player_index)
       treasure_counter.append("/");
       treasure_counter.append(std::to_string(treasures_.size() / players_.size()));
 
-      line.replace(58 * times, treasure_counter.length(), treasure_counter);
+      line.replace(UI_PLAYER_TITLE_OFFSET * times, treasure_counter.length(), treasure_counter);
       player_index++;
     }
   }
@@ -585,7 +585,7 @@ void Game::addTreasureCountersToLine(std::string& line, size_t& player_index)
 
 void Game::addArrowBasesToLine(std::string& line)
 {
-  line.replace(17, UI_ARROW_BASES.length(), UI_ARROW_BASES);
+  line.replace(UI_ARROW_OFFSET, UI_ARROW_BASES.length(), UI_ARROW_BASES);
 }
 
 void Game::addArrowTipsToLine(std::string& line, Direction direction)
@@ -599,10 +599,9 @@ void Game::addArrowTipsToLine(std::string& line, Direction direction)
   {
     arrows = UI_UP_ARROWS;
   }
-  line.replace(17, arrows.length(), arrows);
+  line.replace(UI_ARROW_OFFSET, arrows.length(), arrows);
 }
 
-// Print the actual board
 void Game::printBoard()
 {
   size_t row_label_index = 2;
@@ -610,7 +609,7 @@ void Game::printBoard()
   size_t row_index = 1;
   for (std::vector<Tile*> row : board_)
   {
-    std::vector<std::vector<std::string>> tile_strings{};
+    std::vector<std::vector<std::string>> tile_strings;
     for (Tile* tile : row)
     {
       tile_strings.push_back(tile->getTileString());
@@ -620,40 +619,50 @@ void Game::printBoard()
     {
       bool print_arrow = false;
 
-      // Print the row labels
-      if (line_index == row_label_index)
-      {
-        row_label_index += 5;
-        if (row_index % 2 == 0)
-        {
-          print_arrow = true;
-          std::cout << UI_ARROW_RIGHT;
-        }
-        else
-        {
-          std::cout << "   ";
-        }
-        std::cout << row_index++;
-      }
-      else
-      {
-        std::cout << "    ";
-      }
-
-      // Print the tiles
-      for (std::vector<std::string> tile_rows : tile_strings)
-      {
-        std::cout << tile_rows[tile_line_index];
-      }
-
-      // Print right arrows
-      if (print_arrow)
-      {
-        std::cout << UI_ARROW_LEFT;
-      }
-      std::cout << std::endl;
+      printLeftUI(row_index, line_index, row_label_index, print_arrow);
+      printTilesOfLine(tile_strings, tile_line_index);
+      printRightUI(print_arrow);
 
       line_index++;
     } 
   }
+}
+
+void Game::printLeftUI(size_t& row_index, size_t line_index, size_t& row_label_index, bool& print_arrow)
+{
+  if (line_index == row_label_index)
+  {
+    row_label_index += 5;
+    if (row_index % 2 == 0)
+    {
+      print_arrow = true;
+      std::cout << UI_ARROW_RIGHT;
+    }
+    else
+    {
+      std::cout << "   ";
+    }
+    std::cout << row_index++;
+  }
+  else
+  {
+    std::cout << "    ";
+  }
+}
+
+void Game::printTilesOfLine(std::vector<std::vector<std::string>>& tile_strings, size_t tile_line_index)
+{
+  for (std::vector<std::string> tile_rows : tile_strings)
+  {
+    std::cout << tile_rows[tile_line_index];
+  }
+}
+
+void Game::printRightUI(bool print_arrow)
+{
+  if (print_arrow)
+  {
+    std::cout << UI_ARROW_LEFT;
+  }
+  std::cout << std::endl;
 }

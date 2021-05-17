@@ -36,6 +36,9 @@ const std::string UI_COLUMN_LABELS = "        1        2        3        4      
 const std::string UI_TREASURE_COUNTER = "Treasure: ";
 const std::string UI_PLAYER_BASE = "Player ";
 
+const size_t UI_PLAYER_TITLE_OFFSET = 58;
+const size_t UI_ARROW_OFFSET = 17;
+
 const std::string COMMAND_INVALID = "Invalid command: ";
 const std::string COMMAND_INVALID_PARAMETER = "Invalid parameter: ";
 const std::string COMMAND_WRONG_NUMBER_ARGUMENTS = "Wrong number of arguments!";
@@ -66,7 +69,9 @@ class Game
     void addNewNormalTilesToVector(std::vector<Tile*>& vector, TileType type, size_t count);
     void addNewTreasureTilesToVector(std::vector<Tile*>& vector, TileType type, size_t count, size_t& treasure_index);
     bool isCorner(size_t row_index, size_t col_index);
+    bool isInMoveableLine(size_t row_index, size_t col_index);
     void fillTreasures();
+    
 
     // Free memory
     void deleteTreasures();
@@ -84,14 +89,17 @@ class Game
     void gameField(std::vector<std::string> tokens);
 
     // Print board
-    void print();
+    void printGame();
     void printBoard();
-    void printBoardIfNecessary();
+    void printGameIfNecessary();
     std::vector<std::string> generateUILines();
     void addPlayerTitlesToLine(std::string& line, size_t& player_index);
     void addTreasureCountersToLine(std::string& line, size_t& player_index);
     void addArrowBasesToLine(std::string& line);
     void addArrowTipsToLine(std::string& line, Direction direction);
+    void printRightUI(bool print_arrow);
+    void printTilesOfLine(std::vector<std::vector<std::string>>& tile_strings, size_t tile_line_index);
+    void printLeftUI(size_t& row_index, size_t line_index, size_t& row_label_index, bool& print_arrow);
 
     int playRound();
     void nextPlayer();
