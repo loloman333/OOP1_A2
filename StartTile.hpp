@@ -12,6 +12,8 @@
 
 #include "Tile.hpp"
 
+enum class PlayerColor;
+
 class StartTile : public Tile
 {
   private:
