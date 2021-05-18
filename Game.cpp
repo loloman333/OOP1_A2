@@ -90,7 +90,7 @@ void Game::gameStart()
       std::cout << UI_WRONG_COUNT << std::endl;
     }
   }
-           
+
   for(size_t index = 0; index < playerCount; index++)
   {
     addPlayer(Player::player_colors_[index]);
@@ -146,7 +146,7 @@ bool Game::executeCommand(std::vector<std::string>& tokens)
   }
   else if(command == "insert" || command == "i")
   {
-    std::cout << "<inserts>" << std::endl;
+    insert(tokens);
   }
   else if(command == "gamefield" || command == "g")
   {
@@ -168,21 +168,144 @@ bool Game::executeCommand(std::vector<std::string>& tokens)
   return false;
 }
 
+void Game::insert(std::vector <std::string> tokens)
+{
+  if (tokens.size() == 3)
+  {
+    if(checkInsertParameter(tokens))
+    {
+      insertTile(tokens);
+    }
+  }
+  else
+  {
+    std::cout << COMMAND_WRONG_NUMBER_ARGUMENTS << std::endl;
+  }
+}
+
+bool Game::checkInsertParameter(std::vector <std::string> tokens)
+{
+  if (checkLastInsert(tokens))
+  {
+    if (isInMoveableRowOrCol(tokens[2]))
+    {
+      return true;
+    }
+    else
+    {
+      std::cout << COMMAND_INVALID_PARAMETER << "\"" << tokens[2] << "\"" << std::endl;
+    }
+  }
+  else
+  {
+    std::string invalid_command = "";
+    for(size_t index = 0; index < tokens.size(); index++)
+    {
+      if(index == tokens.size() - 1)
+      {
+        invalid_command += tokens[index];
+      }
+      else
+      {
+        invalid_command += (tokens[index] + " ");
+      }
+    }
+    std::cout << "\"" << invalid_command << "\"" << COMMAND_NOT_ALLOWED << std::endl;
+  }
+  return false;
+}
+
+bool Game::isInMoveableRowOrCol(std::string parameter)
+{
+  return ((std::stoi(parameter) - 1) % 2 == 1 && std::stoi(parameter) < 8 && std::stoi(parameter) > 0);
+}
+
+bool Game::checkLastInsert(std::vector <std::string> tokens)
+{
+  if (tokens[1] == "t" || tokens[1] == "top")
+  {
+    if(!checkDirectionAndRowCol("bottom", "b", tokens[2]))
+    {
+      return false;
+    }
+  }
+  else if (tokens[1] == "l" || tokens[1] == "left")
+  {
+    if(!checkDirectionAndRowCol("right", "r", tokens[2]))
+    {
+      return false;
+    }
+  }
+  else if (tokens[1] == "b" || tokens[1] == "bottom")
+  {
+    if(!checkDirectionAndRowCol("top", "t", tokens[2]))
+    {
+      return false;
+    }
+  }
+  else if (tokens[1] == "r" || tokens[1] == "right")
+  {
+    if(!checkDirectionAndRowCol("left", "l", tokens[2]))
+    {
+      return false;
+    }
+  }
+  else
+  {
+    std::cout << COMMAND_INVALID_PARAMETER << "\"" << tokens[1] << "\"" << std::endl;
+  }
+  last_insert_row_col = tokens[2];
+  last_insert_direction = tokens[1];
+  return true;
+}
+
+bool Game::checkDirectionAndRowCol(std::string direction, std::string alias, std::string row_col)
+{
+  if (last_insert_direction == direction || last_insert_direction == alias)
+  {
+    if (last_insert_row_col == row_col)
+    {
+      return false;
+    }
+  }
+  return true;
+}
+
+void Game::insertTile(std::vector <std::string> tokens)
+{
+  if (tokens[1] == "t" || tokens[1] == "top")
+  {
+    std::cout << "insert top" << std::endl;
+  }
+  else if (tokens[1] == "l" || tokens[1] == "left")
+  {
+    std::cout << "insert left" << std::endl;
+  }
+  else if (tokens[1] == "b" || tokens[1] == "bottom")
+  {
+    std::cout << "insert bottom" << std::endl;
+  }
+  else if (tokens[1] == "r" || tokens[1] == "right")
+  {
+    std::cout << "insert right" << std::endl;
+  }
+}
+
 void Game::gameField(std::vector<std::string> tokens)
 {
   if (tokens.size() > 2)
   {
     std::cout << COMMAND_WRONG_NUMBER_ARGUMENTS << std::endl;
-  } 
+  }
   else if (tokens.size() == 2)
   {
     if (tokens[1] == "on")
     {
-      showGamefield_ = true;
+      show_gamefield_ = true;
     }
     else if (tokens[1] == "off")
     {
-      showGamefield_ = false;
+      show_gamefield_ = false;
     }
     else{
       std::cout << COMMAND_INVALID_PARAMETER << "\"" << tokens[1] << "\"" << std::endl;
@@ -279,7 +402,7 @@ void Game::hideTreasure(std::vector<std::string> tokens)
 
 void Game::printGameIfNecessary()
 {
-  if(showGamefield_)
+  if(show_gamefield_)
   {
     printGame();
   }
@@ -339,7 +462,7 @@ void Game::fillStaticTiles(size_t& treasure_index)
           Tile* tile = new StartTile{Player::player_colors_[player_index]};
 
           board_[row_index].push_back(tile);
-          
+
           if (player_index < players_.size())
           {
             tile->addPlayer(players_[player_index]);
@@ -397,7 +520,7 @@ void Game::addNewNormalTilesToVector(std::vector<Tile*>& vector, TileType type, 
 void Game::addNewTreasureTilesToVector(std::vector<Tile*>& vector, TileType type, size_t count, size_t& treasure_index)
 {
   for (size_t i = 0; i < count; i++)
-  { 
+  {
     Tile* tile = new TreasureTile(type, treasures_[treasure_index]);
 
     treasure_index++;
@@ -436,12 +559,12 @@ void Game::addPlayer(PlayerColor color)
 
 void Game::nextPlayer()
 {
-  currentPlayerIndex_ = (currentPlayerIndex_ + 1) % players_.size();
+  current_player_index_ = (current_player_index_ + 1) % players_.size();
 }
 
 Player* Game::getCurrentPlayer()
 {
-  return players_[currentPlayerIndex_];
+  return players_[current_player_index_];
 }
 
 void Game::distributeTreasures()
@@ -561,7 +684,7 @@ void Game::addPlayerTitlesToLine(std::string& line, size_t& player_index)
       title += "(";
       title += static_cast<char>(players_[player_index]->getPlayerColor());
       title += ")";
-      
+
       line.replace(UI_PLAYER_TITLE_OFFSET * times, title.length(), title);
       player_index++;
     }
@@ -616,7 +739,7 @@ void Game::printBoard()
     {
       tile_strings.push_back(tile->getTileString());
     }
-    
+
     for (size_t tile_line_index = 0; tile_line_index < TILE_HEIGHT; tile_line_index++)
     {
       bool print_arrow = false;
@@ -626,7 +749,7 @@ void Game::printBoard()
       printRightUI(print_arrow);
 
       line_index++;
-    } 
+    }
   }
 }
 

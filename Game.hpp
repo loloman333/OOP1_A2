@@ -43,6 +43,7 @@ const std::string COMMAND_INVALID = "Invalid command: ";
 const std::string COMMAND_INVALID_PARAMETER = "Invalid parameter: ";
 const std::string COMMAND_WRONG_NUMBER_ARGUMENTS = "Wrong number of arguments!";
 const std::string COMMAND_TAKES_NO_ARGUMENTS = "This command does not take any arguments!";
+const std::string COMMAND_NOT_ALLOWED = "is currently not allowed";
 
 class Game
 {
@@ -52,9 +53,11 @@ class Game
     Tile* free_tile_;
     std::vector<Treasure*> treasures_;
     std::vector<Player*> players_;
-    size_t currentPlayerIndex_ = 0;
-    bool showGamefield_ = true;
+    size_t current_player_index_ = 0;
+    bool show_gamefield_ = true;
     bool quit_ = false;
+    std::string last_insert_direction = "";
+    std::string last_insert_row_col = "";
 
     Game();
     Game(const Game&); 
@@ -88,6 +91,12 @@ class Game
     void showFreeTile(std::vector<std::string> tokens);
     void rotateFreeTile(std::vector<std::string> tokens);
     void gameField(std::vector<std::string> tokens);
+    void insert(std::vector<std::string> tokens);
+    void insertTile(std::vector<std::string> tokens);
+    bool checkInsertParameter(std::vector<std::string> tokens);
+    bool isInMoveableRowOrCol(std::string parameter);
+    bool checkLastInsert(std::vector<std::string> tokens);
+    bool checkDirectionAndRowCol(std::string direction, std::string alias, std::string row_col);
 
     // Print board
     void printGame();
