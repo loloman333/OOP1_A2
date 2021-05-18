@@ -91,7 +91,7 @@ void Game::gameStart()
       std::cout << UI_WRONG_COUNT << std::endl;
     }
   }
-           
+
   for(size_t index = 0; index < playerCount; index++)
   {
     addPlayer(Player::player_colors_[index]);
@@ -148,7 +148,7 @@ bool Game::executeCommand(std::vector<std::string>& tokens)
   }
   else if(command == "insert" || command == "i")
   {
-    std::cout << "<inserts>" << std::endl;
+    insert(tokens);
   }
   else if(command == "gamefield" || command == "g")
   {
@@ -157,7 +157,9 @@ bool Game::executeCommand(std::vector<std::string>& tokens)
   else if(command == "finish" || command == "f")
   {
     // Treasure soll auch versteckt werden? Siehe GitLab
-    std::cout << "<finishes turn>" << std::endl;
+    // std::cout << "<finishes turn>" << std::endl;
+    nextPlayer();
+    return true;
   }
   else if(std::find(PLAYER_MOVEMENT.begin(), PLAYER_MOVEMENT.end(), command) != PLAYER_MOVEMENT.end())
   {
@@ -178,21 +180,210 @@ bool Game::executeCommand(std::vector<std::string>& tokens)
   return false;
 }
 
+void Game::insert(std::vector <std::string> tokens)
+{
+  if (tokens.size() == 3)
+  {
+    if(checkInsertParameter(tokens))
+    {
+      insertTile(tokens);
+      inserted_ = true;
+    }
+  }
+  else
+  {
+    std::cout << COMMAND_WRONG_NUMBER_ARGUMENTS << std::endl;
+  }
+}
+
+bool Game::checkInsertParameter(std::vector <std::string> tokens)
+{
+  if (isValidInsertDirection(tokens[1]))
+  {
+    if (isInMoveableRowOrCol(tokens[2]))
+    {
+      if (checkLastInsert(tokens))
+      {
+        return true;
+      }
+      else
+      {
+        std::string invalid_command = "";
+        for (size_t index = 0; index < tokens.size(); index++)
+        {
+          if (index == tokens.size() - 1)
+          {
+            invalid_command += tokens[index];
+          } else
+          {
+            invalid_command += (tokens[index] + " ");
+          }
+        }
+        std::cout << "\"" << invalid_command << "\"" << COMMAND_NOT_ALLOWED << std::endl;
+      }
+    }
+    else
+    {
+      std::cout << COMMAND_INVALID_PARAMETER << "\"" << tokens[2] << "\"" << std::endl;
+    }
+  }
+  else
+  {
+    std::cout << COMMAND_INVALID_PARAMETER << "\"" << tokens[1] << "\"" << std::endl;
+  }
+
+  return false;
+}
+
+bool Game::isValidInsertDirection(std::string direction)
+{
+  if (direction == "t" || direction == "top")
+  {
+    return true;
+  }
+  else if (direction == "l" || direction == "left")
+  {
+    return true;
+  }
+  else if (direction == "b" || direction == "bottom")
+  {
+    return true;
+  }
+  else if (direction == "r" || direction == "right")
+  {
+    return true;
+  }
+  return false;
+}
+
+bool Game::isInMoveableRowOrCol(std::string parameter)
+{
+  size_t row_col = std::stoi(parameter);
+  if (row_col < 1 || row_col > 7)
+  {
+    return false;
+  }
+  return ((row_col - 1) % 2 == 1);
+}
+
+bool Game::checkLastInsert(std::vector <std::string> tokens)
+{
+  if (tokens[1] == "t" || tokens[1] == "top")
+  {
+    return compareLastInsert("b", "bottom", tokens[2]);
+  }
+  else if (tokens[1] == "l" || tokens[1] == "left")
+  {
+    return compareLastInsert("r", "right", tokens[2]);
+  }
+  else if (tokens[1] == "b" || tokens[1] == "bottom")
+  {
+    return compareLastInsert("t", "top", tokens[2]);
+  }
+  else
+  {
+    return compareLastInsert("l", "left", tokens[2]);
+  }
+}
+
+bool Game::compareLastInsert(std::string direction, std::string alias, std::string row_col)
+{
+  if (last_insert_direction == direction || last_insert_direction == alias)
+  {
+    if (last_insert_row_col == row_col)
+    {
+      return false;
+    }
+  }
+  return true;
+}
+
+void Game::insertTile(std::vector <std::string> tokens)
+{
+  if (tokens[1] == "t" || tokens[1] == "top")
+  {
+    insertColumn(tokens);
+  }
+  else if (tokens[1] == "l" || tokens[1] == "left")
+  {
+    insertRow(tokens);
+  }
+  else if (tokens[1] == "b" || tokens[1] == "bottom")
+  {
+    insertColumn(tokens);
+  }
+  else if (tokens[1] == "r" || tokens[1] == "right")
+  {
+    insertRow(tokens);
+  }
+  last_insert_row_col = tokens[2];
+  last_insert_direction = tokens[1];
+  printGame();
+}
+
+void Game::insertRow(std::vector <std::string> tokens)
+{
+  size_t row = std::stoi(tokens[2]) - 1;
+  Tile* temp_free_tile = free_tile_;
+  if (tokens[1] == "l" || tokens[1] == "left")
+  {
+    free_tile_ = board_[row][6];
+    for(size_t index = 6; index > 0; index--)
+    {
+      board_[row][index] = board_[row][index - 1];
+    }
+    board_[row][0] = temp_free_tile;
+  }
+  else
+  {
+    free_tile_ = board_[row][0];
+    for(size_t index = 0; index < 6; index++)
+    {
+      board_[row][index] = board_[row][index + 1];
+    }
+    board_[row][6] = temp_free_tile;
+  }
+}
+
+void Game::insertColumn(std::vector <std::string> tokens)
+{
+  size_t col = std::stoi(tokens[2]) - 1;
+  Tile* temp_free_tile = free_tile_;
+  if (tokens[1] == "t" || tokens[1] == "top")
+  {
+    free_tile_ = board_[6][col];
+    for(size_t index = BOARD_SIZE - 1; index > 0; index--)
+    {
+      board_[index][col] = board_[index - 1][col];
+    }
+    board_[0][col] = temp_free_tile;
+  }
+  else
+  {
+    free_tile_ = board_[0][col];
+    for(size_t index = 0; index < BOARD_SIZE - 1; index++)
+    {
+      board_[index][col] = board_[index + 1][col];
+    }
+    board_[BOARD_SIZE - 1][col] = temp_free_tile;
+  }
+}
+
 void Game::gameField(std::vector<std::string> tokens)
 {
   if (tokens.size() > 2)
   {
     std::cout << COMMAND_WRONG_NUMBER_ARGUMENTS << std::endl;
-  } 
+  }
   else if (tokens.size() == 2)
   {
     if (tokens[1] == "on")
     {
-      showGamefield_ = true;
+      show_gamefield_ = true;
     }
     else if (tokens[1] == "off")
     {
-      showGamefield_ = false;
+      show_gamefield_ = false;
     }
     else{
       std::cout << COMMAND_INVALID_PARAMETER << "\"" << tokens[1] << "\"" << std::endl;
@@ -399,26 +590,25 @@ bool Game::isMovePossible(Direction direction, int movement)
   Direction opposite_direction = getOppositeDirection(direction);
   size_t row_modifier = (static_cast<size_t>(direction) + 1) % 2;
   size_t col_modifier = static_cast<size_t>(direction) % 2;
-  if(direction == Direction::TOP)
+  if(direction == Direction::LEFT)
   {
     col_modifier = col_modifier * -1;
   }
-  if(direction == Direction::LEFT)
+  if(direction == Direction::TOP)
   {
     row_modifier = row_modifier * -1;
   }
   bool possible = true;
   for(int index = 0; index <= movement; index++)
   {
-    size_t row = players_[currentPlayerIndex_]->getRow() + (index * row_modifier);
-    size_t col = players_[currentPlayerIndex_]->getCol() + (index * col_modifier);
+    size_t row = players_[current_player_index_]->getRow() + (index * row_modifier);
+    size_t col = players_[current_player_index_]->getCol() + (index * col_modifier);
     if(row >= 7 || col >= 7)
     {
       return false;
     }
     if(index == 0 && board_[row][col]->isWallInDirection(direction))
     {
-      board_[row][col]->print();
       return false;
     }
     else if(index != 0 && index != movement && (board_[row][col]->isWallInDirection(opposite_direction) || board_[row][col]->isWallInDirection(direction)))
@@ -435,8 +625,8 @@ bool Game::isMovePossible(Direction direction, int movement)
 
 void Game::moveInDirection(Direction direction, int movement)
 {
-  int row_movement = movement * (static_cast<size_t>(direction) + 1) % 2;
-  int col_movement = movement * static_cast<size_t>(direction) % 2;
+  int row_movement = movement * ((static_cast<size_t>(direction) + 1) % 2);
+  int col_movement = movement * (static_cast<size_t>(direction) % 2);
   if(direction == Direction::LEFT)
   {
     col_movement = col_movement * -1;
@@ -445,15 +635,15 @@ void Game::moveInDirection(Direction direction, int movement)
   {
     row_movement = row_movement * -1;
   }
-  std::string current_player_color = players_[currentPlayerIndex_]->getPlayerColorAsString();
-  size_t old_row = players_[currentPlayerIndex_]->getRow();
-  size_t old_col = players_[currentPlayerIndex_]->getCol();
-  size_t new_row = players_[currentPlayerIndex_]->getRow() + row_movement;
-  size_t new_col = players_[currentPlayerIndex_]->getCol() + col_movement;
-  players_[currentPlayerIndex_]->setRow(new_row);
-  players_[currentPlayerIndex_]->setCol(new_col);
+  std::string current_player_color = players_[current_player_index_]->getPlayerColorAsString();
+  size_t old_row = players_[current_player_index_]->getRow();
+  size_t old_col = players_[current_player_index_]->getCol();
+  size_t new_row = players_[current_player_index_]->getRow() + row_movement;
+  size_t new_col = players_[current_player_index_]->getCol() + col_movement;
+  players_[current_player_index_]->setRow(new_row);
+  players_[current_player_index_]->setCol(new_col);
   board_[old_row][old_col]->removePlayer(current_player_color);
-  board_[new_row][new_col]->addPlayer(players_[currentPlayerIndex_]);
+  board_[new_row][new_col]->addPlayer(players_[current_player_index_]);
 }
 
 Direction Game::getOppositeDirection(Direction direction)
@@ -473,7 +663,7 @@ Direction Game::getOppositeDirection(Direction direction)
 
 void Game::printGameIfNecessary()
 {
-  if(showGamefield_)
+  if(show_gamefield_)
   {
     printGame();
   }
@@ -533,7 +723,7 @@ void Game::fillStaticTiles(size_t& treasure_index)
           Tile* tile = new StartTile{Player::player_colors_[player_index]};
 
           board_[row_index].push_back(tile);
-          
+
           if (player_index < players_.size())
           {
             tile->addPlayer(players_[player_index]);
@@ -593,7 +783,7 @@ void Game::addNewNormalTilesToVector(std::vector<Tile*>& vector, TileType type, 
 void Game::addNewTreasureTilesToVector(std::vector<Tile*>& vector, TileType type, size_t count, size_t& treasure_index)
 {
   for (size_t i = 0; i < count; i++)
-  { 
+  {
     Tile* tile = new TreasureTile(type, treasures_[treasure_index]);
 
     treasure_index++;
@@ -632,12 +822,12 @@ void Game::addPlayer(PlayerColor color)
 
 void Game::nextPlayer()
 {
-  currentPlayerIndex_ = (currentPlayerIndex_ + 1) % players_.size();
+  current_player_index_ = (current_player_index_ + 1) % players_.size();
 }
 
 Player* Game::getCurrentPlayer()
 {
-  return players_[currentPlayerIndex_];
+  return players_[current_player_index_];
 }
 
 void Game::distributeTreasures()
@@ -757,7 +947,7 @@ void Game::addPlayerTitlesToLine(std::string& line, size_t& player_index)
       title += "(";
       title += static_cast<char>(players_[player_index]->getPlayerColor());
       title += ")";
-      
+
       line.replace(UI_PLAYER_TITLE_OFFSET * times, title.length(), title);
       player_index++;
     }
@@ -812,7 +1002,7 @@ void Game::printBoard()
     {
       tile_strings.push_back(tile->getTileString());
     }
-    
+
     for (size_t tile_line_index = 0; tile_line_index < TILE_HEIGHT; tile_line_index++)
     {
       bool print_arrow = false;
@@ -822,7 +1012,7 @@ void Game::printBoard()
       printRightUI(print_arrow);
 
       line_index++;
-    } 
+    }
   }
 }
 
