@@ -43,7 +43,7 @@ const std::string COMMAND_INVALID = "Invalid command: ";
 const std::string COMMAND_INVALID_PARAMETER = "Invalid parameter: ";
 const std::string COMMAND_WRONG_NUMBER_ARGUMENTS = "Wrong number of arguments!";
 const std::string COMMAND_TAKES_NO_ARGUMENTS = "This command does not take any arguments!";
-const std::string COMMAND_NOT_ALLOWED = "is currently not allowed";
+const std::string COMMAND_NOT_ALLOWED = " is currently not allowed";
 
 class Game
 {
@@ -97,6 +97,8 @@ class Game
     bool isInMoveableRowOrCol(std::string parameter);
     bool checkLastInsert(std::vector<std::string> tokens);
     bool checkDirectionAndRowCol(std::string direction, std::string alias, std::string row_col);
+    void insertRow(std::vector<std::string> tokens);
+    void insertColumn(std::vector<std::string> tokens);
 
     // Print board
     void printGame();

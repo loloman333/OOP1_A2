@@ -244,7 +244,7 @@ void Tile::addPlayer(Player *player)
 
 void Tile::print()
 {
-  std::vector<std::string> tile_string = getRawTileString();
+  std::vector<std::string> tile_string = getTileString();
   for (std::string row : tile_string)
   {
     std::cout << row << std::endl;

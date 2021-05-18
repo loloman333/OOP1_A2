@@ -217,7 +217,12 @@ bool Game::checkInsertParameter(std::vector <std::string> tokens)
 
 bool Game::isInMoveableRowOrCol(std::string parameter)
 {
-  return ((std::stoi(parameter) - 1) % 2 == 1 && std::stoi(parameter) < 8 && std::stoi(parameter) > 0);
+  size_t row_col = std::stoi(parameter);
+  if (row_col < 1 || row_col > 7)
+  {
+    return false;
+  }
+  return ((row_col - 1) % 2 == 1);
 }
 
 bool Game::checkLastInsert(std::vector <std::string> tokens)
@@ -275,19 +280,68 @@ void Game::insertTile(std::vector <std::string> tokens)
 {
   if (tokens[1] == "t" || tokens[1] == "top")
   {
-    std::cout << "insert top" << std::endl;
+    insertColumn(tokens);
   }
   else if (tokens[1] == "l" || tokens[1] == "left")
   {
-    std::cout << "insert left" << std::endl;
+    insertRow(tokens);
   }
   else if (tokens[1] == "b" || tokens[1] == "bottom")
   {
-    std::cout << "insert bottom" << std::endl;
+    insertColumn(tokens);
   }
   else if (tokens[1] == "r" || tokens[1] == "right")
   {
-    std::cout << "insert right" << std::endl;
+    insertRow(tokens);
+  }
+  printGame();
+}
+
+void Game::insertRow(std::vector <std::string> tokens)
+{
+  size_t row = std::stoi(tokens[2]) - 1;
+  Tile* temp_free_tile = free_tile_;
+  if (tokens[1] == "l" || tokens[1] == "left")
+  {
+    free_tile_ = board_[row][6];
+    for(size_t index = 6; index > 0; index--)
+    {
+      board_[row][index] = board_[row][index - 1];
+    }
+    board_[row][0] = temp_free_tile;
+  }
+  else
+  {
+    free_tile_ = board_[row][0];
+    for(size_t index = 0; index < 6; index++)
+    {
+      board_[row][index] = board_[row][index + 1];
+    }
+    board_[row][6] = temp_free_tile;
+  }
+}
+
+void Game::insertColumn(std::vector <std::string> tokens)
+{
+  size_t col = std::stoi(tokens[2]) - 1;
+  Tile* temp_free_tile = free_tile_;
+  if (tokens[1] == "t" || tokens[1] == "top")
+  {
+    free_tile_ = board_[6][col];
+    for(size_t index = 6; index > 0; index--)
+    {
+      board_[index][col] = board_[index - 1][col];
+    }
+    board_[0][col] = temp_free_tile;
+  }
+  else
+  {
+    free_tile_ = board_[0][col];
+    for(size_t index = 0; index < 6; index++)
+    {
+      board_[index][col] = board_[index + 1][col];
+    }
+    board_[6][col] = temp_free_tile;
   }
 }
 
