@@ -9,7 +9,10 @@
 #include "Tile.hpp"
 #include "Player.hpp"
 
-Tile::Tile(TileType type, Rotation rotation) : type_{type}, rotation_{rotation} {}
+Tile::Tile(TileType type, Rotation rotation) : type_{type}, rotation_{rotation} 
+{
+  setWalls(type, rotation);
+}
 Tile::Tile(TileType type) : type_{type}, rotation_{Rotation::DEG0} {}
 
 TileType Tile::getType()
@@ -94,70 +97,6 @@ bool Tile::isWallInDirection(Direction direction)
   return false;
 }
 
-std::vector<bool> Tile::setWalls()
-{
-  std::vector<bool> wallsToFill{false,false,false,false};
-  for(size_t index = 0; index < walls_.size(); index++)
-  {
-    if(walls_[index] == Direction::TOP)
-    {
-      wallsToFill[static_cast<int>(Direction::TOP)] = true;
-    }
-    else if(walls_[index] == Direction::LEFT)
-    {
-      wallsToFill[static_cast<int>(Direction::LEFT)] = true;
-    }
-    else if(walls_[index] == Direction::BOTTOM)
-    {
-      wallsToFill[static_cast<int>(Direction::BOTTOM)] = true;
-    }
-    else if(walls_[index] == Direction::RIGHT)
-    {
-      wallsToFill[static_cast<int>(Direction::RIGHT)] = true;
-    }
-  }
-  return wallsToFill;
-}
-
-void Tile::fillWalls(std::vector<std::string>& tile)
-{
-  std::vector<std::string> templateTile;
-  std::vector<bool> wallsToFill = setWalls();
-
-  for(size_t row = 0; row < TILE_HEIGHT ; row++)
-  {
-    templateTile.push_back("");
-    for(size_t col = 0; col < TILE_WIDTH ; col++)
-    {
-      if(isCorner(row,col))
-      {
-        templateTile[row].append(WALL);
-      }
-      else if(wallsToFill[static_cast<int>(Direction::TOP)] && row == TOP_ROW)
-      {
-        templateTile[row].append(WALL);
-      }
-      else if(wallsToFill[static_cast<int>(Direction::LEFT)] && col <= LEFT_COLUMN)
-      {
-        templateTile[row].append(WALL);
-      }
-      else if(wallsToFill[static_cast<int>(Direction::BOTTOM)] && row == BOTTOM_ROW)
-      {
-        templateTile[row].append(WALL);
-      }
-      else if(wallsToFill[static_cast<int>(Direction::RIGHT)] && col >= RIGHT_COLUMN)
-      {
-        templateTile[row].append(WALL);
-      }
-      else
-      {
-        templateTile[row].append(" ");
-      }
-    }
-  }
-  tile = templateTile;
-}
-
 Direction Tile::calcDirection(Direction dir, Rotation rot)
 {
   size_t dirValue = static_cast<size_t>(dir);
@@ -181,8 +120,8 @@ void Tile::generateTile(Rotation rotation, std::vector<Direction> directions, st
 
 std::vector<std::string> Tile::getRawTileString()
 {
-  walls_ = {};
   std::vector<std::string> tileVector;
+  walls_.clear();
   std::vector<Direction> directions;
   switch (type_)
   {
@@ -217,10 +156,78 @@ std::vector<std::string> Tile::getRawTileString()
     generateTile(rotation_, directions, tileVector);
     break;
   }
-
   addPlayersToTile(tileVector);
 
   return tileVector;
+}
+
+void Tile::setWalls(TileType type, Rotation rotation)
+{
+  
+}
+
+std::vector<bool> Tile::calcWalls()
+{
+  std::vector<bool> walls_to_fill{false,false,false,false};
+  for(size_t index = 0; index < walls_.size(); index++)
+  {
+    if(walls_[index] == Direction::TOP)
+    {
+      walls_to_fill[static_cast<int>(Direction::TOP)] = true;
+    }
+    else if(walls_[index] == Direction::LEFT)
+    {
+      walls_to_fill[static_cast<int>(Direction::LEFT)] = true;
+    }
+    else if(walls_[index] == Direction::BOTTOM)
+    {
+      walls_to_fill[static_cast<int>(Direction::BOTTOM)] = true;
+    }
+    else if(walls_[index] == Direction::RIGHT)
+    {
+      walls_to_fill[static_cast<int>(Direction::RIGHT)] = true;
+    }
+  }
+  return walls_to_fill;
+}
+
+void Tile::fillWalls(std::vector<std::string>& tile)
+{
+  std::vector<std::string> template_tile;
+  std::vector<bool> walls_to_fill = calcWalls();
+
+  for(size_t row = 0; row < TILE_HEIGHT ; row++)
+  {
+    template_tile.push_back("");
+    for(size_t col = 0; col < TILE_WIDTH ; col++)
+    {
+      if(isCorner(row,col))
+      {
+        template_tile[row].append(WALL);
+      }
+      else if(walls_to_fill[static_cast<int>(Direction::TOP)] && row == TOP_ROW)
+      {
+        template_tile[row].append(WALL);
+      }
+      else if(walls_to_fill[static_cast<int>(Direction::LEFT)] && col <= LEFT_COLUMN)
+      {
+        template_tile[row].append(WALL);
+      }
+      else if(walls_to_fill[static_cast<int>(Direction::BOTTOM)] && row == BOTTOM_ROW)
+      {
+        template_tile[row].append(WALL);
+      }
+      else if(walls_to_fill[static_cast<int>(Direction::RIGHT)] && col >= RIGHT_COLUMN)
+      {
+        template_tile[row].append(WALL);
+      }
+      else
+      {
+        template_tile[row].append(" ");
+      }
+    }
+  }
+  tile = template_tile;
 }
 
 void Tile::addPlayersToTile(std::vector<std::string>& tileVector)

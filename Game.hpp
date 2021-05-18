@@ -48,6 +48,7 @@ const std::string COMMAND_INVALID_PARAMETER = "Invalid parameter: ";
 const std::string COMMAND_WRONG_NUMBER_ARGUMENTS = "Wrong number of arguments!";
 const std::string COMMAND_TAKES_NO_ARGUMENTS = "This command does not take any arguments!";
 const std::string COMMAND_NOT_ALLOWED = " is currently not allowed";
+const std::string IMPOSSIBLE_MOVE = "Impossible move!";
 
 class Game
 {

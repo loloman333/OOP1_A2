@@ -166,11 +166,10 @@ bool Game::executeCommand(std::vector<std::string>& tokens)
     if(inserted_)
     {
       movePlayer(tokens);
-    printGameIfNecessary();
     }
     else
     {
-      std::cout << "\"" << command << "\" is currently not allowed" << std::endl;
+      std::cout << "\"" << command << "\"" << COMMAND_NOT_ALLOWED << std::endl;
     }
   }
   else
@@ -487,6 +486,11 @@ void Game::movePlayer(std::vector<std::string> tokens)
     if(isMovePossible(direction, movement))
     {
       moveInDirection(direction, movement);
+      printGameIfNecessary();
+    }
+    else
+    {
+      std::cout << IMPOSSIBLE_MOVE << std::endl;
     }
   }
 }

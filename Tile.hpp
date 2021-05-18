@@ -48,7 +48,8 @@ class Tile
     void addPlayersToTile(std::vector<std::string>& tileVector);
     Direction calcDirection(Direction dir, Rotation rot);
     bool isCorner(size_t row, size_t col);
-    std::vector<bool> setWalls();
+    std::vector<bool> calcWalls();
+    void setWalls(TileType type, Rotation rotation);
     
 
   public:
