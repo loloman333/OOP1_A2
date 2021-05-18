@@ -13,6 +13,7 @@
 #include "Treasure.hpp"
 #include "Random.hpp"
 #include "Player.hpp"
+#include "Tile.hpp"
 
 #include <algorithm>
 
@@ -99,6 +100,7 @@ void Game::gameStart()
 
 void Game::playRound()
 {
+  inserted_ = false;
   Player* player = getCurrentPlayer();
   std::string currentOutput = player->getPlayerColorAsString();
   std::transform(currentOutput.begin(), currentOutput.end(), currentOutput.begin(), ::toupper);
@@ -159,7 +161,15 @@ bool Game::executeCommand(std::vector<std::string>& tokens)
   }
   else if(std::find(PLAYER_MOVEMENT.begin(), PLAYER_MOVEMENT.end(), command) != PLAYER_MOVEMENT.end())
   {
-    std::cout << "<moves player>" << std::endl;
+    if(inserted_)
+    {
+      movePlayer(tokens);
+    printGameIfNecessary();
+    }
+    else
+    {
+      std::cout << "\"" << command << "\" is currently not allowed" << std::endl;
+    }
   }
   else
   {
@@ -277,6 +287,190 @@ void Game::hideTreasure(std::vector<std::string> tokens)
   }
 }
 
+void Game::movePlayer(std::vector<std::string> tokens)
+{
+  if(checkMoveInput(tokens))
+  {
+    Direction direction = getDirection(tokens);
+    size_t movement = getAmount(tokens);
+    if(isMovePossible(direction, movement))
+    {
+      moveInDirection(direction, movement);
+    }
+  }
+}
+
+bool Game::checkMoveInput(std::vector<std::string> tokens)
+{
+  if(tokens[0] == "go")
+  {
+    if(tokens.size() > 1 && tokens.size() < 4)
+    {
+      return true;
+    }
+    else
+    {
+      return false;
+    }
+  }
+  else if(tokens.size() == 1)
+  {
+    return true;
+  }
+  else
+  {
+    return false;
+  }
+} 
+
+Direction Game::getDirection(std::vector<std::string> tokens)
+{
+  if(tokens[0] == "go")
+  {
+    if(tokens[1] == "up")
+    {
+      return Direction::TOP;
+    }
+    else if(tokens[1] == "left")
+    {
+      return Direction::LEFT;
+    }
+    else if(tokens[1] == "down")
+    {
+      return Direction::BOTTOM;
+    }
+    else if(tokens[1] == "right")
+    {
+      return Direction::RIGHT;
+    }
+  }
+  else
+  {
+    for(size_t index = 0; index < PLAYER_MOVEMENT.size(); index++)
+    {
+      if(tokens[0] == PLAYER_MOVEMENT[index])
+      {
+        if(index < MOVE_TOP)
+        {
+          return Direction::TOP;
+        }
+        else if(index < MOVE_LEFT)
+        {
+          return Direction::LEFT;
+        }
+        else if(index < MOVE_BOTTOM)
+        {
+          return Direction::BOTTOM;
+        }
+        else if(index < MOVE_RIGHT)
+        {
+          return Direction::RIGHT;
+        }
+      }
+    }
+  }
+}
+
+int Game::getAmount(std::vector<std::string> tokens)
+{
+  int amount = 0;
+  if(tokens[0] == "go" && tokens.size() == 3)
+  {
+    try
+    {
+      amount = std::stoi(tokens[2]);
+      return amount;
+    }
+    catch(std::invalid_argument)
+    {
+      std::cout << "Invalid parameter: \"" << tokens[2] << "\"" << std::endl;
+      return NULL;
+    }
+    
+  }
+  else
+  {
+    return 1;
+  }
+}
+
+bool Game::isMovePossible(Direction direction, int movement)
+{
+  Direction opposite_direction = getOppositeDirection(direction);
+  size_t row_modifier = (static_cast<size_t>(direction) + 1) % 2;
+  size_t col_modifier = static_cast<size_t>(direction) % 2;
+  if(direction == Direction::TOP)
+  {
+    col_modifier = col_modifier * -1;
+  }
+  if(direction == Direction::LEFT)
+  {
+    row_modifier = row_modifier * -1;
+  }
+  bool possible = true;
+  for(int index = 0; index <= movement; index++)
+  {
+    size_t row = players_[currentPlayerIndex_]->getRow() + (index * row_modifier);
+    size_t col = players_[currentPlayerIndex_]->getCol() + (index * col_modifier);
+    if(row >= 7 || col >= 7)
+    {
+      return false;
+    }
+    if(index == 0 && board_[row][col]->isWallInDirection(direction))
+    {
+      board_[row][col]->print();
+      return false;
+    }
+    else if(index != 0 && index != movement && (board_[row][col]->isWallInDirection(opposite_direction) || board_[row][col]->isWallInDirection(direction)))
+    {
+      return false;
+    }
+    else if(index == movement && board_[row][col]->isWallInDirection(opposite_direction))
+    {
+      return false;
+    }
+  }
+  return true; 
+}
+
+void Game::moveInDirection(Direction direction, int movement)
+{
+  int row_movement = movement * (static_cast<size_t>(direction) + 1) % 2;
+  int col_movement = movement * static_cast<size_t>(direction) % 2;
+  if(direction == Direction::LEFT)
+  {
+    col_movement = col_movement * -1;
+  }
+  if(direction == Direction::TOP)
+  {
+    row_movement = row_movement * -1;
+  }
+  std::string current_player_color = players_[currentPlayerIndex_]->getPlayerColorAsString();
+  size_t old_row = players_[currentPlayerIndex_]->getRow();
+  size_t old_col = players_[currentPlayerIndex_]->getCol();
+  size_t new_row = players_[currentPlayerIndex_]->getRow() + row_movement;
+  size_t new_col = players_[currentPlayerIndex_]->getCol() + col_movement;
+  players_[currentPlayerIndex_]->setRow(new_row);
+  players_[currentPlayerIndex_]->setCol(new_col);
+  board_[old_row][old_col]->removePlayer(current_player_color);
+  board_[new_row][new_col]->addPlayer(players_[currentPlayerIndex_]);
+}
+
+Direction Game::getOppositeDirection(Direction direction)
+{
+  switch (direction)
+  {
+  case Direction::TOP:
+    return Direction::BOTTOM;
+  case Direction::LEFT:
+    return Direction::RIGHT;
+  case Direction::BOTTOM:
+    return Direction::TOP;
+  case Direction::RIGHT:
+    return Direction::LEFT;
+  }
+}
+
 void Game::printGameIfNecessary()
 {
   if(showGamefield_)
@@ -343,6 +537,8 @@ void Game::fillStaticTiles(size_t& treasure_index)
           if (player_index < players_.size())
           {
             tile->addPlayer(players_[player_index]);
+            players_[player_index]->setCol(col_index);
+            players_[player_index]->setRow(row_index);
           }
 
           player_index++;

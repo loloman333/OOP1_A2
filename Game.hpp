@@ -22,6 +22,10 @@ enum class Direction;
 
 const size_t BOARD_SIZE = 7;
 const std::vector<std::string> PLAYER_MOVEMENT{"w", "\x1b[A", "a", "\x1b[D", "s", "\x1b[B", "d", "\x1b[C", "go"};
+const size_t MOVE_TOP = 2;
+const size_t MOVE_LEFT = 4;
+const size_t MOVE_BOTTOM = 6;
+const size_t MOVE_RIGHT = 8;
 
 const std::string UI_WELCOME = "Welcome to the Wild OOP Labyrinth!!!";
 const std::string UI_PLAYER_COUNT = "Player Count (2-4): ";
@@ -55,6 +59,7 @@ class Game
     size_t currentPlayerIndex_ = 0;
     bool showGamefield_ = true;
     bool quit_ = false;
+    bool inserted_ = false;
 
     Game();
     Game(const Game&); 
@@ -72,6 +77,12 @@ class Game
     bool isCorner(size_t row_index, size_t col_index);
     bool isInMoveableLine(size_t row_index, size_t col_index);
     void fillTreasures();
+    bool checkMoveInput(std::vector<std::string> tokens);
+    Direction getDirection(std::vector<std::string> tokens);
+    int getAmount(std::vector<std::string> tokens);
+    bool isMovePossible(Direction direction, int movement);
+    void moveInDirection(Direction direction, int movement);
+    Direction getOppositeDirection(Direction direction);
     
 
     // Free memory
@@ -88,6 +99,7 @@ class Game
     void showFreeTile(std::vector<std::string> tokens);
     void rotateFreeTile(std::vector<std::string> tokens);
     void gameField(std::vector<std::string> tokens);
+    void movePlayer(std::vector<std::string> tokens);
 
     // Print board
     void printGame();

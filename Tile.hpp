@@ -41,13 +41,15 @@ class Tile
     TileType type_;
     Rotation rotation_;
     std::vector<Player*> players_;
+    std::vector<Direction> walls_;
 
-    void fillWalls(std::vector<Direction>, std::vector<std::string>& tile);
-    void generateTile(Rotation rotation, std::vector<Direction> directions, std::vector<std::string>& tile);
+    void fillWalls(std::vector<std::string>& tile);
+    void generateTile(Rotation rotation,std::vector<Direction> directions , std::vector<std::string>& tile);
     void addPlayersToTile(std::vector<std::string>& tileVector);
     Direction calcDirection(Direction dir, Rotation rot);
     bool isCorner(size_t row, size_t col);
-    std::vector<bool> setWalls(std::vector<Direction> directions);
+    std::vector<bool> setWalls();
+    
 
   public:
     Tile() = default;
@@ -67,7 +69,9 @@ class Tile
     size_t getRotationValue();
     std::string getTileTypeString();
     void addPlayer(Player* player);
+    void removePlayer(std::string player_color);
 
+    bool isWallInDirection(Direction direction);
     void print();
     void rotate(Direction dir);
 };

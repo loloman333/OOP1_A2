@@ -82,24 +82,36 @@ bool Tile::isCorner(size_t row, size_t col)
   return false;
 }
 
-std::vector<bool> Tile::setWalls(std::vector<Direction> directions)
+bool Tile::isWallInDirection(Direction direction)
+{
+  for(size_t index = 0; index < walls_.size(); index++)
+  {
+    if(walls_[index] == direction)
+    {
+      return true;
+    }
+  }
+  return false;
+}
+
+std::vector<bool> Tile::setWalls()
 {
   std::vector<bool> wallsToFill{false,false,false,false};
-  for(size_t index = 0; index < directions.size(); index++)
+  for(size_t index = 0; index < walls_.size(); index++)
   {
-    if(directions[index] == Direction::TOP)
+    if(walls_[index] == Direction::TOP)
     {
       wallsToFill[static_cast<int>(Direction::TOP)] = true;
     }
-    else if(directions[index] == Direction::LEFT)
+    else if(walls_[index] == Direction::LEFT)
     {
       wallsToFill[static_cast<int>(Direction::LEFT)] = true;
     }
-    else if(directions[index] == Direction::BOTTOM)
+    else if(walls_[index] == Direction::BOTTOM)
     {
       wallsToFill[static_cast<int>(Direction::BOTTOM)] = true;
     }
-    else if(directions[index] == Direction::RIGHT)
+    else if(walls_[index] == Direction::RIGHT)
     {
       wallsToFill[static_cast<int>(Direction::RIGHT)] = true;
     }
@@ -107,10 +119,10 @@ std::vector<bool> Tile::setWalls(std::vector<Direction> directions)
   return wallsToFill;
 }
 
-void Tile::fillWalls(std::vector<Direction> directions, std::vector<std::string>& tile)
+void Tile::fillWalls(std::vector<std::string>& tile)
 {
   std::vector<std::string> templateTile;
-  std::vector<bool> wallsToFill = setWalls(directions);
+  std::vector<bool> wallsToFill = setWalls();
 
   for(size_t row = 0; row < TILE_HEIGHT ; row++)
   {
@@ -162,15 +174,16 @@ void Tile::generateTile(Rotation rotation, std::vector<Direction> directions, st
 {
   for(size_t index = 0; index < directions.size(); index++)
   {
-    directions[index] = calcDirection(directions[index],rotation);
+    walls_.push_back(calcDirection(directions[index],rotation));
   }
-  fillWalls(directions,tile);
+  fillWalls(tile);
 }
 
 std::vector<std::string> Tile::getRawTileString()
 {
+  walls_ = {};
   std::vector<std::string> tileVector;
-  std::vector<Direction> directions{};
+  std::vector<Direction> directions;
   switch (type_)
   {
   case TileType::T:
@@ -249,6 +262,19 @@ void Tile::print()
   {
     std::cout << row << std::endl;
   }
+}
+
+void Tile::removePlayer(std::string player_color)
+{
+  size_t location = 0;
+  for(size_t index = 0; index < players_.size(); index++)
+  {
+    if(players_[index]->getPlayerColorAsString() == player_color)
+    {
+      location = index;
+    }
+  }
+  players_.erase(players_.begin() + location);
 }
 
 void Tile::rotate(Direction dir)
