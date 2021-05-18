@@ -155,7 +155,9 @@ bool Game::executeCommand(std::vector<std::string>& tokens)
   else if(command == "finish" || command == "f")
   {
     // Treasure soll auch versteckt werden? Siehe GitLab
-    std::cout << "<finishes turn>" << std::endl;
+    // std::cout << "<finishes turn>" << std::endl;
+    nextPlayer();
+    return true;
   }
   else if(std::find(PLAYER_MOVEMENT.begin(), PLAYER_MOVEMENT.end(), command) != PLAYER_MOVEMENT.end())
   {
@@ -185,11 +187,29 @@ void Game::insert(std::vector <std::string> tokens)
 
 bool Game::checkInsertParameter(std::vector <std::string> tokens)
 {
-  if (checkLastInsert(tokens))
+  if (isValidInsertDirection(tokens[1]))
   {
     if (isInMoveableRowOrCol(tokens[2]))
     {
-      return true;
+      if (checkLastInsert(tokens))
+      {
+        return true;
+      }
+      else
+      {
+        std::string invalid_command = "";
+        for (size_t index = 0; index < tokens.size(); index++)
+        {
+          if (index == tokens.size() - 1)
+          {
+            invalid_command += tokens[index];
+          } else
+          {
+            invalid_command += (tokens[index] + " ");
+          }
+        }
+        std::cout << "\"" << invalid_command << "\"" << COMMAND_NOT_ALLOWED << std::endl;
+      }
     }
     else
     {
@@ -198,19 +218,29 @@ bool Game::checkInsertParameter(std::vector <std::string> tokens)
   }
   else
   {
-    std::string invalid_command = "";
-    for(size_t index = 0; index < tokens.size(); index++)
-    {
-      if(index == tokens.size() - 1)
-      {
-        invalid_command += tokens[index];
-      }
-      else
-      {
-        invalid_command += (tokens[index] + " ");
-      }
-    }
-    std::cout << "\"" << invalid_command << "\"" << COMMAND_NOT_ALLOWED << std::endl;
+    std::cout << COMMAND_INVALID_PARAMETER << "\"" << tokens[1] << "\"" << std::endl;
+  }
+
+  return false;
+}
+
+bool Game::isValidInsertDirection(std::string direction)
+{
+  if (direction == "t" || direction == "top")
+  {
+    return true;
+  }
+  else if (direction == "l" || direction == "left")
+  {
+    return true;
+  }
+  else if (direction == "b" || direction == "bottom")
+  {
+    return true;
+  }
+  else if (direction == "r" || direction == "right")
+  {
+    return true;
   }
   return false;
 }
@@ -229,42 +259,23 @@ bool Game::checkLastInsert(std::vector <std::string> tokens)
 {
   if (tokens[1] == "t" || tokens[1] == "top")
   {
-    if(!checkDirectionAndRowCol("bottom", "b", tokens[2]))
-    {
-      return false;
-    }
+    return compareLastInsert("b", "bottom", tokens[2]);
   }
   else if (tokens[1] == "l" || tokens[1] == "left")
   {
-    if(!checkDirectionAndRowCol("right", "r", tokens[2]))
-    {
-      return false;
-    }
+    return compareLastInsert("r", "right", tokens[2]);
   }
   else if (tokens[1] == "b" || tokens[1] == "bottom")
   {
-    if(!checkDirectionAndRowCol("top", "t", tokens[2]))
-    {
-      return false;
-    }
-  }
-  else if (tokens[1] == "r" || tokens[1] == "right")
-  {
-    if(!checkDirectionAndRowCol("left", "l", tokens[2]))
-    {
-      return false;
-    }
+    return compareLastInsert("t", "top", tokens[2]);
   }
   else
   {
-    std::cout << COMMAND_INVALID_PARAMETER << "\"" << tokens[1] << "\"" << std::endl;
+    return compareLastInsert("l", "left", tokens[2]);
   }
-  last_insert_row_col = tokens[2];
-  last_insert_direction = tokens[1];
-  return true;
 }
 
-bool Game::checkDirectionAndRowCol(std::string direction, std::string alias, std::string row_col)
+bool Game::compareLastInsert(std::string direction, std::string alias, std::string row_col)
 {
   if (last_insert_direction == direction || last_insert_direction == alias)
   {
@@ -294,6 +305,8 @@ void Game::insertTile(std::vector <std::string> tokens)
   {
     insertRow(tokens);
   }
+  last_insert_row_col = tokens[2];
+  last_insert_direction = tokens[1];
   printGame();
 }
 
@@ -328,7 +341,7 @@ void Game::insertColumn(std::vector <std::string> tokens)
   if (tokens[1] == "t" || tokens[1] == "top")
   {
     free_tile_ = board_[6][col];
-    for(size_t index = 6; index > 0; index--)
+    for(size_t index = BOARD_SIZE - 1; index > 0; index--)
     {
       board_[index][col] = board_[index - 1][col];
     }
@@ -337,11 +350,11 @@ void Game::insertColumn(std::vector <std::string> tokens)
   else
   {
     free_tile_ = board_[0][col];
-    for(size_t index = 0; index < 6; index++)
+    for(size_t index = 0; index < BOARD_SIZE - 1; index++)
     {
       board_[index][col] = board_[index + 1][col];
     }
-    board_[6][col] = temp_free_tile;
+    board_[BOARD_SIZE - 1][col] = temp_free_tile;
   }
 }
 

@@ -95,8 +95,9 @@ class Game
     void insertTile(std::vector<std::string> tokens);
     bool checkInsertParameter(std::vector<std::string> tokens);
     bool isInMoveableRowOrCol(std::string parameter);
+    bool isValidInsertDirection(std::string direction);
     bool checkLastInsert(std::vector<std::string> tokens);
-    bool checkDirectionAndRowCol(std::string direction, std::string alias, std::string row_col);
+    bool compareLastInsert(std::string direction, std::string alias, std::string row_col);
     void insertRow(std::vector<std::string> tokens);
     void insertColumn(std::vector<std::string> tokens);
 
