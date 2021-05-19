@@ -141,7 +141,7 @@ protected = false
 name = 'playthrough_valid'
 testcase_type = "IO"
 description = "Full valid playthrough"
-timeout = 10
+timeout = 20
 env_vars = 'RAND_SEED=1543129'
 exp_file = "tests/d2/09/out"
 in_file = "tests/d2/09/in"
