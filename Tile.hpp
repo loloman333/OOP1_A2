@@ -31,7 +31,7 @@ const size_t INDEX_WITH_WALL = 7;
 //Enums
 enum class TileType {T, L, I, O, U, X};
 enum class Rotation{DEG0 = 0, DEG90 = 1, DEG180 = 2, DEG270 = 3};
-enum class Direction{TOP = 0, LEFT = 1, BOTTOM = 2, RIGHT = 3};
+enum class Direction{TOP = 0, LEFT = 1, BOTTOM = 2, RIGHT = 3, UNDEFINED = 4};
 
 class Player;
 
@@ -45,7 +45,7 @@ class Tile
 
     void fillTileString(std::vector<std::string>& tile);
     void generateTile(Rotation rotation,std::vector<Direction> directions);
-    void addPlayersToTile(std::vector<std::string>& tileVector);
+    void addPlayersToTile(std::vector<std::string>& tile_vector);
     Direction calcDirection(Direction dir, Rotation rot);
     bool isCorner(size_t row, size_t col);
     std::vector<bool> calcWalls();
