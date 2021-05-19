@@ -11,9 +11,9 @@
 
 Tile::Tile(TileType type, Rotation rotation) : type_{type}, rotation_{rotation} 
 {
-  setWalls(type, rotation);
+  setWalls();
 }
-Tile::Tile(TileType type) : type_{type}, rotation_{Rotation::DEG0} {}
+Tile::Tile(TileType type) : Tile(type, Rotation::DEG0) {}
 
 TileType Tile::getType()
 {
@@ -33,11 +33,13 @@ std::vector<Player*> Tile::getPlayers()
 void Tile::setRotation(Rotation r)
 {
   rotation_ = r;
+  setWalls();
 }
 
 void Tile::setType(TileType type)
 {
   type_ = type;
+  setWalls();
 }
 
 size_t Tile::getRotationValue()
@@ -99,71 +101,71 @@ bool Tile::isWallInDirection(Direction direction)
 
 Direction Tile::calcDirection(Direction dir, Rotation rot)
 {
-  size_t dirValue = static_cast<size_t>(dir);
-  size_t rotValue = static_cast<size_t>(rot);
-  dirValue += rotValue;
-  if(dirValue >= DIRECTION_AMOUNT)
+  size_t dir_value = static_cast<size_t>(dir);
+  size_t rot_value = static_cast<size_t>(rot);
+  dir_value += rot_value;
+  if(dir_value >= DIRECTION_AMOUNT)
   {
-    dirValue -= DIRECTION_AMOUNT;
+    dir_value -= DIRECTION_AMOUNT;
   }
-  return static_cast<Direction>(dirValue);
+  return static_cast<Direction>(dir_value);
 }
 
-void Tile::generateTile(Rotation rotation, std::vector<Direction> directions, std::vector<std::string>& tile)
+void Tile::generateTile(Rotation rotation, std::vector<Direction> directions)
 {
   for(size_t index = 0; index < directions.size(); index++)
   {
     walls_.push_back(calcDirection(directions[index],rotation));
   }
-  fillWalls(tile);
 }
 
 std::vector<std::string> Tile::getRawTileString()
 {
-  std::vector<std::string> tileVector;
+  std::vector<std::string> tile_vector;
+  setWalls();
+  fillTileString(tile_vector);
+  addPlayersToTile(tile_vector);
+
+  return tile_vector;
+}
+
+void Tile::setWalls()
+{
   walls_.clear();
   std::vector<Direction> directions;
   switch (type_)
   {
   case TileType::T:
     directions.push_back(Direction::TOP);
-    generateTile(rotation_, directions, tileVector);
+    generateTile(rotation_, directions);
     break;
   case TileType::L:
     directions.push_back(Direction::LEFT);
     directions.push_back(Direction::BOTTOM);
-    generateTile(rotation_, directions, tileVector);
+    generateTile(rotation_, directions);
       break;
   case TileType::I:
     directions.push_back(Direction::LEFT);
     directions.push_back(Direction::RIGHT);
-    generateTile(rotation_, directions, tileVector);
+    generateTile(rotation_, directions);
       break;
   case TileType::O:
     directions.push_back(Direction::LEFT);
     directions.push_back(Direction::RIGHT);
     directions.push_back(Direction::BOTTOM);
     directions.push_back(Direction::TOP);
-    generateTile(rotation_, directions, tileVector);
+    generateTile(rotation_, directions);
     break;
   case TileType::U:
     directions.push_back(Direction::RIGHT);
     directions.push_back(Direction::LEFT);
     directions.push_back(Direction::BOTTOM);
-    generateTile(rotation_, directions, tileVector);
+    generateTile(rotation_, directions);
       break;
   case TileType::X:
-    generateTile(rotation_, directions, tileVector);
+    generateTile(rotation_, directions);
     break;
   }
-  addPlayersToTile(tileVector);
-
-  return tileVector;
-}
-
-void Tile::setWalls(TileType type, Rotation rotation)
-{
-  
 }
 
 std::vector<bool> Tile::calcWalls()
@@ -191,7 +193,7 @@ std::vector<bool> Tile::calcWalls()
   return walls_to_fill;
 }
 
-void Tile::fillWalls(std::vector<std::string>& tile)
+void Tile::fillTileString(std::vector<std::string>& tile)
 {
   std::vector<std::string> template_tile;
   std::vector<bool> walls_to_fill = calcWalls();
@@ -230,7 +232,7 @@ void Tile::fillWalls(std::vector<std::string>& tile)
   tile = template_tile;
 }
 
-void Tile::addPlayersToTile(std::vector<std::string>& tileVector)
+void Tile::addPlayersToTile(std::vector<std::string>& tile_vector)
 {
   if (!players_.empty())
   {
@@ -246,13 +248,13 @@ void Tile::addPlayersToTile(std::vector<std::string>& tileVector)
       player_string += static_cast<char>(player->getPlayerColor());
     }
 
-    if (tileVector[3][0] == ' ')
+    if (tile_vector[3][0] == ' ')
     {
-      tileVector[3].replace(index, player_string.size(), player_string);
+      tile_vector[3].replace(index, player_string.size(), player_string);
     }
     else
     {
-      tileVector[3].replace(index + 4, player_string.size(), player_string);
+      tile_vector[3].replace(index + 4, player_string.size(), player_string);
     }
   }
 }

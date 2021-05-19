@@ -43,13 +43,13 @@ class Tile
     std::vector<Player*> players_;
     std::vector<Direction> walls_;
 
-    void fillWalls(std::vector<std::string>& tile);
-    void generateTile(Rotation rotation,std::vector<Direction> directions , std::vector<std::string>& tile);
+    void fillTileString(std::vector<std::string>& tile);
+    void generateTile(Rotation rotation,std::vector<Direction> directions);
     void addPlayersToTile(std::vector<std::string>& tileVector);
     Direction calcDirection(Direction dir, Rotation rot);
     bool isCorner(size_t row, size_t col);
     std::vector<bool> calcWalls();
-    void setWalls(TileType type, Rotation rotation);
+    void setWalls();
     
 
   public:

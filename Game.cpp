@@ -564,6 +564,8 @@ Direction Game::getDirection(std::vector<std::string> tokens)
       }
     }
   }
+  std::cout << "Error" << std::endl;
+  return Direction::TOP;
 }
 
 int Game::getAmount(std::vector<std::string> tokens)
@@ -579,7 +581,7 @@ int Game::getAmount(std::vector<std::string> tokens)
     catch(std::invalid_argument)
     {
       std::cout << "Invalid parameter: \"" << tokens[2] << "\"" << std::endl;
-      return NULL;
+      return 0;
     }
     
   }
@@ -602,7 +604,6 @@ bool Game::isMovePossible(Direction direction, int movement)
   {
     row_modifier = row_modifier * -1;
   }
-  bool possible = true;
   for(int index = 0; index <= movement; index++)
   {
     size_t row = players_[current_player_index_]->getRow() + (index * row_modifier);
@@ -1014,7 +1015,6 @@ void Game::printBoard()
       printLeftUI(row_index, line_index, row_label_index, print_arrow);
       printTilesOfLine(tile_strings, tile_line_index);
       printRightUI(print_arrow);
-
       line_index++;
     }
   }
