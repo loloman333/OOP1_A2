@@ -65,8 +65,8 @@ private:
   bool quit_ = false;
   bool inserted_ = false;
   bool show_treasure_ = false;
-  std::string last_insert_direction = "";
-  std::string last_insert_row_col = "";
+  std::string last_insert_direction_ = "";
+  std::string last_insert_row_col_ = "";
 
   Game();
   Game(const Game&);

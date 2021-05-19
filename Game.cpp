@@ -183,43 +183,51 @@ bool Game::executeCommand(std::vector<std::string>& tokens)
 
 bool Game::finish(std::vector<std::string> tokens)
 {
-  if (tokens.size() != 1)
+  if (inserted_)
   {
-    commandTakesNoArguments();
-    return false;
-  }
-
-  size_t player_row = getCurrentPlayer()->getRow();
-  size_t player_column = getCurrentPlayer()->getCol();
-  if (board_[player_row][player_column]->hasTreasure())
-  {
-    TreasureTile* tile = dynamic_cast<TreasureTile*>(board_[player_row][player_column]);
-    if (currentPlayerNeedsTreasure(tile->getTreasure()))
+    if (tokens.size() != 1)
     {
-      currentPlayerCollectTreasure(tile->getTreasure());
+      commandTakesNoArguments();
+      return false;
     }
-  }
 
-  if (isCorner(player_row, player_column))
-  {
-    StartTile* tile = dynamic_cast<StartTile*>(board_[player_row][player_column]);
-    if (getCurrentPlayer()->getPlayerColor() == tile->getPlayerColor())
+    size_t player_row = getCurrentPlayer()->getRow();
+    size_t player_column = getCurrentPlayer()->getCol();
+    if (board_[player_row][player_column]->hasTreasure())
     {
-      if (getCurrentPlayer()->getCoveredStackRef().empty())
+      TreasureTile *tile = dynamic_cast<TreasureTile *>(board_[player_row][player_column]);
+      if (currentPlayerNeedsTreasure(tile->getTreasure()))
       {
-        std::string color = getCurrentPlayer()->getPlayerColorAsString();
-        std::transform(color.begin(), color.end(), color.begin(), ::toupper);
-
-        std::cout << UI_WIN_1 << color << UI_WIN_2 << std::endl;
-        quit_ = true;
-        return true;
+        currentPlayerCollectTreasure(tile->getTreasure());
       }
     }
-  }
 
-  show_treasure_ = false;
-  nextPlayer();
-  return true;
+    if (isCorner(player_row, player_column))
+    {
+      StartTile *tile = dynamic_cast<StartTile *>(board_[player_row][player_column]);
+      if (getCurrentPlayer()->getPlayerColor() == tile->getPlayerColor())
+      {
+        if (getCurrentPlayer()->getCoveredStackRef().empty())
+        {
+          std::string color = getCurrentPlayer()->getPlayerColorAsString();
+          std::transform(color.begin(), color.end(), color.begin(), ::toupper);
+
+          std::cout << UI_WIN_1 << color << UI_WIN_2 << std::endl;
+          quit_ = true;
+          return true;
+        }
+      }
+    }
+
+    show_treasure_ = false;
+    nextPlayer();
+    return true;
+  }
+  else
+  {
+    commandNotAllowed(tokens);
+    return false;
+  }
 }
 
 bool Game::currentPlayerNeedsTreasure(Treasure* treasure)
@@ -346,9 +354,9 @@ bool Game::checkLastInsert(std::vector <std::string> tokens)
 
 bool Game::compareLastInsert(std::string direction, std::string alias, std::string row_col)
 {
-  if (last_insert_direction == direction || last_insert_direction == alias)
+  if (last_insert_direction_ == direction || last_insert_direction_ == alias)
   {
-    if (last_insert_row_col == row_col)
+    if (last_insert_row_col_ == row_col)
     {
       return false;
     }
@@ -374,8 +382,8 @@ void Game::insertTile(std::vector <std::string> tokens)
   {
     insertRow(tokens);
   }
-  last_insert_row_col = tokens[2];
-  last_insert_direction = tokens[1];
+  last_insert_row_col_ = tokens[2];
+  last_insert_direction_ = tokens[1];
   printGame();
 }
 
@@ -481,27 +489,33 @@ void Game::gameField(std::vector<std::string> tokens)
 
 void Game::rotateFreeTile(std::vector<std::string> tokens)
 {
-  if (tokens.size() == 2)
+  if (!inserted_)
   {
-    std::string direction = tokens[1];
-    if(direction == "l" || direction == "left")
+    if (tokens.size() == 2)
     {
-      free_tile_->rotate(Direction::LEFT);
-    }
-    else if (direction == "r" || direction == "right")
-    {
-      free_tile_->rotate(Direction::RIGHT);
+      std::string direction = tokens[1];
+      if(direction == "l" || direction == "left")
+      {
+        free_tile_->rotate(Direction::LEFT);
+      }
+      else if (direction == "r" || direction == "right")
+      {
+        free_tile_->rotate(Direction::RIGHT);
+      }
+      else
+      {
+        invalidParameter(direction);
+      }
     }
     else
     {
-      invalidParameter(direction);
+      wrongNumberArguments();
     }
   }
   else
   {
-    wrongNumberArguments();
+    commandNotAllowed(tokens);
   }
-
 }
 
 void Game::showFreeTile(std::vector<std::string> tokens)
