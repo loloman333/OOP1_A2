@@ -64,6 +64,7 @@ private:
   bool show_gamefield_ = true;
   bool quit_ = false;
   bool inserted_ = false;
+  bool show_treasure_ = false;
   std::string last_insert_direction = "";
   std::string last_insert_row_col = "";
 
@@ -94,6 +95,7 @@ private:
   std::vector<std::string> tokenize(std::string input);
   bool executeCommand(std::vector<std::string>& tokens);
   void showTreasure(std::vector<std::string> tokens);
+  void printTreasure();
   void hideTreasure(std::vector<std::string> tokens);
   void showFreeTile(std::vector<std::string> tokens);
   void rotateFreeTile(std::vector<std::string> tokens);

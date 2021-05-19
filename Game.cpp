@@ -101,6 +101,7 @@ void Game::gameStart()
 void Game::playRound()
 {
   inserted_ = false;
+
   Player* player = getCurrentPlayer();
   std::string current_output = player->getPlayerColorAsString();
   std::transform(current_output.begin(), current_output.end(), current_output.begin(), ::toupper);
@@ -212,7 +213,7 @@ bool Game::finish(std::vector<std::string> tokens)
     }
   }
 
-  std::cout << UI_CLEAR;
+  show_treasure_ = false;
   nextPlayer();
   return true;
 }
@@ -520,27 +521,39 @@ void Game::showTreasure(std::vector<std::string> tokens)
   }
   else
   {
-    std::vector<Treasure*> covered_stack = getCurrentPlayer()->getCoveredStackRef();
-    if(covered_stack.empty())
+    show_treasure_ = true;
+    if(show_gamefield_)
     {
-      std::cout << "All Treasures found, return to your startfield to win!" << std::endl;
+      printGame();
     }
     else
     {
-      Treasure* next_treasure = covered_stack.back();
-      std::string treasure_name = next_treasure->getName();
-      size_t treasure_id = next_treasure->getTreasureId();
-      std::string id_string= "";
-
-      if (treasure_id < 10)
-      {
-        id_string = "0";
-      }
-      id_string += std::to_string(treasure_id);
-
-      printGameIfNecessary();
-      std::cout << "Current Treasure: " << treasure_name << " Nr.: " << id_string << std::endl;
+      printTreasure();
     }
+  }
+}
+
+void Game::printTreasure()
+{
+  std::vector<Treasure*> covered_stack = getCurrentPlayer()->getCoveredStackRef();
+  if(covered_stack.empty())
+  {
+    std::cout << "All Treasures found, return to your startfield to win!" << std::endl;
+  }
+  else
+  {
+    Treasure *next_treasure = covered_stack.back();
+    std::string treasure_name = next_treasure->getName();
+    size_t treasure_id = next_treasure->getTreasureId();
+    std::string id_string = "";
+
+    if (treasure_id < 10)
+    {
+      id_string = "0";
+    }
+    id_string += std::to_string(treasure_id);
+
+    std::cout << "Current Treasure: " << treasure_name << " Nr.: " << id_string << std::endl;
   }
 }
 
@@ -548,6 +561,7 @@ void Game::hideTreasure(std::vector<std::string> tokens)
 {
   if (tokens.size() == 1)
   {
+    show_treasure_ = false;
     std::cout << UI_CLEAR;
     printGame();
   }
@@ -984,6 +998,11 @@ void Game::printGame()
   printBoard();
   std::cout << ui_lines[2] << std::endl;
   std::cout << ui_lines[3] << std::endl;
+
+  if(show_treasure_)
+  {
+    printTreasure();
+  }
 }
 
 std::vector<std::string> Game::generateUILines()
