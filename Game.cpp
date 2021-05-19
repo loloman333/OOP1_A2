@@ -170,6 +170,10 @@ bool Game::executeCommand(std::vector<std::string>& tokens)
       moveNotAllowed(tokens);
     }
   }
+  else if(command == "")
+  {
+    return false;
+  }
   else
   {
     invalidCommand(command);
