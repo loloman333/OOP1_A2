@@ -111,7 +111,7 @@ class Game
     int getAmount(std::vector<std::string> tokens);
     void getMovementModifier(Direction direction, int &row_modifier, int &col_modifier);
     bool isMovePossible(Direction direction, size_t movement, int &row_movement, int &col_movement);
-    void moveInDirection(Player* player, Direction direction, size_t movement, int &row_movement, int &col_movement);
+    void moveInDirection(Player* player, size_t movement, int &row_movement, int &col_movement);
     void movePlayersToTile(Tile* from, size_t row, size_t column);
     Direction getOppositeDirection(Direction direction);
     void playersUpdateRowColumn(std::vector<Player*> players, size_t row, size_t column);

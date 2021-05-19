@@ -517,7 +517,7 @@ void Game::movePlayer(std::vector<std::string> tokens)
         getMovementModifier(direction, row_modifier, col_modifier);
         if(isMovePossible(direction, movement, row_modifier, col_modifier))
         {
-          moveInDirection(getCurrentPlayer(), direction, movement, row_modifier, col_modifier);
+          moveInDirection(getCurrentPlayer(), movement, row_modifier, col_modifier);
           printGameIfNecessary();
         }
         else
@@ -649,13 +649,13 @@ bool Game::isMovePossible(Direction direction, size_t movement, int &row_modifie
   {
     size_t row = players_[current_player_index_]->getRow() + (index * row_modifier);
     size_t col = players_[current_player_index_]->getCol() + (index * col_modifier);
-    Tile* current_tile = board_[row][col];
-    bool wall_in_front = current_tile->isWallInDirection(direction);
-    bool wall_behind = current_tile->isWallInDirection(opposite_direction);
     if(row >= 7 || col >= 7)
     {
       return false;
     }
+    Tile* current_tile = board_[row][col];
+    bool wall_in_front = current_tile->isWallInDirection(direction);
+    bool wall_behind = current_tile->isWallInDirection(opposite_direction);
     if(index == 0 && wall_in_front)
     {
       return false;
@@ -672,7 +672,7 @@ bool Game::isMovePossible(Direction direction, size_t movement, int &row_modifie
   return true; 
 }
 
-void Game::moveInDirection(Player* player, Direction direction, size_t movement, int &row_modifier, int &col_modifier)
+void Game::moveInDirection(Player* player, size_t movement, int &row_modifier, int &col_modifier)
 {
   std::string player_color = player->getPlayerColorAsString();
   size_t old_row = player->getRow();
@@ -697,6 +697,8 @@ Direction Game::getOppositeDirection(Direction direction)
     return Direction::TOP;
   case Direction::RIGHT:
     return Direction::LEFT;
+  default:
+    return Direction::UNDEFINED;
   }
 }
 
