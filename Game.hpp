@@ -114,8 +114,9 @@ private:
   bool checkMoveInput(std::vector<std::string> tokens);
   Direction getDirection(std::vector<std::string> tokens);
   int getAmount(std::vector<std::string> tokens);
-  bool isMovePossible(Direction direction, size_t movement);
-  void moveInDirection(Player* player, Direction direction, size_t movement);
+  void getMovementModifier(Direction direction, int &row_modifier, int &col_modifier);
+  bool isMovePossible(Direction direction, size_t movement, int &row_movement, int &col_movement);
+  void moveInDirection(Player* player, size_t movement, int &row_movement, int &col_movement);
   void movePlayersToTile(Tile* from, size_t row, size_t column);
   Direction getOppositeDirection(Direction direction);
   void playersUpdateRowColumn(std::vector<Player*> players, size_t row, size_t column);
@@ -140,6 +141,7 @@ private:
   void commandTakesNoArguments();
   void commandNotAllowed(std::vector<std::string> tokens);
   void impossibleMove();
+  void moveNotAllowed(std::vector<std::string> tokens);
 
   void playRound();
   void nextPlayer();
