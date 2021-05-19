@@ -81,13 +81,6 @@ class Game
     bool isCorner(size_t row_index, size_t col_index);
     bool isInMoveableLine(size_t row_index, size_t col_index);
     void fillTreasures();
-    bool checkMoveInput(std::vector<std::string> tokens);
-    Direction getDirection(std::vector<std::string> tokens);
-    int getAmount(std::vector<std::string> tokens);
-    bool isMovePossible(Direction direction, int movement);
-    void moveInDirection(Direction direction, int movement);
-    Direction getOppositeDirection(Direction direction);
-    
 
     // Free memory
     void deleteTreasures();
@@ -107,12 +100,20 @@ class Game
     void insert(std::vector<std::string> tokens);
     void insertTile(std::vector<std::string> tokens);
     bool checkInsertParameter(std::vector<std::string> tokens);
-    bool isInMoveableRowOrCol(std::string parameter);
+    bool isInMoveableRowOrCol(size_t row_col);
     bool isValidInsertDirection(std::string direction);
     bool checkLastInsert(std::vector<std::string> tokens);
     bool compareLastInsert(std::string direction, std::string alias, std::string row_col);
     void insertRow(std::vector<std::string> tokens);
     void insertColumn(std::vector<std::string> tokens);
+    bool checkMoveInput(std::vector<std::string> tokens);
+    Direction getDirection(std::vector<std::string> tokens);
+    int getAmount(std::vector<std::string> tokens);
+    bool isMovePossible(Direction direction, size_t movement);
+    void moveInDirection(Player* player, Direction direction, size_t movement);
+    void movePlayersToTile(Tile* from, size_t row, size_t column);
+    Direction getOppositeDirection(Direction direction);
+    void playersUpdateRowColumn(std::vector<Player*> players, size_t row, size_t column);
 
     // Print board
     void printGame();
@@ -126,6 +127,14 @@ class Game
     void printRightUI(bool print_arrow);
     void printTilesOfLine(std::vector<std::vector<std::string>>& tile_strings, size_t tile_line_index);
     void printLeftUI(size_t& row_index, size_t line_index, size_t& row_label_index, bool& print_arrow);
+
+    // Error messages
+    void invalidCommand(std::string command);
+    void invalidParameter(std::string parameter);
+    void wrongNumberArguments();
+    void commandTakesNoArguments();
+    void commandNotAllowed(std::vector<std::string> tokens);
+    void impossibleMove();
 
     void playRound();
     void nextPlayer();

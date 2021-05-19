@@ -74,3 +74,9 @@ void Player::setRow(size_t row)
 {
   row_ = row;
 }
+
+void Player::setRowCol(size_t row, size_t column)
+{
+  setRow(row);
+  setCol(column);
+}

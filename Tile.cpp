@@ -328,3 +328,12 @@ void Tile::rotate(Direction dir)
       break;
   }
 }
+
+bool Tile::containsPlayer()
+{
+  if(players_.size() == 0)
+  {
+    return false;
+  }
+  return true;
+}

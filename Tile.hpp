@@ -71,6 +71,7 @@ class Tile
     std::string getTileTypeString();
     void addPlayer(Player* player);
     void removePlayer(std::string player_color);
+    bool containsPlayer();
 
     bool isWallInDirection(Direction direction);
     void print();

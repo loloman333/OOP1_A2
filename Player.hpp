@@ -42,6 +42,7 @@ class Player
     void setPlayerColor(PlayerColor player_color);
     void setRow(size_t row);
     void setCol(size_t col);
+    void setRowCol(size_t row, size_t column);
 };
 
 #endif //A2_PLAYER_HPP
