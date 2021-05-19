@@ -30,6 +30,9 @@ const size_t MOVE_RIGHT = 8;
 const std::string UI_WELCOME = "Welcome to the Wild OOP Labyrinth!!!";
 const std::string UI_PLAYER_COUNT = "Player Count (2-4): ";
 const std::string UI_WRONG_COUNT = "Wrong Input only a Number from 2 to 4 is allowed!";
+const std::string UI_WIN_1 = "The Player ";
+const std::string UI_WIN_2 = " has won the game!";
+const std::string UI_CLEAR = "\x1b[2J";
 
 const std::string UI_ARROW_RIGHT = "-->";
 const std::string UI_ARROW_LEFT = "<--";
@@ -52,99 +55,101 @@ const std::string IMPOSSIBLE_MOVE = "Impossible move!";
 
 class Game
 {
-  private:
+private:
+  std::vector<std::vector<Tile*>> board_;
+  Tile* free_tile_;
+  std::vector<Treasure*> treasures_;
+  std::vector<Player*> players_;
+  size_t current_player_index_ = 0;
+  bool show_gamefield_ = true;
+  bool quit_ = false;
+  bool inserted_ = false;
+  std::string last_insert_direction = "";
+  std::string last_insert_row_col = "";
 
-    std::vector<std::vector<Tile*>> board_;
-    Tile* free_tile_;
-    std::vector<Treasure*> treasures_;
-    std::vector<Player*> players_;
-    size_t current_player_index_ = 0;
-    bool show_gamefield_ = true;
-    bool quit_ = false;
-    bool inserted_ = false;
-    std::string last_insert_direction = "";
-    std::string last_insert_row_col = "";
+  Game();
+  Game(const Game&);
+  Game& operator=(const Game&);
 
-    Game();
-    Game(const Game&); 
-    Game& operator=(const Game&);
+  // Preparations
+  void gameStart();
+  void addPlayer(PlayerColor color);
+  void distributeTreasures();
+  void fillBoard();
+  void fillStaticTiles(size_t& treasure_index);
+  void fillVariableTiles(size_t& treasure_index);
+  void addNewNormalTilesToVector(std::vector<Tile*>& vector, TileType type, size_t count);
+  void addNewTreasureTilesToVector(std::vector<Tile*>& vector, TileType type, size_t count, size_t& treasure_index);
+  bool isCorner(size_t row_index, size_t col_index);
+  bool isInMoveableLine(size_t row_index, size_t col_index);
+  void fillTreasures();
 
-    // Preparations
-    void gameStart();
-    void addPlayer(PlayerColor color);
-    void distributeTreasures();
-    void fillBoard();
-    void fillStaticTiles(size_t& treasure_index);
-    void fillVariableTiles(size_t& treasure_index);
-    void addNewNormalTilesToVector(std::vector<Tile*>& vector, TileType type, size_t count);
-    void addNewTreasureTilesToVector(std::vector<Tile*>& vector, TileType type, size_t count, size_t& treasure_index);
-    bool isCorner(size_t row_index, size_t col_index);
-    bool isInMoveableLine(size_t row_index, size_t col_index);
-    void fillTreasures();
+  // Free memory
+  void deleteTreasures();
+  void deleteFreeTile();
+  void deleteBoard();
+  void deletePlayers();
 
-    // Free memory
-    void deleteTreasures();
-    void deleteFreeTile();
-    void deleteBoard();
-    void deletePlayers();
+  // Commands
+  std::vector<std::string> tokenize(std::string input);
+  bool executeCommand(std::vector<std::string>& tokens);
+  void showTreasure(std::vector<std::string> tokens);
+  void hideTreasure(std::vector<std::string> tokens);
+  void showFreeTile(std::vector<std::string> tokens);
+  void rotateFreeTile(std::vector<std::string> tokens);
+  void gameField(std::vector<std::string> tokens);
+  void movePlayer(std::vector<std::string> tokens);
+  bool finish(std::vector<std::string> tokens);
+  bool currentPlayerNeedsTreasure(Treasure* treasure);
+  void currentPlayerCollectTreasure(Treasure* treasure);
+  void insert(std::vector<std::string> tokens);
+  void insertTile(std::vector<std::string> tokens);
+  bool checkInsertParameter(std::vector<std::string> tokens);
+  bool isInMoveableRowOrCol(size_t row_col);
+  bool isValidInsertDirection(std::string direction);
+  bool checkLastInsert(std::vector<std::string> tokens);
+  bool compareLastInsert(std::string direction, std::string alias, std::string row_col);
+  void insertRow(std::vector<std::string> tokens);
+  void insertColumn(std::vector<std::string> tokens);
+  bool checkMoveInput(std::vector<std::string> tokens);
+  Direction getDirection(std::vector<std::string> tokens);
+  int getAmount(std::vector<std::string> tokens);
+  bool isMovePossible(Direction direction, size_t movement);
+  void moveInDirection(Player* player, Direction direction, size_t movement);
+  void movePlayersToTile(Tile* from, size_t row, size_t column);
+  Direction getOppositeDirection(Direction direction);
+  void playersUpdateRowColumn(std::vector<Player*> players, size_t row, size_t column);
 
-    // Commands
-    std::vector<std::string> tokenize(std::string input);
-    bool executeCommand(std::vector<std::string>& tokens);
-    void showTreasure(std::vector<std::string> tokens);
-    void hideTreasure(std::vector<std::string> tokens);
-    void showFreeTile(std::vector<std::string> tokens);
-    void rotateFreeTile(std::vector<std::string> tokens);
-    void gameField(std::vector<std::string> tokens);
-    void movePlayer(std::vector<std::string> tokens);
-    void insert(std::vector<std::string> tokens);
-    void insertTile(std::vector<std::string> tokens);
-    bool checkInsertParameter(std::vector<std::string> tokens);
-    bool isInMoveableRowOrCol(size_t row_col);
-    bool isValidInsertDirection(std::string direction);
-    bool checkLastInsert(std::vector<std::string> tokens);
-    bool compareLastInsert(std::string direction, std::string alias, std::string row_col);
-    void insertRow(std::vector<std::string> tokens);
-    void insertColumn(std::vector<std::string> tokens);
-    bool checkMoveInput(std::vector<std::string> tokens);
-    Direction getDirection(std::vector<std::string> tokens);
-    int getAmount(std::vector<std::string> tokens);
-    bool isMovePossible(Direction direction, size_t movement);
-    void moveInDirection(Player* player, Direction direction, size_t movement);
-    void movePlayersToTile(Tile* from, size_t row, size_t column);
-    Direction getOppositeDirection(Direction direction);
-    void playersUpdateRowColumn(std::vector<Player*> players, size_t row, size_t column);
+  // Print board
+  void printGame();
+  void printBoard();
+  void printGameIfNecessary();
+  std::vector<std::string> generateUILines();
+  void addPlayerTitlesToLine(std::string& line, size_t& player_index);
+  void addTreasureCountersToLine(std::string& line, size_t& player_index);
+  void addArrowBasesToLine(std::string& line);
+  void addArrowTipsToLine(std::string& line, Direction direction);
+  void printRightUI(bool print_arrow);
+  void printTilesOfLine(std::vector<std::vector<std::string>>& tile_strings, size_t tile_line_index);
+  void printLeftUI(size_t& row_index, size_t line_index, size_t& row_label_index, bool& print_arrow);
 
-    // Print board
-    void printGame();
-    void printBoard();
-    void printGameIfNecessary();
-    std::vector<std::string> generateUILines();
-    void addPlayerTitlesToLine(std::string& line, size_t& player_index);
-    void addTreasureCountersToLine(std::string& line, size_t& player_index);
-    void addArrowBasesToLine(std::string& line);
-    void addArrowTipsToLine(std::string& line, Direction direction);
-    void printRightUI(bool print_arrow);
-    void printTilesOfLine(std::vector<std::vector<std::string>>& tile_strings, size_t tile_line_index);
-    void printLeftUI(size_t& row_index, size_t line_index, size_t& row_label_index, bool& print_arrow);
+  // Error messages
+  void invalidCommand(std::string command);
+  void invalidParameter(std::string parameter);
+  void wrongNumberArguments();
+  void commandTakesNoArguments();
+  void commandNotAllowed(std::vector<std::string> tokens);
+  void impossibleMove();
 
-    // Error messages
-    void invalidCommand(std::string command);
-    void invalidParameter(std::string parameter);
-    void wrongNumberArguments();
-    void commandTakesNoArguments();
-    void commandNotAllowed(std::vector<std::string> tokens);
-    void impossibleMove();
+  void playRound();
+  void nextPlayer();
+  Player* getCurrentPlayer();
 
-    void playRound();
-    void nextPlayer();
-    Player* getCurrentPlayer();
+public:
+  static Game& instance();
+  ~Game();
 
-  public:
-    static Game& instance();
-    ~ Game();
-
-    int run();
+  int run();
 };
 
-#endif //A2_GAME_HPP
+#endif // A2_GAME_HPP

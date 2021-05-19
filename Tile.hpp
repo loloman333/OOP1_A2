@@ -72,7 +72,7 @@ class Tile
     void addPlayer(Player* player);
     void removePlayer(std::string player_color);
     bool containsPlayer();
-
+    bool virtual hasTreasure();
     bool isWallInDirection(Direction direction);
     void print();
     void rotate(Direction dir);

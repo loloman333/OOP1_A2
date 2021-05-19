@@ -34,7 +34,7 @@ class TreasureTile : public Tile
 
     void setTreasure(Treasure* treasure);
     void setFound(bool collected);
-
+    bool hasTreasure();
     void foundTreasure();
     std::vector<std::string> getTileString();
 };

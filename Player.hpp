@@ -43,6 +43,8 @@ class Player
     void setRow(size_t row);
     void setCol(size_t col);
     void setRowCol(size_t row, size_t column);
+
+    void incrementNrFoundTreasures();
 };
 
 #endif //A2_PLAYER_HPP

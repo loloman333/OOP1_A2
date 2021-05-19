@@ -103,6 +103,15 @@ Rotation TreasureTile::calculateRotation(size_t treasure_id)
   }
 }
 
+bool TreasureTile::hasTreasure()
+{
+  if (getFound())
+  {
+    return false;
+  }
+  return true;
+}
+
 bool TreasureTile::isSingleDigit(size_t number)
 {
   return (number < 10);

@@ -156,11 +156,7 @@ bool Game::executeCommand(std::vector<std::string>& tokens)
   }
   else if(command == "finish" || command == "f")
   {
-    // Treasure soll auch versteckt werden? Siehe GitLab
-    // std::cout << "<finishes turn>" << std::endl;
-    nextPlayer();
-    inserted_ = false;
-    return true;
+    return finish(tokens);
   }
   else if(std::find(PLAYER_MOVEMENT.begin(), PLAYER_MOVEMENT.end(), command) != PLAYER_MOVEMENT.end())
   {
@@ -178,6 +174,65 @@ bool Game::executeCommand(std::vector<std::string>& tokens)
     invalidCommand(command);
   }
   return false;
+}
+
+bool Game::finish(std::vector<std::string> tokens)
+{
+  if (tokens.size() != 1)
+  {
+    commandTakesNoArguments();
+    return false;
+  }
+
+  size_t player_row = getCurrentPlayer()->getRow();
+  size_t player_column = getCurrentPlayer()->getCol();
+  if (board_[player_row][player_column]->hasTreasure())
+  {
+    TreasureTile* tile = dynamic_cast<TreasureTile*>(board_[player_row][player_column]);
+    if (currentPlayerNeedsTreasure(tile->getTreasure()))
+    {
+      currentPlayerCollectTreasure(tile->getTreasure());
+    }
+  }
+
+  if (isCorner(player_row, player_column))
+  {
+    StartTile* tile = dynamic_cast<StartTile*>(board_[player_row][player_column]);
+    if (getCurrentPlayer()->getPlayerColor() == tile->getPlayerColor())
+    {
+      if (getCurrentPlayer()->getCoveredStackRef().empty())
+      {
+        std::string color = getCurrentPlayer()->getPlayerColorAsString();
+        std::transform(color.begin(), color.end(), color.begin(), ::toupper);
+
+        std::cout << UI_WIN_1 << color << UI_WIN_2 << std::endl;
+        quit_ = true;
+        return true;
+      }
+    }
+  }
+
+  std::cout << UI_CLEAR;
+  nextPlayer();
+  return true;
+}
+
+bool Game::currentPlayerNeedsTreasure(Treasure* treasure)
+{
+  std::vector<Treasure*>& stack = getCurrentPlayer()->getCoveredStackRef();
+  if (stack.empty() || stack.back() != treasure)
+  {
+    return false;
+  }
+  return true;
+}
+
+void Game::currentPlayerCollectTreasure(Treasure* treasure)
+{
+  treasure->setFound(true);
+  std::vector<Treasure*>& stack = getCurrentPlayer()->getCoveredStackRef();
+  stack.pop_back();
+  getCurrentPlayer()->incrementNrFoundTreasures();
 }
 
 void Game::insert(std::vector <std::string> tokens)
@@ -493,7 +548,7 @@ void Game::hideTreasure(std::vector<std::string> tokens)
 {
   if (tokens.size() == 1)
   {
-    std::cout << "\x1b[2J";
+    std::cout << UI_CLEAR;
     printGame();
   }
   else
@@ -501,6 +556,7 @@ void Game::hideTreasure(std::vector<std::string> tokens)
     commandTakesNoArguments();
   }
 }
+
 
 void Game::movePlayer(std::vector<std::string> tokens)
 {

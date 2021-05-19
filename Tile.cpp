@@ -329,6 +329,11 @@ void Tile::rotate(Direction dir)
   }
 }
 
+bool Tile::hasTreasure()
+{
+  return false;
+}
+
 bool Tile::containsPlayer()
 {
   if(players_.size() == 0)

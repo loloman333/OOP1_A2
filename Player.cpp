@@ -80,3 +80,8 @@ void Player::setRowCol(size_t row, size_t column)
   setRow(row);
   setCol(column);
 }
+
+void Player::incrementNrFoundTreasures()
+{
+  nr_found_treasures_++;
+}
