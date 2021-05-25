@@ -34,6 +34,7 @@ enum class Rotation{DEG0 = 0, DEG90 = 1, DEG180 = 2, DEG270 = 3};
 enum class Direction{TOP = 0, LEFT = 1, BOTTOM = 2, RIGHT = 3, UNDEFINED = 4};
 
 class Player;
+enum class PlayerColor;
 
 class Tile
 {
@@ -46,6 +47,7 @@ class Tile
     void fillTileString(std::vector<std::string>& tile);
     void generateTile(Rotation rotation,std::vector<Direction> directions);
     void addPlayersToTile(std::vector<std::string>& tile_vector);
+    bool isPlayerColorOnTile(PlayerColor color);
     Direction calcDirection(Direction dir, Rotation rot);
     bool isCorner(size_t row, size_t col);
     std::vector<bool> calcWalls();

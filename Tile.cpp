@@ -236,27 +236,44 @@ void Tile::addPlayersToTile(std::vector<std::string>& tile_vector)
 {
   if (!players_.empty())
   {
-    int index = 3;
-    if (players_.size() == 4)
+    
+    std::string player_string = "P";
+
+    for (PlayerColor color : Player::player_colors_)
     {
-      index = 2;
+      if (isPlayerColorOnTile(color))
+      {
+        player_string.push_back(static_cast<char>(color));
+      }
     }
 
-    std::string player_string = "P";
-    for (Player* player : players_)
+    int position = 3;
+    if (players_.size() == 4)
     {
-      player_string += static_cast<char>(player->getPlayerColor());
+      position = 2;
     }
 
     if (tile_vector[3][0] == ' ')
     {
-      tile_vector[3].replace(index, player_string.size(), player_string);
+      tile_vector[3].replace(position, player_string.size(), player_string);
     }
     else
     {
-      tile_vector[3].replace(index + 4, player_string.size(), player_string);
+      tile_vector[3].replace(position + 4, player_string.size(), player_string);
     }
   }
+}
+
+bool Tile::isPlayerColorOnTile(PlayerColor color)
+{
+  for (Player* player : players_)
+  {
+    if (player->getPlayerColor() == color)
+    {
+      return true;
+    }
+  }
+  return false;
 }
 
 void Tile::addPlayer(Player *player)
