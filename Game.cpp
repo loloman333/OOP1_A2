@@ -15,11 +15,13 @@
 #include "Player.hpp"
 #include "Tile.hpp"
 #include "CommandMaster.hpp"
+#include "PrintMaster.hpp"
 
 #include <algorithm>
 
 Game::Game(){
   command_master_ = new CommandMaster(*this);
+  print_master_ = new PrintMaster(*this);
 }
 
 Game::~Game()
@@ -29,6 +31,7 @@ Game::~Game()
   deleteTreasures();
   deletePlayers();
   delete command_master_;
+  delete print_master_;
 }
 
 Game& Game::instance()
@@ -48,7 +51,7 @@ int Game::run()
 
     while (gameIsRunning())
     {
-      command_master_->printGameIfNecessary();
+      print_master_->printGameIfNecessary();
       playRound();
     }
 
@@ -301,188 +304,6 @@ void Game::deletePlayers()
   }
 }
 
-void Game::printGame()
-{
-  std::vector<std::string> ui_lines = generateUILines();
-
-  std::cout << ui_lines[0] << std::endl;
-  std::cout << ui_lines[1] << std::endl;
-  std::cout << UI_COLUMN_LABELS << std::endl;
-  printBoard();
-  std::cout << ui_lines[2] << std::endl;
-  std::cout << ui_lines[3] << std::endl;
-
-  if(command_master_->getShowTreasure())
-  {
-    command_master_->printTreasure();
-  }
-}
-
-std::vector<std::string> Game::generateUILines()
-{
-  size_t player_index_titles = 0;
-  size_t player_index_treasures = 0;
-
-  size_t title_row_at = 0;
-  size_t title_row_mod = 2;
-
-  size_t arrow_base_at = 0;
-  size_t arrow_base_mod = 3;
-
-  std::vector<std::string> lines;
-
-  for (size_t index = 0; index < 4; index++)
-  {
-    std::string line = "                                                                       ";
-    if (index % title_row_mod == title_row_at)
-    {
-      addPlayerTitlesToLine(line, player_index_titles);
-    }
-    else
-    {
-      addTreasureCountersToLine(line, player_index_treasures);
-    }
-
-    if (index % arrow_base_mod == arrow_base_at)
-    {
-      addArrowBasesToLine(line);
-    }
-    else
-    {
-      if (index == 1)
-      {
-        addArrowTipsToLine(line, Direction::BOTTOM);
-      }
-      else if (index == 2)
-      {
-        addArrowTipsToLine(line, Direction::TOP);
-      }
-    }
-    line.erase(line.find_last_not_of(" ") + 1);
-    lines.push_back(line);
-  }
-
-  return lines;
-}
-
-void Game::addPlayerTitlesToLine(std::string& line, size_t& player_index)
-{
-  for (size_t times = 0; times < 2; times++)
-  {
-    if (player_index < players_.size())
-    {
-      std::string title = UI_PLAYER_BASE;
-      title += players_[player_index]->getPlayerColorAsString();
-      title += "(";
-      title += static_cast<char>(players_[player_index]->getPlayerColor());
-      title += ")";
-
-      line.replace(UI_PLAYER_TITLE_OFFSET * times, title.length(), title);
-      player_index++;
-    }
-  }
-}
-
-void Game::addTreasureCountersToLine(std::string& line, size_t& player_index)
-{
-  for (size_t times = 0; times < 2; times++)
-  {
-    if (player_index < players_.size())
-    {
-      std::string treasure_counter = UI_TREASURE_COUNTER;
-      treasure_counter.append(std::to_string(players_[player_index]->getNrFoundTreasures()));
-      treasure_counter.append("/");
-      treasure_counter.append(std::to_string(treasures_.size() / players_.size()));
-
-      line.replace(UI_PLAYER_TITLE_OFFSET * times, treasure_counter.length(), treasure_counter);
-      player_index++;
-    }
-  }
-}
-
-void Game::addArrowBasesToLine(std::string& line)
-{
-  line.replace(UI_ARROW_OFFSET, UI_ARROW_BASES.length(), UI_ARROW_BASES);
-}
-
-void Game::addArrowTipsToLine(std::string& line, Direction direction)
-{
-  std::string arrows;
-  if (direction == Direction::BOTTOM)
-  {
-    arrows = UI_DOWN_ARROWS;
-  }
-  else if (direction == Direction::TOP)
-  {
-    arrows = UI_UP_ARROWS;
-  }
-  line.replace(UI_ARROW_OFFSET, arrows.length(), arrows);
-}
-
-void Game::printBoard()
-{
-  size_t row_label_index = 2;
-  size_t line_index = 0;
-  size_t row_index = 1;
-  for (std::vector<Tile*> row : board_)
-  {
-    std::vector<std::vector<std::string>> tile_strings;
-    for (Tile* tile : row)
-    {
-      tile_strings.push_back(tile->getTileString());
-    }
-
-    for (size_t tile_line_index = 0; tile_line_index < TILE_HEIGHT; tile_line_index++)
-    {
-      bool print_arrow = false;
-
-      printLeftUI(row_index, line_index, row_label_index, print_arrow);
-      printTilesOfLine(tile_strings, tile_line_index);
-      printRightUI(print_arrow);
-      line_index++;
-    }
-  }
-}
-
-void Game::printLeftUI(size_t& row_index, size_t line_index, size_t& row_label_index, bool& print_arrow)
-{
-  if (line_index == row_label_index)
-  {
-    row_label_index += 5;
-    if (row_index % 2 == 0)
-    {
-      print_arrow = true;
-      std::cout << UI_ARROW_RIGHT;
-    }
-    else
-    {
-      std::cout << "   ";
-    }
-    std::cout << row_index++;
-  }
-  else
-  {
-    std::cout << "    ";
-  }
-}
-
-void Game::printTilesOfLine(std::vector<std::vector<std::string>>& tile_strings, size_t tile_line_index)
-{
-  for (std::vector<std::string> tile_rows : tile_strings)
-  {
-    std::cout << tile_rows[tile_line_index];
-  }
-}
-
-void Game::printRightUI(bool print_arrow)
-{
-  if (print_arrow)
-  {
-    std::cout << UI_ARROW_LEFT;
-  }
-  std::cout << std::endl;
-}
-
 void Game::quitGame()
 {
   quit_ = true;
@@ -506,5 +327,25 @@ void Game::setFreeTile(Tile* tile)
 std::vector<std::vector<Tile*>>& Game::getBoard()
 {
   return board_;
+}
+
+std::vector<Player*>& Game::getPlayers()
+{
+  return players_;
+}
+
+std::vector<Treasure*>& Game::getTreasures()
+{
+  return treasures_;
+}
+
+CommandMaster* Game::getCommandMaster()
+{
+  return command_master_;
+}
+
+PrintMaster* Game::getPrintMaster()
+{
+  return print_master_;
 }
 

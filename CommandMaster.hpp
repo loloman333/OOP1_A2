@@ -15,6 +15,11 @@
 
 const std::vector<std::string> PLAYER_MOVEMENT{"w", "\x1b[A", "a", "\x1b[D", "s", "\x1b[B", "d", "\x1b[C", "go"};
 
+const size_t MOVE_TOP = 2;
+const size_t MOVE_LEFT = 4;
+const size_t MOVE_BOTTOM = 6;
+const size_t MOVE_RIGHT = 8;
+
 const std::string COMMAND_INVALID = "Invalid command: ";
 const std::string COMMAND_INVALID_PARAMETER = "Invalid parameter: ";
 const std::string COMMAND_WRONG_NUMBER_ARGUMENTS = "Wrong number of arguments!";
@@ -88,26 +93,17 @@ private:
   bool isMovePossible(Direction direction, size_t movement, int &row_movement, int &col_movement);
   void moveInDirection(Player* player, size_t movement, int &row_movement, int &col_movement);
   Direction getOppositeDirection(Direction direction);
-
-  // Error messages
-  void invalidCommand(std::string command);
-  void invalidParameter(std::string parameter);
-  void wrongNumberArguments();
-  void commandTakesNoArguments();
-  void commandNotAllowed(std::vector<std::string> tokens);
-  void impossibleMove();
   void moveNotAllowed(std::vector<std::string> tokens);
 
 public:
 
-  CommandMaster(Game& game) : game_{game} {};
+  CommandMaster(Game& game);
   std::vector<std::string> tokenize(std::string input);
   bool handleCommand();
   void reset();
 
-  void printGameIfNecessary();
-  void printTreasure();
   bool getShowTreasure();
+  bool getShowGamefield();
 };
 
 #endif // A2_COMMANDMASTER_HPP

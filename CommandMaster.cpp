@@ -7,6 +7,7 @@
 //
 
 #include "CommandMaster.hpp"
+#include "PrintMaster.hpp"
 #include "Game.hpp"
 #include "Player.hpp"
 #include "StartTile.hpp"
@@ -16,6 +17,8 @@
 
 #include <iostream>
 #include <algorithm>
+
+CommandMaster::CommandMaster(Game& game) : game_{game} {};
 
 bool CommandMaster::handleCommand()
 {
@@ -102,7 +105,7 @@ bool CommandMaster::executeCommand(std::vector<std::string>& tokens)
   }
   else
   {
-    invalidCommand(command);
+    game_.getPrintMaster()->invalidCommand(command);
   }
   return false;
 }
@@ -117,52 +120,19 @@ void CommandMaster::showTreasure(std::vector<std::string> tokens)
 {
   if (tokens.size() > 1)
   {
-    commandTakesNoArguments();
+    game_.getPrintMaster()->commandTakesNoArguments();
   }
   else
   {
     show_treasure_ = true;
     if(show_gamefield_)
     {
-      game_.printGame();
+      game_.getPrintMaster()->printGame();
     }
     else
     {
-      printTreasure();
+      game_.getPrintMaster()->printTreasure();
     }
-  }
-}
-
-void CommandMaster::printGameIfNecessary()
-{
-  if(show_gamefield_)
-  {
-    game_.printGame();
-  }
-}
-
-
-void CommandMaster::printTreasure()
-{
-  std::vector<Treasure*> covered_stack = game_.getCurrentPlayer()->getCoveredStackRef();
-  if(covered_stack.empty())
-  {
-    std::cout << ALL_TREASURES_FOUND << std::endl;
-  }
-  else
-  {
-    Treasure *next_treasure = covered_stack.back();
-    std::string treasure_name = next_treasure->getName();
-    size_t treasure_id = next_treasure->getTreasureId();
-    std::string id_string = "";
-
-    if (treasure_id < 10)
-    {
-      id_string = "0";
-    }
-    id_string += std::to_string(treasure_id);
-
-    std::cout << CURRENT_TREASURE << treasure_name << TREASURE_NUMBER << id_string << std::endl;
   }
 }
 
@@ -171,12 +141,12 @@ void CommandMaster::hideTreasure(std::vector<std::string> tokens)
   if (tokens.size() == 1)
   {
     show_treasure_ = false;
-    std::cout << UI_CLEAR;
-    game_.printGame();
+
+    game_.getPrintMaster()->resetUI();
   }
   else
   {
-    commandTakesNoArguments();
+    game_.getPrintMaster()->commandTakesNoArguments();
   }
 }
 
@@ -185,12 +155,11 @@ void CommandMaster::showFreeTile(std::vector<std::string> tokens)
 {
   if (tokens.size() == 1)
   {
-    std::cout << FREE_TILE << std::endl;
-    game_.getFreeTile()->print();
+    game_.getPrintMaster()->printFreeTile();
   }
   else if (tokens.size() > 1)
   {
-    commandTakesNoArguments();
+    game_.getPrintMaster()->commandTakesNoArguments();
   }
 }
 
@@ -211,17 +180,17 @@ void CommandMaster::rotateFreeTile(std::vector<std::string> tokens)
       }
       else
       {
-        invalidParameter(direction);
+        game_.getPrintMaster()->invalidParameter(direction);
       }
     }
     else
     {
-      wrongNumberArguments();
+      game_.getPrintMaster()->wrongNumberArguments();
     }
   }
   else
   {
-    commandNotAllowed(tokens);
+    game_.getPrintMaster()->commandNotAllowed(tokens);
   }
 }
 
@@ -229,7 +198,7 @@ void CommandMaster::gameField(std::vector<std::string> tokens)
 {
   if (tokens.size() > 2)
   {
-    wrongNumberArguments();
+    game_.getPrintMaster()->wrongNumberArguments();
   }
   else if (tokens.size() == 2)
   {
@@ -242,12 +211,12 @@ void CommandMaster::gameField(std::vector<std::string> tokens)
       show_gamefield_ = false;
     }
     else{
-      invalidParameter(tokens[1]);
+      game_.getPrintMaster()->invalidParameter(tokens[1]);
     }
   }
   else
   {
-    game_.printGame();
+    game_.getPrintMaster()->printGame();
   }
 }
 
@@ -258,7 +227,7 @@ bool CommandMaster::finish(std::vector<std::string> tokens)
   {
     if (tokens.size() != 1)
     {
-      commandTakesNoArguments();
+      game_.getPrintMaster()->commandTakesNoArguments();
       return false;
     }
 
@@ -283,7 +252,8 @@ bool CommandMaster::finish(std::vector<std::string> tokens)
           std::string color = game_.getCurrentPlayer()->getPlayerColorAsString();
           std::transform(color.begin(), color.end(), color.begin(), ::toupper);
 
-          std::cout << UI_WIN_1 << color << UI_WIN_2 << std::endl;
+          game_.getPrintMaster()->printWin(color);
+
           game_.quitGame();
           return true;
         }
@@ -295,7 +265,7 @@ bool CommandMaster::finish(std::vector<std::string> tokens)
   }
   else
   {
-    commandNotAllowed(tokens);
+    game_.getPrintMaster()->commandNotAllowed(tokens);
     return false;
   }
 }
@@ -333,12 +303,12 @@ void CommandMaster::insert(std::vector <std::string> tokens)
     }
     else
     {
-      wrongNumberArguments();
+      game_.getPrintMaster()->wrongNumberArguments();
     }
   }
   else
   {
-    commandNotAllowed(tokens);
+    game_.getPrintMaster()->commandNotAllowed(tokens);
   }
 }
 
@@ -360,7 +330,7 @@ bool CommandMaster::checkInsertParameter(std::vector <std::string> tokens)
       }
       else
       {
-        commandNotAllowed(tokens);
+       game_.getPrintMaster()->commandNotAllowed(tokens);
       }
     }
     else
@@ -370,7 +340,7 @@ bool CommandMaster::checkInsertParameter(std::vector <std::string> tokens)
   }
   else
   {
-    invalidParameter(tokens[1]);
+    game_.getPrintMaster()->invalidParameter(tokens[1]);
   }
 
   return false;
@@ -458,7 +428,7 @@ void CommandMaster::insertTile(std::vector <std::string> tokens)
   }
   last_insert_row_col_ = tokens[2];
   last_insert_direction_ = tokens[1];
-  game_.printGame();
+  game_.getPrintMaster()->printGame();
 }
 
 void CommandMaster::insertRow(std::vector <std::string> tokens)
@@ -556,11 +526,11 @@ void CommandMaster::movePlayer(std::vector<std::string> tokens)
           if(isMovePossible(direction, movement, row_modifier, col_modifier))
           {
             moveInDirection(game_.getCurrentPlayer(), movement, row_modifier, col_modifier);
-            printGameIfNecessary();
+            game_.getPrintMaster()->printGameIfNecessary();
           }
           else
           {
-            impossibleMove();
+            game_.getPrintMaster()->impossibleMove();
           }
         }
       }
@@ -582,7 +552,7 @@ bool CommandMaster::checkMoveInput(std::vector<std::string> tokens)
     }
     else
     {
-      wrongNumberArguments();
+      game_.getPrintMaster()->wrongNumberArguments();
       return false;
     }
   }
@@ -592,7 +562,7 @@ bool CommandMaster::checkMoveInput(std::vector<std::string> tokens)
   }
   else
   {
-    commandTakesNoArguments();
+    game_.getPrintMaster()->commandTakesNoArguments();
     return false;
   }
 }
@@ -643,7 +613,7 @@ Direction CommandMaster::getDirection(std::vector<std::string> tokens)
       }
     }
   }
-  invalidParameter(tokens[1]);
+  game_.getPrintMaster()->invalidParameter(tokens[1]);
   return Direction::UNDEFINED;
 }
 
@@ -740,42 +710,6 @@ Direction CommandMaster::getOppositeDirection(Direction direction)
   }
 }
 
-void CommandMaster::invalidCommand(std::string command)
-{
-  std::cout << COMMAND_INVALID << "\"" << command << "\"" << std::endl;
-}
-
-void CommandMaster::invalidParameter(std::string parameter)
-{
-  std::cout << COMMAND_INVALID_PARAMETER << "\"" << parameter << "\"" << std::endl;
-}
-
-void CommandMaster::wrongNumberArguments()
-{
-  std::cout << COMMAND_WRONG_NUMBER_ARGUMENTS << std::endl;
-}
-
-void CommandMaster::commandTakesNoArguments()
-{
-  std::cout << COMMAND_TAKES_NO_ARGUMENTS << std::endl;
-}
-
-void CommandMaster::commandNotAllowed(std::vector<std::string> tokens)
-{
-  std::string invalid_command = "";
-  for (size_t index = 0; index < tokens.size(); index++)
-  {
-    invalid_command += (tokens[index] + " ");
-  }
-  std::cout << "\"" << invalid_command.substr(0, invalid_command.length() - 1)
-            << "\"" << COMMAND_NOT_ALLOWED << std::endl;
-}
-
-void CommandMaster::impossibleMove()
-{
-  std::cout << IMPOSSIBLE_MOVE << std::endl;
-}
-
 void CommandMaster::moveNotAllowed(std::vector<std::string> tokens)
 {
   std::vector<std::string> edited_tokens = tokens;
@@ -795,7 +729,7 @@ void CommandMaster::moveNotAllowed(std::vector<std::string> tokens)
   {
     edited_tokens[0] = "arrow right";
   }
-  commandNotAllowed(edited_tokens);
+  game_.getPrintMaster()->commandNotAllowed(edited_tokens);
 }
 
 bool CommandMaster::getShowTreasure()
@@ -808,7 +742,7 @@ bool CommandMaster::stringToSizeT(std::string token, size_t& number)
   if (token.find(".") != std::string::npos || token.find(",") != std::string::npos
       || token.find("-") != std::string::npos)
   {
-    invalidParameter(token);
+    game_.getPrintMaster()->invalidParameter(token);
     return false;
   }
   else
@@ -819,10 +753,14 @@ bool CommandMaster::stringToSizeT(std::string token, size_t& number)
     }
     catch (std::invalid_argument)
     {
-      invalidParameter(token);
+      game_.getPrintMaster()->invalidParameter(token);
       return false;
     }
   }
   return true;
 }
 
+bool CommandMaster::getShowGamefield()
+{
+  return show_gamefield_;
+}
