@@ -47,6 +47,7 @@ private:
   std::string last_insert_row_col_ = "";
 
   bool executeCommand(std::vector<std::string>& tokens);
+  bool stringToSizeT(std::string token, size_t& number);
 
   // Treasure
   void showTreasure(std::vector<std::string> tokens);
@@ -82,7 +83,7 @@ private:
   void movePlayer(std::vector<std::string> tokens);
   bool checkMoveInput(std::vector<std::string> tokens);
   Direction getDirection(std::vector<std::string> tokens);
-  int getAmount(std::vector<std::string> tokens);
+  size_t getAmount(std::vector<std::string> tokens);
   void getMovementModifier(Direction direction, int &row_modifier, int &col_modifier);
   bool isMovePossible(Direction direction, size_t movement, int &row_movement, int &col_movement);
   void moveInDirection(Player* player, size_t movement, int &row_movement, int &col_movement);

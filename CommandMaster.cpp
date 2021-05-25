@@ -347,15 +347,11 @@ bool CommandMaster::checkInsertParameter(std::vector <std::string> tokens)
   if (isValidInsertDirection(tokens[1]))
   {
     size_t row_col;
-    try
+    if (!stringToSizeT(tokens[2], row_col))
     {
-      row_col = std::stoi(tokens[2]);
-    }
-    catch (std::invalid_argument)
-    {
-      invalidParameter(tokens[2]);
       return false;
     }
+
     if (isInMoveableRowOrCol(row_col))
     {
       if (checkLastInsert(tokens))
@@ -651,30 +647,17 @@ Direction CommandMaster::getDirection(std::vector<std::string> tokens)
   return Direction::UNDEFINED;
 }
 
-int CommandMaster::getAmount(std::vector<std::string> tokens)
+size_t CommandMaster::getAmount(std::vector<std::string> tokens)
 {
-  int amount = 0;
+  size_t amount = 0;
   if(tokens[0] == "go" && tokens.size() == 3)
   {
-    try
+    if(!stringToSizeT(tokens[2], amount))
     {
-      amount = std::stoi(tokens[2]);
-      if (amount > 0)
-      {
-        return amount;
-      }
-      else
-      {
-        invalidParameter(tokens[2]);
-        return 0;
-      }
-    }
-    catch(std::invalid_argument)
-    {
-      invalidParameter(tokens[2]);
       return 0;
     }
 
+    return amount;
   }
   else
   {
@@ -818,5 +801,28 @@ void CommandMaster::moveNotAllowed(std::vector<std::string> tokens)
 bool CommandMaster::getShowTreasure()
 {
   return show_treasure_;
+}
+
+bool CommandMaster::stringToSizeT(std::string token, size_t& number)
+{
+  if (token.find(".") != std::string::npos || token.find(",") != std::string::npos
+      || token.find("-") != std::string::npos)
+  {
+    invalidParameter(token);
+    return false;
+  }
+  else
+  {
+    try
+    {
+      number = std::stoi(token);
+    }
+    catch (std::invalid_argument)
+    {
+      invalidParameter(token);
+      return false;
+    }
+  }
+  return true;
 }
 
