@@ -25,6 +25,7 @@ const std::string ALL_TREASURES_FOUND = "All Treasures found, return to your sta
 const std::string CURRENT_TREASURE = "Current Treasure: ";
 const std::string TREASURE_NUMBER = " Nr.: ";
 const std::string FREE_TILE = "Free tile:";
+const std::string INVALID_POSITION = "Invalid Position!";
 
 class Player;
 class Tile;

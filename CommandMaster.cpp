@@ -321,17 +321,24 @@ void CommandMaster::currentPlayerCollectTreasure(Treasure* treasure)
 
 void CommandMaster::insert(std::vector <std::string> tokens)
 {
-  if (tokens.size() == 3)
+  if (!inserted_)
   {
-    if(checkInsertParameter(tokens))
+    if (tokens.size() == 3)
     {
-      insertTile(tokens);
-      inserted_ = true;
+      if(checkInsertParameter(tokens))
+      {
+        insertTile(tokens);
+        inserted_ = true;
+      }
+    }
+    else
+    {
+      wrongNumberArguments();
     }
   }
   else
   {
-    wrongNumberArguments();
+    commandNotAllowed(tokens);
   }
 }
 
@@ -362,7 +369,7 @@ bool CommandMaster::checkInsertParameter(std::vector <std::string> tokens)
     }
     else
     {
-      invalidParameter(tokens[2]);
+      std::cout << INVALID_POSITION << std::endl;
     }
   }
   else
@@ -542,10 +549,10 @@ void CommandMaster::movePlayer(std::vector<std::string> tokens)
     if(checkMoveInput(tokens))
     {
       Direction direction = getDirection(tokens);
-      if(!(direction == Direction::UNDEFINED))
+      if(direction != Direction::UNDEFINED)
       {
         size_t movement = getAmount(tokens);
-        if(!(movement == 0))
+        if(movement != 0)
         {
           int row_modifier = 0;
           int col_modifier = 0;
@@ -652,7 +659,15 @@ int CommandMaster::getAmount(std::vector<std::string> tokens)
     try
     {
       amount = std::stoi(tokens[2]);
-      return amount;
+      if (amount > 0)
+      {
+        return amount;
+      }
+      else
+      {
+        invalidParameter(tokens[2]);
+        return 0;
+      }
     }
     catch(std::invalid_argument)
     {
