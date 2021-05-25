@@ -8,6 +8,9 @@
 
 #include "Game.hpp"
 #include <iostream>
+#include <string>
+
+const std::string WRONG_ARGUMENTS = "Wrong arguments!";
 
 int main(int argc)
 {
@@ -18,7 +21,7 @@ int main(int argc)
   }
   else
   {
-    std::cout << "Wrong arguments!" << std::endl;
+    std::cout << WRONG_ARGUMENTS << std::endl;
     return 2;
   }
 }
