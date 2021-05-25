@@ -28,7 +28,7 @@ Das Aufsammeln der Items erfolgt gleich wie bei Schätzen. Das heißt, steht ein
 Nachdem ein Item verwendet wurde, verschwindet es wieder aus dem Inventar des `Player`s und erscheint wieder auf dem dazugehörigen `Tile` (wo es aufgesammelt wurde), wo es dann auch wieder aufgesammelt werden kann.
 
 ## Nutzung des Items
-Mit dem Befehl `item` wird das Item genutzt. Dieser Befehl kann innerhalb einer Runde jederzeit ausgeführt werden, das heißt er kann vor `insert` oder auch zwischen verschiedenen `go`-Befehlen ausgeführt werden. Je nach Art des Items passieren unterschiedliche Dinge.
+Mit dem Befehl `item` wird das Item genutzt. Dieser Befehl kann innerhalb einer Runde jederzeit ausgeführt werden, das heißt er kann vor `insert` oder auch zwischen verschiedenen `go`-Befehlen ausgeführt werden. Je nach Art des Items passieren unterschiedliche Dinge. Hat der Spieler kein Item, so wird `No item collected\n` ausgegeben.
 
 ### Ziegel
 Mit Ziegeln lässt sich eine neue Mauer auf jenem Tile bauen, auf welchem man sich gerade befindet. Um herauszufinden, welche Richtung verschlossen werden sollen, wird folgende Ausgabe gemacht: `Where do you want to build the wall? ` Gültige Antworten darauf sind `top`,`bottom`,`left` und `right`. Bei ungültiger Antwort wird nochmal nachgefragt. Ist an der gewünschten Stelle bereits eine Mauer, so wird `Wall already exists!\n` ausgegeben und man muss erneut den Befehl `item` eingeben, wenn man eine Mauer bauen möchte. Steht an dieser Stelle noch keine Mauer so wird eine Neue errichtet, das Spielfeld neu ausgegeben und die Meldung `Wall built` ausgegeben.
