@@ -13,14 +13,6 @@
 #include <vector>
 #include <string>
 
-class Tile;
-class Player;
-class Treasure;
-class CommandMaster;
-enum class PlayerColor;
-enum class TileType;
-enum class Direction;
-
 const size_t BOARD_SIZE = 7;
 const size_t MOVE_TOP = 2;
 const size_t MOVE_LEFT = 4;
@@ -46,16 +38,27 @@ const std::string UI_PLAYER_BASE = "Player ";
 const size_t UI_PLAYER_TITLE_OFFSET = 58;
 const size_t UI_ARROW_OFFSET = 17;
 
+const size_t EXIT_DEFAULT = 0;
+const size_t EXIT_MEMORY_ERROR = 1;
+
+class Tile;
+class Player;
+class Treasure;
+class CommandMaster;
+enum class PlayerColor;
+enum class TileType;
+enum class Direction;
+
 class Game
 {
 private:
+  CommandMaster* command_master_;
   std::vector<std::vector<Tile*>> board_;
-  Tile* free_tile_;
   std::vector<Treasure*> treasures_;
   std::vector<Player*> players_;
+  Tile* free_tile_;
   size_t current_player_index_ = 0;
   bool quit_ = false;
-  CommandMaster* command_master_;
 
   Game();
   Game(const Game&);
@@ -103,7 +106,6 @@ public:
   Tile* getFreeTile();
   void setFreeTile(Tile* tile);
   void printGame();
-  void printGameIfNecessary();
   void quitGame();
   static Game& instance();
   ~Game();

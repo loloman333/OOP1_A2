@@ -11,10 +11,12 @@
 #include <string>
 
 const std::string WRONG_ARGUMENTS = "Wrong arguments!";
+const size_t ARGUMENT_COUNT = 1;
+const size_t EXIT_WRONG_ARGUMENTS = 2;
 
-int main(int argc)
+int main(int argc, [[maybe_unused]] char* argv[])
 {
-  if(argc == 1)
+  if(argc == ARGUMENT_COUNT)
   {
     Game& game = Game::instance();
     return game.run();
@@ -22,6 +24,6 @@ int main(int argc)
   else
   {
     std::cout << WRONG_ARGUMENTS << std::endl;
-    return 2;
+    return EXIT_WRONG_ARGUMENTS;
   }
 }

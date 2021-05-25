@@ -42,22 +42,22 @@ int Game::run()
   try
   {
     fillTreasures();
-
     gameStart();
     fillBoard();
     distributeTreasures();
 
     while (gameIsRunning())
     {
-      printGame();
+      command_master_->printGameIfNecessary();
       playRound();
     }
 
-  } catch (std::bad_alloc)
-  {
-    return 1;
   }
-  return 0;
+  catch (std::bad_alloc)
+  {
+    return EXIT_MEMORY_ERROR;
+  }
+  return EXIT_DEFAULT;
 }
 
 void Game::gameStart()
@@ -117,14 +117,6 @@ void Game::playRound()
     stop = command_master_->handleCommand();
   }
   command_master_->reset();
-}
-
-void Game::printGameIfNecessary()
-{
-  if(command_master_->getShowGamefield())
-  {
-    printGame();
-  }
 }
 
 void Game::fillBoard()

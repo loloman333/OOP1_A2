@@ -6,23 +6,16 @@
 //---------------------------------------------------------------------------------------------------------------------
 //
 
-#include "Game.hpp"
 #include "CommandMaster.hpp"
+#include "Game.hpp"
 #include "Player.hpp"
-#include "Tile.hpp"
-#include "TreasureTile.hpp"
 #include "StartTile.hpp"
+#include "Tile.hpp"
 #include "Treasure.hpp"
+#include "TreasureTile.hpp"
 
 #include <iostream>
 #include <algorithm>
-
-void CommandMaster::reset()
-{
-  inserted_ = false;
-  show_treasure_ = false;
-  show_gamefield_ = true;
-}
 
 bool CommandMaster::handleCommand()
 {
@@ -101,14 +94,7 @@ bool CommandMaster::executeCommand(std::vector<std::string>& tokens)
   }
   else if(std::find(PLAYER_MOVEMENT.begin(), PLAYER_MOVEMENT.end(), command) != PLAYER_MOVEMENT.end())
   {
-    if(inserted_)
-    {
-      movePlayer(tokens);
-    }
-    else
-    {
-      moveNotAllowed(tokens);
-    }
+    movePlayer(tokens);
   }
   else if(command == "")
   {
@@ -119,6 +105,12 @@ bool CommandMaster::executeCommand(std::vector<std::string>& tokens)
     invalidCommand(command);
   }
   return false;
+}
+
+void CommandMaster::reset()
+{
+  inserted_ = false;
+  show_treasure_ = false;
 }
 
 void CommandMaster::showTreasure(std::vector<std::string> tokens)
@@ -141,13 +133,21 @@ void CommandMaster::showTreasure(std::vector<std::string> tokens)
   }
 }
 
+void CommandMaster::printGameIfNecessary()
+{
+  if(show_gamefield_)
+  {
+    game_.printGame();
+  }
+}
+
 
 void CommandMaster::printTreasure()
 {
   std::vector<Treasure*> covered_stack = game_.getCurrentPlayer()->getCoveredStackRef();
   if(covered_stack.empty())
   {
-    std::cout << "All Treasures found, return to your startfield to win!" << std::endl;
+    std::cout << ALL_TREASURES_FOUND << std::endl;
   }
   else
   {
@@ -162,7 +162,7 @@ void CommandMaster::printTreasure()
     }
     id_string += std::to_string(treasure_id);
 
-    std::cout << "Current Treasure: " << treasure_name << " Nr.: " << id_string << std::endl;
+    std::cout << CURRENT_TREASURE << treasure_name << TREASURE_NUMBER << id_string << std::endl;
   }
 }
 
@@ -185,7 +185,7 @@ void CommandMaster::showFreeTile(std::vector<std::string> tokens)
 {
   if (tokens.size() == 1)
   {
-    std::cout << "Free tile:" << std::endl;
+    std::cout << FREE_TILE << std::endl;
     game_.getFreeTile()->print();
   }
   else if (tokens.size() > 1)
@@ -290,7 +290,6 @@ bool CommandMaster::finish(std::vector<std::string> tokens)
       }
     }
 
-    show_treasure_ = false;
     game_.nextPlayer();
     return true;
   }
@@ -538,28 +537,35 @@ void CommandMaster::playersUpdateRowColumn(std::vector<Player*> players, size_t 
 
 void CommandMaster::movePlayer(std::vector<std::string> tokens)
 {
-  if(checkMoveInput(tokens))
+  if (inserted_)
   {
-    Direction direction = getDirection(tokens);
-    if(!(direction == Direction::UNDEFINED))
+    if(checkMoveInput(tokens))
     {
-      size_t movement = getAmount(tokens);
-      if(!(movement == 0))
+      Direction direction = getDirection(tokens);
+      if(!(direction == Direction::UNDEFINED))
       {
-        int row_modifier = 0;
-        int col_modifier = 0;
-        getMovementModifier(direction, row_modifier, col_modifier);
-        if(isMovePossible(direction, movement, row_modifier, col_modifier))
+        size_t movement = getAmount(tokens);
+        if(!(movement == 0))
         {
-          moveInDirection(game_.getCurrentPlayer(), movement, row_modifier, col_modifier);
-          game_.printGameIfNecessary();
-        }
-        else
-        {
-          impossibleMove();
+          int row_modifier = 0;
+          int col_modifier = 0;
+          getMovementModifier(direction, row_modifier, col_modifier);
+          if(isMovePossible(direction, movement, row_modifier, col_modifier))
+          {
+            moveInDirection(game_.getCurrentPlayer(), movement, row_modifier, col_modifier);
+            printGameIfNecessary();
+          }
+          else
+          {
+            impossibleMove();
+          }
         }
       }
     }
+  }
+  else
+  {
+    moveNotAllowed(tokens);
   }
 }
 
@@ -792,11 +798,6 @@ void CommandMaster::moveNotAllowed(std::vector<std::string> tokens)
     edited_tokens[0] = "arrow right";
   }
   commandNotAllowed(edited_tokens);
-}
-
-bool CommandMaster::getShowGamefield()
-{
-  return show_gamefield_;
 }
 
 bool CommandMaster::getShowTreasure()

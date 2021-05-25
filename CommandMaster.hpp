@@ -21,6 +21,10 @@ const std::string COMMAND_WRONG_NUMBER_ARGUMENTS = "Wrong number of arguments!";
 const std::string COMMAND_TAKES_NO_ARGUMENTS = "This command does not take any arguments!";
 const std::string COMMAND_NOT_ALLOWED = " is currently not allowed";
 const std::string IMPOSSIBLE_MOVE = "Impossible move!";
+const std::string ALL_TREASURES_FOUND = "All Treasures found, return to your startfield to win!";
+const std::string CURRENT_TREASURE = "Current Treasure: ";
+const std::string TREASURE_NUMBER = " Nr.: ";
+const std::string FREE_TILE = "Free tile:";
 
 class Player;
 class Tile;
@@ -71,6 +75,7 @@ private:
   void insertColumn(std::vector<std::string> tokens);
   void playersUpdateRowColumn(std::vector<Player*> players, size_t row, size_t column);
   void movePlayersToTile(Tile* from, size_t row, size_t column);
+  void notUsed();
 
   // Move
   void movePlayer(std::vector<std::string> tokens);
@@ -94,13 +99,13 @@ private:
 public:
 
   CommandMaster(Game& game) : game_{game} {};
-  void reset();
-  void printTreasure();
-  bool getShowGamefield();
-  bool getShowTreasure();
   std::vector<std::string> tokenize(std::string input);
   bool handleCommand();
+  void reset();
 
+  void printGameIfNecessary();
+  void printTreasure();
+  bool getShowTreasure();
 };
 
 #endif // A2_COMMANDMASTER_HPP
