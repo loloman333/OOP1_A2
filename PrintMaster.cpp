@@ -253,6 +253,16 @@ void PrintMaster::ladderUsed()
   std::cout << UI_LADDER_PROMPT << std::endl;
 }
 
+void PrintMaster::noItem()
+{
+  std::cout << UI_NO_ITEM << std::endl;
+}
+
+void PrintMaster::printBomb()
+{
+  std::cout << UI_BOMB << std::endl;
+}
+
 void PrintMaster::invalidCommand(std::string command)
 {
   std::cout << COMMAND_INVALID << "\"" << command << "\"" << std::endl;

@@ -81,6 +81,7 @@ class Tile
     void rotate(Direction dir);
     bool isPlayerColorOnTile(PlayerColor color);
     bool addWallInDirection(Direction direction);
+    void removeWallInDirection(Direction direction);
 };
 
 #endif //A2_TILE_HPP

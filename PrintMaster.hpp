@@ -48,6 +48,7 @@ const std::string UI_WALL_BUILT = "Wall built";
 const std::string ROPE_NO_PLAYER = "No player to tie up here.";
 const std::string ROPE_TIED_1 = "Player ";
 const std::string ROPE_TIED_2 = " tied up.";
+const std::string UI_BOMB = "BOOOOOOOOOMMMMM!!!!";
 
 const size_t UI_PLAYER_TITLE_OFFSET = 58;
 const size_t UI_ARROW_OFFSET = 17;
@@ -88,6 +89,9 @@ public:
   void whereWall();
   void wallExists();
   void wallBuilt();
+  void ladderUsed();
+  void noItem();
+  void printBomb();
 
   // Error messages
   void invalidCommand(std::string command);

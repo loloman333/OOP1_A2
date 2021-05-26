@@ -140,7 +140,30 @@ Direction Item::getDirectionFromString(std::string string)
 
 void Item::useDynamite(Game& game)
 {
-
+  int row = game.getCurrentPlayer()->getRow();
+  int col = game.getCurrentPlayer()->getCol();
+  game.getBoard()[row][col]->setType(TileType::X);
+  if(row + 1 < BOARD_SIZE)
+  {
+    game.getBoard()[row + 1][col]->removeWallInDirection(Direction::TOP);
+  }
+  if((col - 1) >= 0)
+  {
+    game.getBoard()[row][col - 1]->removeWallInDirection(Direction::RIGHT);
+  }
+  if((row - 1) >= 0)
+  {
+    game.getBoard()[row - 1][col]->removeWallInDirection(Direction::BOTTOM);
+  }
+  if(col + 1 < BOARD_SIZE)
+  {
+    game.getBoard()[row][col + 1]->removeWallInDirection(Direction::LEFT);
+  }
+  game.getCurrentPlayer()->setItem(nullptr);
+  setFound(false);
+  game.getPrintMaster()->printGame();
+  game.getPrintMaster()->printBomb();
+  
 }
 
 void Item::useLadder(Game& game)

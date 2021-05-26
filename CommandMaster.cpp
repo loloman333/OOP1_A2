@@ -712,19 +712,20 @@ bool CommandMaster::isMovePossible(Direction direction, size_t movement, int &ro
   Player* current_player = game_.getCurrentPlayer();
   if(current_player->getUsingLadder())
   {
-    size_t row_location = (movement * row_modifier) + current_player->getRow();
-    size_t col_location = (movement * col_modifier) + current_player->getCol();
-    if(row_location > 0 && row_location < BOARD_SIZE && col_location > 0 && col_location < BOARD_SIZE)
+    int row_location = (movement * row_modifier) + current_player->getRow();
+    int col_location = (movement * col_modifier) + current_player->getCol();
+    if(row_location >= 0 && row_location < BOARD_SIZE && col_location >= 0 && col_location < BOARD_SIZE)
     {
       current_player->setUsingLadder(false);
       current_player->getItem()->setFound(false);
+      current_player->setItem(nullptr);
       return true;
     }
   }
   for(size_t index = 0; index <= movement; index++)
   {
-    size_t row = game_.getCurrentPlayer()->getRow() + (index * row_modifier);
-    size_t col = game_.getCurrentPlayer()->getCol() + (index * col_modifier);
+    int row = game_.getCurrentPlayer()->getRow() + (index * row_modifier);
+    int col = game_.getCurrentPlayer()->getCol() + (index * col_modifier);
     if(row >= BOARD_SIZE || col >= BOARD_SIZE)
     {
       return false;
@@ -753,8 +754,8 @@ void CommandMaster::moveInDirection(Player* player, size_t movement, int &row_mo
   std::string player_color = player->getPlayerColorAsString();
   size_t old_row = player->getRow();
   size_t old_col = player->getCol();
-  size_t new_row = player->getRow() + (movement * row_modifier);
-  size_t new_col = player->getCol() + (movement * col_modifier);
+  int new_row = player->getRow() + (movement * row_modifier);
+  int new_col = player->getCol() + (movement * col_modifier);
   player->setRow(new_row);
   player->setCol(new_col);
   game_.getBoard()[old_row][old_col]->removePlayer(player_color);
@@ -839,5 +840,9 @@ void CommandMaster::useItem()
   if(!(current->getItem() == nullptr))
   {
     game_.getCurrentPlayer()->getItem()->use();
+  }
+  else
+  {
+    game_.getPrintMaster()->noItem();
   }
 }
