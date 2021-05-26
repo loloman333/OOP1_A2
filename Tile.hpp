@@ -9,7 +9,6 @@
 #ifndef A2_TILE_HPP
 #define A2_TILE_HPP
 
-#include <cstdlib>
 #include <string>
 #include <vector>
 #include <iostream>

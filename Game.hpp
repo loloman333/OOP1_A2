@@ -42,6 +42,7 @@ private:
   Tile* free_tile_;
   size_t current_player_index_ = 0;
   bool quit_ = false;
+  bool bonus_items_ = false;
 
   bool gameIsRunning();
 
@@ -83,6 +84,7 @@ static Game& instance();
   Player* getCurrentPlayer();
   Tile* getFreeTile();
   void setFreeTile(Tile* tile);
+  void setBonus(bool choice);
   void quitGame();
 
 };

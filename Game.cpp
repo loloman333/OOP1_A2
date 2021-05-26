@@ -329,11 +329,6 @@ Tile* Game::getFreeTile()
   return free_tile_;
 }
 
-void Game::setFreeTile(Tile* tile)
-{
-  free_tile_ = tile;
-}
-
 std::vector<std::vector<Tile*>>& Game::getBoard()
 {
   return board_;
@@ -357,5 +352,16 @@ CommandMaster* Game::getCommandMaster()
 PrintMaster* Game::getPrintMaster()
 {
   return print_master_;
+}
+
+void Game::setFreeTile(Tile* tile)
+{
+  free_tile_ = tile;
+}
+
+
+void Game::setBonus(bool choice)
+{
+  bonus_items_ = choice;
 }
 
