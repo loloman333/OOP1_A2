@@ -82,6 +82,10 @@ bool CommandMaster::executeCommand(std::vector<std::string>& tokens)
   {
     return finish(tokens);
   }
+  else if(command == "item")
+  {
+    useItem();
+  }
   else if(std::find(PLAYER_MOVEMENT.begin(), PLAYER_MOVEMENT.end(), command) != PLAYER_MOVEMENT.end())
   {
     movePlayer(tokens);
@@ -753,4 +757,13 @@ bool CommandMaster::stringToSizeT(std::string token, size_t& number)
 bool CommandMaster::getShowGamefield()
 {
   return show_gamefield_;
+}
+
+void CommandMaster::useItem()
+{
+  Player* current = game_.getCurrentPlayer();
+  if(!(current->getItem() == nullptr))
+  {
+    game_.getCurrentPlayer()->getItem()->use();
+  }
 }

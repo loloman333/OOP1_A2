@@ -55,6 +55,11 @@ size_t Player::getRow()
   return row_;
 }
 
+Item* Player::getItem()
+{
+  return item_;
+}
+
 void Player::setNrFoundTreasures(size_t nr_found_treasures)
 {
   nr_found_treasures_ = nr_found_treasures;
@@ -79,6 +84,11 @@ void Player::setRowCol(size_t row, size_t column)
 {
   setRow(row);
   setCol(column);
+}
+
+void Player::setItem(Item* item)
+{
+  item_ = item;
 }
 
 void Player::incrementNrFoundTreasures()

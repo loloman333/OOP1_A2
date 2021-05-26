@@ -13,6 +13,7 @@
 #include <string>
 
 class Treasure;
+class Item;
 
 enum class PlayerColor {RED = 'R', YELLOW = 'Y', BLUE = 'B', GREEN = 'G'};
 
@@ -25,6 +26,7 @@ class Player
     PlayerColor player_color_;
     size_t row_;
     size_t col_;
+    Item* item_;
 
   public: 
     Player(PlayerColor player_color);
@@ -35,6 +37,7 @@ class Player
     std::string getPlayerColorAsString();
     size_t getRow();
     size_t getCol();
+    Item* getItem();
 
     static const std::vector<PlayerColor> player_colors_; 
 
@@ -43,6 +46,7 @@ class Player
     void setRow(size_t row);
     void setCol(size_t col);
     void setRowCol(size_t row, size_t column);
+    void setItem(Item* item);
 
     void incrementNrFoundTreasures();
 };
