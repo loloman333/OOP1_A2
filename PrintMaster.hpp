@@ -28,6 +28,8 @@ const std::string UI_COLUMN_LABELS = "        1        2        3        4      
 const std::string UI_TREASURE_COUNTER = "Treasure: ";
 const std::string UI_PLAYER_BASE = "Player ";
 
+const std::string UI_BOMB = "BOOOOOOOOOMMMMM!!!!";
+
 const size_t UI_PLAYER_TITLE_OFFSET = 58;
 const size_t UI_ARROW_OFFSET = 17;
 
@@ -60,7 +62,10 @@ public:
   void printWin(std::string color);
   void printGame();
 
+  //Item
   void ladderUsed();
+  void noItem();
+  void printBomb();
 
   // Error messages
   void invalidCommand(std::string command);

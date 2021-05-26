@@ -389,3 +389,19 @@ Player* Tile::getPlayer(PlayerColor player_color)
   }
   return nullptr;
 }
+
+void Tile::removeWallInDirection(Direction direction)
+{
+  size_t remove =  walls_.size();
+  for(size_t index = 0; index < walls_.size(); index++)
+  {
+    if(walls_[index] == direction)
+    {
+      remove = index;
+    }
+  }
+  if(remove != walls_.size())
+  {
+    walls_.erase(walls_.begin() + remove);
+  }
+}

@@ -13,6 +13,7 @@
 #include <string>
 
 const std::string UI_LADDER_PROMPT = "You can go in all directions, with your next move. Choose wisely!";
+const std::string UI_NO_ITEM = "Not item collected";
 
 const std::string ROPE_NO_PLAYER = "No player to tie up here.";
 const std::string ROPE_TIED_1 = "Player ";
