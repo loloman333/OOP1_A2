@@ -349,10 +349,6 @@ void Tile::rotate(Direction dir)
   }
 
   int new_rotation = (static_cast<size_t>(getRotation()) + step);
-  // if (new_rotation < 0)
-  // {
-  //   new_rotation = static_cast<size_t>(Rotation::DEG270);
-  // }
   new_rotation += ROTATION_AMOUNT;
   new_rotation %= ROTATION_AMOUNT;
 

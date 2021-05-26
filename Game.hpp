@@ -63,7 +63,9 @@ private:
   void deleteTreasures();
   void deleteFreeTile();
   void deleteBoard();
+  void deleteItemsFromPlayers();
   void deletePlayers();
+  void deleteTile(Tile* tile);
   
   void playRound();
 
@@ -84,6 +86,7 @@ static Game& instance();
   std::vector<Treasure*>& getTreasures();
   Player* getCurrentPlayer();
   Tile* getFreeTile();
+  bool getBonusItemsFlag();
   void setFreeTile(Tile* tile);
   void setBonus(bool choice);
   void quitGame();

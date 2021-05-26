@@ -84,7 +84,7 @@ bool CommandMaster::executeCommand(std::vector<std::string>& tokens)
   {
     return finish(tokens);
   }
-  else if(command == "item")
+  else if(command == "item" && game_.getBonusItemsFlag())
   {
     useItem();
   }
