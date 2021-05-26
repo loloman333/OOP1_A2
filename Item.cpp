@@ -90,6 +90,10 @@ void Item::useRope(Game& game)
 
   if (current_tile->getPlayers().size() > 1)
   {
+    current_player->getItem()->setFound(false);
+    current_player->setItem(nullptr);
+    game.getPrintMaster()->printGameIfNecessary();
+
     for (PlayerColor color : Player::player_colors_)
     {
       if(current_tile->isPlayerColorOnTile(color) && color != current_player->getPlayerColor())
@@ -99,7 +103,6 @@ void Item::useRope(Game& game)
         std::cout << ROPE_TIED_1 << player->getPlayerColorAsString() << ROPE_TIED_2 << std::endl;
       }
     }
-    current_player->setItem(nullptr);
   }
   else
   {
