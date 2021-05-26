@@ -314,11 +314,6 @@ void CommandMaster::insert(std::vector <std::string> tokens)
 
 bool CommandMaster::checkInsertParameter(std::vector <std::string> tokens)
 {
-
-  for (auto token : tokens)
-  {
-    std::cout << token << std::endl;
-  }
   if (isValidInsertDirection(tokens[1]))
   {
     size_t row_col;
