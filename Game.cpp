@@ -46,8 +46,12 @@ int Game::run()
   {
     fillTreasures();
     gameStart();
-    fillBoard();
-    distributeTreasures();
+
+    if (gameIsRunning())
+    {
+      fillBoard();
+      distributeTreasures();
+    }
 
     while (gameIsRunning())
     {
@@ -74,6 +78,7 @@ void Game::gameStart()
   {
     std::cout << UI_PLAYER_COUNT;
     std::getline(std::cin, input);
+
     input_vector = command_master_->tokenize(input);
     if(input_vector.size() == 1)
     {
@@ -93,6 +98,11 @@ void Game::gameStart()
       {
         std::cout << UI_WRONG_COUNT << std::endl;
       }
+    }
+    else if(std::cin.eof())
+    {
+      quitGame();
+      return;
     }
     else
     {
