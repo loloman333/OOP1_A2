@@ -39,8 +39,8 @@ const std::string CURRENT_TREASURE = "Current Treasure: ";
 const std::string TREASURE_NUMBER = " Nr.: ";
 const std::string FREE_TILE = "Free tile:";
 const std::string INVALID_POSITION = "Invalid Position!";
-const std::string ROPE_CANT_MOVE = "You can't move because you are tied up";
 
+const std::string ROPE_CANT_MOVE = "You can't move because you are tied up";
 const std::string UI_LADDER_PROMPT = "You can go in all directions, with your next move. Choose wisely!";
 const std::string UI_WHERE_WALL = "Where do you want to build the wall? ";
 const std::string UI_WALL_EXISTS = "Wall already exists!";

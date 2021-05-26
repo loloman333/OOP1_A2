@@ -330,5 +330,5 @@ void PrintMaster::wallExists()
 
 void PrintMaster::wallBuilt()
 { 
-  std::cout << UI_WALL_BUILT << std::endl;
+  std::cout << UI_WALL_BUILT;
 }

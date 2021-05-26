@@ -837,10 +837,10 @@ bool CommandMaster::getShowGamefield()
 
 void CommandMaster::useItem()
 {
-  Player* current = game_.getCurrentPlayer();
-  if(!(current->getItem() == nullptr))
+  Player* current_player = game_.getCurrentPlayer();
+  if(current_player->getItem() != nullptr)
   {
-    game_.getCurrentPlayer()->getItem()->use();
+    current_player->getItem()->use();
   }
   else
   {
