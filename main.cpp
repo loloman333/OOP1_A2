@@ -11,19 +11,27 @@
 #include <string>
 
 const std::string WRONG_ARGUMENTS = "Wrong arguments!";
-const size_t ARGUMENT_COUNT = 1;
+const size_t NORMAL_GAME_ARGUMENT_COUNT = 1;
+const size_t BONUS_GAME_ARGUMENT_COUNT = 2;
+const size_t MAX_ARGUMENT_COUNT = 2;
 const size_t EXIT_WRONG_ARGUMENTS = 2;
 
-int main(int argc, [[maybe_unused]] char* argv[])
+int main(int argc, char* argv[])
 {
-  if(argc == ARGUMENT_COUNT)
+  if(argc == NORMAL_GAME_ARGUMENT_COUNT)
   {
     Game& game = Game::instance();
     return game.run();
   }
-  else
+  else if(argc == BONUS_GAME_ARGUMENT_COUNT)
   {
-    std::cout << WRONG_ARGUMENTS << std::endl;
-    return EXIT_WRONG_ARGUMENTS;
+    if(std::string(argv[1]) == "-bonus")
+    {
+      Game& game = Game::instance();
+      game.setBonus(true);
+      return game.run();
+    }
   }
+  std::cout << WRONG_ARGUMENTS << std::endl;
+  return EXIT_WRONG_ARGUMENTS;
 }
