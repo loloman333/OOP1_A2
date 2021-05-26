@@ -496,6 +496,7 @@ void CommandMaster::movePlayersToTile(Tile* from, size_t row, size_t column)
   {
     game_.getBoard()[row][column]->addPlayer(player);
     player->setRowCol(row, column);
+    from->removePlayer(player->getPlayerColorAsString());
   }
 }
 
