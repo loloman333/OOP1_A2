@@ -328,7 +328,6 @@ void Game::deleteTile(Tile* tile)
 {
   if (tile->hasItem())
   {
-    std::cout << dynamic_cast<ItemTile*>(tile)->getItem()->getItemTypeAsString() << std::endl;
     delete dynamic_cast<ItemTile*>(tile)->getItem();
   }
   delete tile;
