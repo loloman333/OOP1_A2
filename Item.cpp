@@ -46,5 +46,19 @@ void Item::setFound(bool found)
 
 void Item::use()
 {
-
+  switch (item_type_)
+  {
+  case ItemType::BRICKS:
+    useBricks();
+    break;
+  case ItemType::DYNAMITE:
+    useDynamite();
+    break;
+  case ItemType::LADDER:
+    useLadder();
+    break;
+  case ItemType::ROPE:
+    useRope();
+    break;
+  }
 }

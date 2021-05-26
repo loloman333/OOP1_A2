@@ -19,6 +19,10 @@ class Item
 private:
   ItemType item_type_;
   bool found_ = false;
+  void useBricks();
+  void useDynamite();
+  void useLadder();
+  void useRope();
 
 public:
   Item(ItemType item_type);
@@ -30,6 +34,7 @@ public:
   void setFound(bool found);
 
   void use();
+
 };
 
 #endif //A2_ITEM_HPP
