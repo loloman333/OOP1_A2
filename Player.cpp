@@ -91,6 +91,11 @@ void Player::setItem(Item* item)
   item_ = item;
 }
 
+void Player::setTied(bool tied)
+{
+  tied_ = tied;
+}
+
 void Player::incrementNrFoundTreasures()
 {
   nr_found_treasures_++;

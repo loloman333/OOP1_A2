@@ -27,6 +27,7 @@ class Player
     size_t row_;
     size_t col_;
     Item* item_ = nullptr;
+    bool tied_ = false;
 
   public: 
     Player(PlayerColor player_color);
@@ -47,6 +48,7 @@ class Player
     void setCol(size_t col);
     void setRowCol(size_t row, size_t column);
     void setItem(Item* item);
+    void setTied(bool tied);
 
     void incrementNrFoundTreasures();
 };

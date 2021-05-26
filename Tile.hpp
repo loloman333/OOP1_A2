@@ -44,7 +44,6 @@ class Tile
     void fillTileString(std::vector<std::string>& tile);
     void generateTile(Rotation rotation,std::vector<Direction> directions);
     void addPlayersToTile(std::vector<std::string>& tile_vector);
-    bool isPlayerColorOnTile(PlayerColor color);
     Direction calcDirection(Direction dir, Rotation rot);
     bool isCorner(size_t row, size_t col);
     std::vector<bool> calcWalls();
@@ -69,12 +68,14 @@ class Tile
     std::string getTileTypeString();
     void addPlayer(Player* player);
     void removePlayer(std::string player_color);
+    Player* getPlayer(PlayerColor player_color);
     bool containsPlayer();
     bool virtual hasTreasure();
     bool virtual hasItem();
     bool isWallInDirection(Direction direction);
     void print();
     void rotate(Direction dir);
+    bool isPlayerColorOnTile(PlayerColor color);
 };
 
 #endif //A2_TILE_HPP
