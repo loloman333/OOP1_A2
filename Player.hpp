@@ -26,7 +26,7 @@ class Player
     PlayerColor player_color_;
     size_t row_;
     size_t col_;
-    Item* item_;
+    Item* item_ = nullptr;
 
   public: 
     Player(PlayerColor player_color);

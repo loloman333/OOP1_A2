@@ -15,6 +15,7 @@
 #include "Treasure.hpp"
 #include "TreasureTile.hpp"
 #include "Item.hpp"
+#include "ItemTile.hpp"
 
 #include <iostream>
 #include <algorithm>
@@ -223,33 +224,22 @@ bool CommandMaster::finish(std::vector<std::string> tokens)
       return false;
     }
 
-    size_t player_row = game_.getCurrentPlayer()->getRow();
-    size_t player_column = game_.getCurrentPlayer()->getCol();
-    if (game_.getBoard()[player_row][player_column]->hasTreasure())
+    Treasure* treasure_to_collect;
+    if (checkCollectTreasure(treasure_to_collect))
     {
-      TreasureTile* tile = dynamic_cast<TreasureTile *>(game_.getBoard()[player_row][player_column]);
-      if (currentPlayerNeedsTreasure(tile->getTreasure()))
-      {
-        currentPlayerCollectTreasure(tile->getTreasure());
-      }
+      currentPlayerCollectTreasure(treasure_to_collect);
     }
 
-    if (game_.isCorner(player_row, player_column))
+    Item* item_to_collect;
+    if (checkCollectItem(item_to_collect))
     {
-      StartTile *tile = dynamic_cast<StartTile *>(game_.getBoard()[player_row][player_column]);
-      if (game_.getCurrentPlayer()->getPlayerColor() == tile->getPlayerColor())
-      {
-        if (game_.getCurrentPlayer()->getCoveredStackRef().empty())
-        {
-          std::string color = game_.getCurrentPlayer()->getPlayerColorAsString();
-          std::transform(color.begin(), color.end(), color.begin(), ::toupper);
+      std::cout << "collect item" << std::endl;
+      currentPlayerCollectItem(item_to_collect);
+    }
 
-          game_.getPrintMaster()->printWin(color);
-
-          game_.quitGame();
-          return true;
-        }
-      }
+    if (checkWin())
+    {
+      return true;
     }
 
     game_.nextPlayer();
@@ -262,6 +252,65 @@ bool CommandMaster::finish(std::vector<std::string> tokens)
   }
 }
 
+bool CommandMaster::checkCollectTreasure(Treasure*& treasure_to_collect)
+{
+  size_t player_row = game_.getCurrentPlayer()->getRow();
+  size_t player_column = game_.getCurrentPlayer()->getCol();
+
+  if (game_.getBoard()[player_row][player_column]->hasTreasure())
+  {
+    TreasureTile* tile = dynamic_cast<TreasureTile *>(game_.getBoard()[player_row][player_column]);
+    if (currentPlayerNeedsTreasure(tile->getTreasure()))
+    {
+      treasure_to_collect = tile->getTreasure();
+      return true;
+    }
+  }
+  return false;
+}
+
+bool CommandMaster::checkCollectItem(Item*& item_to_collect)
+{
+  size_t player_row = game_.getCurrentPlayer()->getRow();
+  size_t player_column = game_.getCurrentPlayer()->getCol();
+
+  if (game_.getBoard()[player_row][player_column]->hasItem())
+  {
+    ItemTile* tile = dynamic_cast<ItemTile*>(game_.getBoard()[player_row][player_column]);
+    if (game_.getCurrentPlayer()->getItem() == nullptr)
+    {
+      item_to_collect = tile->getItem();
+      return true;
+    }
+  }
+  return false;
+}
+
+bool CommandMaster::checkWin()
+{
+  size_t player_row = game_.getCurrentPlayer()->getRow();
+  size_t player_column = game_.getCurrentPlayer()->getCol();
+  
+  if (game_.isCorner(player_row, player_column))
+  {
+    StartTile *tile = dynamic_cast<StartTile *>(game_.getBoard()[player_row][player_column]);
+    if (game_.getCurrentPlayer()->getPlayerColor() == tile->getPlayerColor())
+    {
+      if (game_.getCurrentPlayer()->getCoveredStackRef().empty())
+      {
+        std::string color = game_.getCurrentPlayer()->getPlayerColorAsString();
+        std::transform(color.begin(), color.end(), color.begin(), ::toupper);
+
+        game_.getPrintMaster()->printWin(color);
+
+        game_.quitGame();
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
 
 bool CommandMaster::currentPlayerNeedsTreasure(Treasure* treasure)
 {
@@ -279,6 +328,12 @@ void CommandMaster::currentPlayerCollectTreasure(Treasure* treasure)
   std::vector<Treasure*>& stack = game_.getCurrentPlayer()->getCoveredStackRef();
   stack.pop_back();
   game_.getCurrentPlayer()->incrementNrFoundTreasures();
+}
+
+void CommandMaster::currentPlayerCollectItem(Item* item)
+{
+  item->setFound(true);
+  game_.getCurrentPlayer()->setItem(item);
 }
 
 void CommandMaster::insert(std::vector <std::string> tokens)

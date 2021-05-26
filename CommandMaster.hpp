@@ -36,6 +36,7 @@ class Player;
 class Tile;
 class Treasure;
 class Game;
+class Item;
 enum class Direction;
 
 class CommandMaster
@@ -69,6 +70,10 @@ private:
   bool finish(std::vector<std::string> tokens);
   bool currentPlayerNeedsTreasure(Treasure* treasure);
   void currentPlayerCollectTreasure(Treasure* treasure);
+  void currentPlayerCollectItem(Item* item);
+  bool checkCollectTreasure(Treasure*& treasure_to_collect);
+  bool checkCollectItem(Item*& item_to_collect);
+  bool checkWin();
 
   // Insert
   void insert(std::vector<std::string> tokens);
