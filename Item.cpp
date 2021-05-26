@@ -104,6 +104,8 @@ void Item::useLadder(Game& game)
 {
   game.getPrintMaster()->ladderUsed();
   game.getCurrentPlayer()->setUsingLadder(true);
+  game.getCurrentPlayer()->setItem(nullptr);
+  setFound(false);
 }
 void Item::useRope(Game& game)
 {

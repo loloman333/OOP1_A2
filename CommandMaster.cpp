@@ -717,8 +717,6 @@ bool CommandMaster::isMovePossible(Direction direction, size_t movement, int &ro
     if(row_location >= 0 && row_location < BOARD_SIZE && col_location >= 0 && col_location < BOARD_SIZE)
     {
       current_player->setUsingLadder(false);
-      current_player->getItem()->setFound(false);
-      current_player->setItem(nullptr);
       return true;
     }
   }
