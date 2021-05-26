@@ -177,7 +177,7 @@ void CommandMaster::rotateFreeTile(std::vector<std::string> tokens)
   }
   else
   {
-    game_.getPrintMaster()->commandNotAllowed(tokens);
+    game_.getPrintMaster()->commandNotAllowed(tokens[0]);
   }
 }
 
@@ -252,7 +252,7 @@ bool CommandMaster::finish(std::vector<std::string> tokens)
   }
   else
   {
-    game_.getPrintMaster()->commandNotAllowed(tokens);
+    game_.getPrintMaster()->commandNotAllowed(tokens[0]);
     return false;
   }
 }
