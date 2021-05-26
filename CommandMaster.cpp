@@ -295,7 +295,7 @@ void CommandMaster::insert(std::vector <std::string> tokens)
   }
   else
   {
-    game_.getPrintMaster()->commandNotAllowed(tokens);
+    game_.getPrintMaster()->commandNotAllowed(tokens[0]);
   }
 }
 
@@ -526,7 +526,7 @@ void CommandMaster::movePlayer(std::vector<std::string> tokens)
   }
   else
   {
-    moveNotAllowed(tokens);
+    moveNotAllowed(tokens[0]);
   }
 }
 
@@ -698,26 +698,26 @@ Direction CommandMaster::getOppositeDirection(Direction direction)
   }
 }
 
-void CommandMaster::moveNotAllowed(std::vector<std::string> tokens)
+void CommandMaster::moveNotAllowed(std::string command)
 {
-  std::vector<std::string> edited_tokens = tokens;
-  if(tokens[0] == PLAYER_MOVEMENT[1])
+  if(command == PLAYER_MOVEMENT[1])
   {
-    edited_tokens[0] = "arrow up";
+    
+    command = "arrow up";
   }
-  else if(tokens[0] == PLAYER_MOVEMENT[3])
+  else if(command == PLAYER_MOVEMENT[3])
   {
-    edited_tokens[0] = "arrow left";
+    command = "arrow left";
   }
-  else if(tokens[0] == PLAYER_MOVEMENT[5])
+  else if(command == PLAYER_MOVEMENT[5])
   {
-    edited_tokens[0] = "arrow down";
+    command = "arrow down";
   }
-  else if(tokens[0] == PLAYER_MOVEMENT[7])
+  else if(command == PLAYER_MOVEMENT[7])
   {
-    edited_tokens[0] = "arrow right";
+    command = "arrow right";
   }
-  game_.getPrintMaster()->commandNotAllowed(edited_tokens);
+  game_.getPrintMaster()->commandNotAllowed(command);
 }
 
 bool CommandMaster::getShowTreasure()

@@ -66,6 +66,7 @@ public:
   void wrongNumberArguments();
   void commandTakesNoArguments();
   void commandNotAllowed(std::vector<std::string> tokens);
+  void commandNotAllowed(std::string command);
   void impossibleMove();
 };
 

@@ -93,7 +93,7 @@ private:
   bool isMovePossible(Direction direction, size_t movement, int &row_movement, int &col_movement);
   void moveInDirection(Player* player, size_t movement, int &row_movement, int &col_movement);
   Direction getOppositeDirection(Direction direction);
-  void moveNotAllowed(std::vector<std::string> tokens);
+  void moveNotAllowed(std::string command);
 
 public:
 

@@ -274,8 +274,12 @@ void PrintMaster::commandNotAllowed(std::vector<std::string> tokens)
   {
     invalid_command += (tokens[index] + " ");
   }
-  std::cout << "\"" << invalid_command.substr(0, invalid_command.length() - 1)
-            << "\"" << COMMAND_NOT_ALLOWED << std::endl;
+  commandNotAllowed(invalid_command.substr(0, invalid_command.length() - 1));
+}
+
+void PrintMaster::commandNotAllowed(std::string command)
+{
+  std::cout << "\"" << command << "\"" << COMMAND_NOT_ALLOWED << std::endl;
 }
 
 void PrintMaster::impossibleMove()
