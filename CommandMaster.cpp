@@ -112,14 +112,7 @@ void CommandMaster::showTreasure(std::vector<std::string> tokens)
   else
   {
     show_treasure_ = true;
-    if(show_gamefield_)
-    {
-      game_.getPrintMaster()->printGame();
-    }
-    else
-    {
-      game_.getPrintMaster()->printTreasure();
-    }
+    game_.getPrintMaster()->printGameIfNecessary();
   }
 }
 
@@ -177,7 +170,7 @@ void CommandMaster::rotateFreeTile(std::vector<std::string> tokens)
   }
   else
   {
-    game_.getPrintMaster()->commandNotAllowed(tokens);
+    game_.getPrintMaster()->commandNotAllowed(tokens[0]);
   }
 }
 
@@ -252,7 +245,7 @@ bool CommandMaster::finish(std::vector<std::string> tokens)
   }
   else
   {
-    game_.getPrintMaster()->commandNotAllowed(tokens);
+    game_.getPrintMaster()->commandNotAllowed(tokens[0]);
     return false;
   }
 }
@@ -418,6 +411,10 @@ void CommandMaster::insertTile(std::vector <std::string> tokens)
   last_insert_row_col_ = tokens[2];
   last_insert_direction_ = tokens[1];
   game_.getPrintMaster()->printGame();
+  if(show_treasure_)
+  {
+    game_.getPrintMaster()->printTreasure();
+  }
 }
 
 void CommandMaster::insertRow(std::vector <std::string> tokens)
