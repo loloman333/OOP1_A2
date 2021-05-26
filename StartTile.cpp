@@ -10,7 +10,7 @@
 #include "StartTile.hpp"
 #include "Player.hpp"
 
-StartTile::StartTile(PlayerColor player_color) : Tile{}, player_color_{player_color} 
+StartTile::StartTile(PlayerColor player_color) : Tile{TileType::L}, player_color_{player_color} 
 {
   Rotation rotation;
   switch (player_color)
@@ -29,7 +29,6 @@ StartTile::StartTile(PlayerColor player_color) : Tile{}, player_color_{player_co
       break;
   }
 
-  setType(TileType::L);
   setRotation(rotation);
 }
 

@@ -17,6 +17,7 @@ const std::string WALL = "█";
 const std::size_t TILE_HEIGHT = 5;
 const std::size_t TILE_WIDTH = 9;
 const std::size_t DIRECTION_AMOUNT = 4;
+const std::size_t ROTATION_AMOUNT = 4;
 const std::size_t TOP_ROW = 0;
 const std::size_t BOTTOM_ROW = 4;
 const std::size_t LEFT_COLUMN = 1;
@@ -42,13 +43,16 @@ class Tile
     std::vector<Direction> walls_;
 
     void fillTileString(std::vector<std::string>& tile);
-    void generateTile(Rotation rotation,std::vector<Direction> directions);
     void addPlayersToTile(std::vector<std::string>& tile_vector);
     bool isPlayerColorOnTile(PlayerColor color);
     Direction calcDirection(Direction dir, Rotation rot);
     bool isCorner(size_t row, size_t col);
     std::vector<bool> calcWalls();
-    void setWalls();
+    void setWalls(std::vector<Direction> directions);
+    void setWallsAccordingToTileType();
+    void updateWallsAccordingToRotation(Rotation old_rotation);
+    void updateWallsAccordingToRotation();
+    void generateWalls();
 
   public:
     Tile() = default;

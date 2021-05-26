@@ -8,10 +8,11 @@
 
 #include "Tile.hpp"
 #include "Player.hpp"
+#include "stdlib.h"
 
 Tile::Tile(TileType type, Rotation rotation) : type_{type}, rotation_{rotation} 
 {
-  setWalls();
+  generateWalls();
 }
 Tile::Tile(TileType type) : Tile(type, Rotation::DEG0) {}
 
@@ -30,16 +31,17 @@ std::vector<Player*> Tile::getPlayers()
   return players_;
 }
 
-void Tile::setRotation(Rotation r)
+void Tile::setRotation(Rotation rotation)
 {
-  rotation_ = r;
-  setWalls();
+  Rotation old_rotation = rotation_;
+  rotation_ = rotation;
+  updateWallsAccordingToRotation(old_rotation);
 }
 
 void Tile::setType(TileType type)
 {
   type_ = type;
-  setWalls();
+  generateWalls();
 }
 
 size_t Tile::getRotationValue()
@@ -111,61 +113,92 @@ Direction Tile::calcDirection(Direction dir, Rotation rot)
   return static_cast<Direction>(dir_value);
 }
 
-void Tile::generateTile(Rotation rotation, std::vector<Direction> directions)
-{
-  for(size_t index = 0; index < directions.size(); index++)
-  {
-    walls_.push_back(calcDirection(directions[index],rotation));
-  }
-}
-
 std::vector<std::string> Tile::getRawTileString()
 {
   std::vector<std::string> tile_vector;
-  setWalls();
+  //setWalls(); TODO why is this called here
   fillTileString(tile_vector);
   addPlayersToTile(tile_vector);
 
   return tile_vector;
 }
 
-void Tile::setWalls()
+void Tile::setWallsAccordingToTileType()
 {
-  walls_.clear();
-  std::vector<Direction> directions;
+  std::vector<Direction> new_walls_{};
+
   switch (type_)
   {
-  case TileType::T:
-    directions.push_back(Direction::TOP);
-    generateTile(rotation_, directions);
-    break;
-  case TileType::L:
-    directions.push_back(Direction::LEFT);
-    directions.push_back(Direction::BOTTOM);
-    generateTile(rotation_, directions);
+    case TileType::T:
+      new_walls_.push_back(Direction::TOP);
       break;
-  case TileType::I:
-    directions.push_back(Direction::LEFT);
-    directions.push_back(Direction::RIGHT);
-    generateTile(rotation_, directions);
+    case TileType::L:
+      new_walls_.push_back(Direction::LEFT);
+      new_walls_.push_back(Direction::BOTTOM);
+        break;
+    case TileType::I:
+      new_walls_.push_back(Direction::LEFT);
+      new_walls_.push_back(Direction::RIGHT);
+        break;
+    case TileType::O:
+      new_walls_.push_back(Direction::LEFT);
+      new_walls_.push_back(Direction::RIGHT);
+      new_walls_.push_back(Direction::BOTTOM);
+      new_walls_.push_back(Direction::TOP);
       break;
-  case TileType::O:
-    directions.push_back(Direction::LEFT);
-    directions.push_back(Direction::RIGHT);
-    directions.push_back(Direction::BOTTOM);
-    directions.push_back(Direction::TOP);
-    generateTile(rotation_, directions);
-    break;
-  case TileType::U:
-    directions.push_back(Direction::RIGHT);
-    directions.push_back(Direction::LEFT);
-    directions.push_back(Direction::BOTTOM);
-    generateTile(rotation_, directions);
+    case TileType::U:
+      new_walls_.push_back(Direction::RIGHT);
+      new_walls_.push_back(Direction::LEFT);
+      new_walls_.push_back(Direction::BOTTOM);
+        break;
+    case TileType::X:
       break;
-  case TileType::X:
-    generateTile(rotation_, directions);
-    break;
   }
+  setWalls(new_walls_);
+}
+
+void Tile::updateWallsAccordingToRotation()
+{
+  updateWallsAccordingToRotation(Rotation::DEG0);
+}
+
+void Tile::updateWallsAccordingToRotation(Rotation old_rotation)
+{
+  std::vector<Direction> new_walls_{};
+
+  int old_rotation_int = static_cast<int>(old_rotation);
+  int new_rotation_int = static_cast<int>(rotation_);
+
+  int rotation_change = abs(old_rotation_int - new_rotation_int);
+  int step = rotation_change;
+
+  if (old_rotation_int > new_rotation_int)
+  {
+    step *= -1;
+  }
+
+  for (Direction direction : walls_)
+  {
+    size_t new_direction = (static_cast<size_t>(direction) + step);
+
+    new_direction += DIRECTION_AMOUNT;
+    new_direction %= DIRECTION_AMOUNT;
+
+    new_walls_.push_back(static_cast<Direction>(new_direction));
+  }
+
+  setWalls(new_walls_);
+}
+
+void Tile::setWalls(std::vector<Direction> directions)
+{
+  walls_ = directions;
+}
+
+void Tile::generateWalls()
+{
+  setWallsAccordingToTileType();
+  updateWallsAccordingToRotation();
 }
 
 std::vector<bool> Tile::calcWalls()
@@ -305,45 +338,25 @@ void Tile::removePlayer(std::string player_color)
 
 void Tile::rotate(Direction dir)
 {
-  switch (dir)
+  int step = 0;
+  if (dir == Direction::LEFT)
   {
-    case Direction::LEFT:
-      switch (rotation_)
-      {
-        case Rotation::DEG0:
-          rotation_ = Rotation::DEG90;
-          break;
-        case Rotation::DEG90:
-          rotation_ = Rotation::DEG180;
-          break;
-        case Rotation::DEG180:
-          rotation_ = Rotation::DEG270;
-          break;
-        case Rotation::DEG270:
-          rotation_ = Rotation::DEG0;
-          break;
-      }
-      break;
-    case Direction::RIGHT:
-      switch (rotation_)
-      {
-        case Rotation::DEG0:
-          rotation_ = Rotation::DEG270;
-          break;
-        case Rotation::DEG90:
-          rotation_ = Rotation::DEG0;
-          break;
-        case Rotation::DEG180:
-          rotation_ = Rotation::DEG90;
-          break;
-        case Rotation::DEG270:
-          rotation_ = Rotation::DEG180;
-          break;
-      }
-      break;
-    default:
-      break;
+    step = 1;
+  } 
+  else if (dir == Direction::RIGHT)
+  {
+    step = -1;
   }
+
+  int new_rotation = (static_cast<size_t>(getRotation()) + step);
+  // if (new_rotation < 0)
+  // {
+  //   new_rotation = static_cast<size_t>(Rotation::DEG270);
+  // }
+  new_rotation += ROTATION_AMOUNT;
+  new_rotation %= ROTATION_AMOUNT;
+
+  setRotation(static_cast<Rotation>(new_rotation));
 }
 
 bool Tile::hasTreasure()
