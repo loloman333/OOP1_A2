@@ -31,6 +31,7 @@ Game::~Game()
   deleteFreeTile();
   deleteBoard();
   deleteTreasures();
+  deleteItemsFromPlayers();
   deletePlayers();
   delete command_master_;
   delete print_master_;
@@ -49,18 +50,15 @@ int Game::run()
     fillTreasures();
     gameStart();
 
-    if (gameIsRunning())
-    {
-      fillBoard();
-      distributeTreasures();
-    }
+    fillBoard();
+    distributeTreasures();
+
 
     while (gameIsRunning())
     {
-      print_master_->printGameIfNecessary();
+      print_master_->printGame();
       playRound();
     }
-
   }
   catch (std::bad_alloc)
   {
@@ -78,6 +76,7 @@ void Game::gameStart()
   size_t player_count = 0;
   while (player_count == 0)
   {
+
     std::cout << UI_PLAYER_COUNT;
     std::getline(std::cin, input);
 
@@ -104,7 +103,7 @@ void Game::gameStart()
     else if(std::cin.eof())
     {
       quitGame();
-      return;
+      player_count = 2;
     }
     else
     {
@@ -309,13 +308,30 @@ void Game::deleteBoard()
   {
     for (Tile* tile : row)
     {
-      if (tile->hasItem())
-      {
-        delete dynamic_cast<ItemTile*>(tile)->getItem();
-      }
-      delete tile;
+      deleteTile(tile);
     }
   }
+}
+
+void Game::deleteItemsFromPlayers()
+{
+  for (Player* player : players_)
+  {
+    if (player->getItem() != nullptr)
+    {
+      delete player->getItem();
+    }
+  }
+}
+
+void Game::deleteTile(Tile* tile)
+{
+  if (tile->hasItem())
+  {
+    std::cout << dynamic_cast<ItemTile*>(tile)->getItem()->getItemTypeAsString() << std::endl;
+    delete dynamic_cast<ItemTile*>(tile)->getItem();
+  }
+  delete tile;
 }
 
 void Game::deleteTreasures()
@@ -328,7 +344,7 @@ void Game::deleteTreasures()
 
 void Game::deleteFreeTile()
 {
-  delete free_tile_;
+  deleteTile(free_tile_);
 }
 
 void Game::deletePlayers()
@@ -352,6 +368,11 @@ bool Game::gameIsRunning()
 Tile* Game::getFreeTile()
 {
   return free_tile_;
+}
+
+bool Game::getBonusItemsFlag()
+{
+  return bonus_items_;
 }
 
 std::vector<std::vector<Tile*>>& Game::getBoard()

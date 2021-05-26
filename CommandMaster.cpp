@@ -84,7 +84,7 @@ bool CommandMaster::executeCommand(std::vector<std::string>& tokens)
   {
     return finish(tokens);
   }
-  else if(command == "item")
+  else if(command == "item" && game_.getBonusItemsFlag())
   {
     useItem();
   }
@@ -383,7 +383,7 @@ bool CommandMaster::checkInsertParameter(std::vector <std::string> tokens)
       }
       else
       {
-        std::cout << INVALID_POSITION << std::endl;
+        game_.getPrintMaster()->invalidInsertPosition();
       }
     }
     else
@@ -708,13 +708,15 @@ void CommandMaster::getMovementModifier(Direction direction, int &row_modifier, 
 
 bool CommandMaster::isMovePossible(Direction direction, size_t movement, int &row_modifier, int &col_modifier)
 {
+  int board_size_int = static_cast<int>(BOARD_SIZE);
+
   Direction opposite_direction = getOppositeDirection(direction);
   Player* current_player = game_.getCurrentPlayer();
   if(current_player->getUsingLadder())
   {
     int row_location = (movement * row_modifier) + current_player->getRow();
     int col_location = (movement * col_modifier) + current_player->getCol();
-    if(row_location >= 0 && row_location < BOARD_SIZE && col_location >= 0 && col_location < BOARD_SIZE)
+    if(row_location >= 0 && row_location < board_size_int && col_location >= 0 && col_location < board_size_int)
     {
       current_player->setUsingLadder(false);
       return true;
@@ -724,7 +726,8 @@ bool CommandMaster::isMovePossible(Direction direction, size_t movement, int &ro
   {
     int row = game_.getCurrentPlayer()->getRow() + (index * row_modifier);
     int col = game_.getCurrentPlayer()->getCol() + (index * col_modifier);
-    if(row >= BOARD_SIZE || col >= BOARD_SIZE)
+    
+    if(row >= board_size_int || col >= board_size_int || row < 0 || col < 0)
     {
       return false;
     }

@@ -11,15 +11,14 @@
 #define A2_ITEM_HPP
 
 #include <string>
+#include <vector>
 
-const std::string UI_LADDER_PROMPT = "You can go in all directions, with your next move. Choose wisely!";
-const std::string UI_NO_ITEM = "Not item collected";
-
-const std::string ROPE_NO_PLAYER = "No player to tie up here.";
-const std::string ROPE_TIED_1 = "Player ";
-const std::string ROPE_TIED_2 = " tied up.";
+const std::vector<std::string> WALL_VALID_RESPONSES{"top", "left", "bottom", "right"};
 
 class Game;
+class Tile;
+enum class Direction;
+
 enum class ItemType {ROPE, DYNAMITE, BRICKS, LADDER};
 
 class Item
@@ -31,6 +30,10 @@ private:
   void useDynamite(Game& game);
   void useLadder(Game& game);
   void useRope(Game& game);
+
+  bool isValidResponse(std::string response);
+  Direction getDirectionFromString(std::string string);
+  void setBricksInDirection(Direction direction, Tile* tile);
 
 public:
   Item(ItemType item_type);

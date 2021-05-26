@@ -12,7 +12,9 @@
 #include "Player.hpp"
 #include "Tile.hpp"
 #include "PrintMaster.hpp"
+#include "CommandMaster.hpp"
 #include "ItemTile.hpp"
+#include <algorithm>
 
 Item::Item(ItemType item_type) : item_type_{item_type} {};
 
@@ -71,14 +73,77 @@ void Item::use()
 
 void Item::useBricks(Game& game)
 {
+  std::string answer;
+  std::vector<std::string> tokens;
 
+  do
+  {
+    game.getPrintMaster()->whereWall();
+    std::getline(std::cin, answer);
+    tokens = game.getCommandMaster()->tokenize(answer);
+  }
+  while (tokens.size() != 1 || !isValidResponse(tokens[0]));
+
+  Direction direction = getDirectionFromString(tokens[0]);
+
+  Player* current_player = game.getCurrentPlayer();
+  Tile* current_tile = game.getBoard()[current_player->getRow()][current_player->getCol()];
+  
+  setBricksInDirection(direction, current_tile);
 }
+
+bool Item::isValidResponse(std::string response)
+{
+  return std::find(WALL_VALID_RESPONSES.begin(), WALL_VALID_RESPONSES.end(), response) != WALL_VALID_RESPONSES.end();
+}
+
+void Item::setBricksInDirection(Direction direction, Tile* tile)
+{ 
+  Game& game = Game::instance();
+
+  if (tile->addWallInDirection(direction))
+  {
+    game.getCurrentPlayer()->setItem(nullptr);
+    setFound(false);
+    game.getPrintMaster()->printGame();
+    game.getPrintMaster()->wallBuilt();
+  }
+  else
+  {
+    game.getPrintMaster()->wallExists();
+  }
+}
+
+Direction Item::getDirectionFromString(std::string string)
+{
+  if (string == "top")
+  {
+    return Direction::TOP;
+  } 
+  else if (string == "left")
+  {
+    return Direction::LEFT;
+  } 
+  else if (string == "bottom")
+  {
+    return Direction::BOTTOM;
+  } 
+  else if (string == "right")
+  {
+    return Direction::RIGHT;
+  } 
+  else
+  {
+    return Direction::UNDEFINED;
+  }
+}
+
 void Item::useDynamite(Game& game)
 {
   int row = game.getCurrentPlayer()->getRow();
   int col = game.getCurrentPlayer()->getCol();
   game.getBoard()[row][col]->setType(TileType::X);
-  if(row + 1 < BOARD_SIZE)
+  if(row + 1 < static_cast<int>(BOARD_SIZE))
   {
     game.getBoard()[row + 1][col]->removeWallInDirection(Direction::TOP);
   }
@@ -90,7 +155,7 @@ void Item::useDynamite(Game& game)
   {
     game.getBoard()[row - 1][col]->removeWallInDirection(Direction::BOTTOM);
   }
-  if(col + 1 < BOARD_SIZE)
+  if(col + 1 < static_cast<int>(BOARD_SIZE))
   {
     game.getBoard()[row][col + 1]->removeWallInDirection(Direction::LEFT);
   }
@@ -100,6 +165,7 @@ void Item::useDynamite(Game& game)
   game.getPrintMaster()->printBomb();
   
 }
+
 void Item::useLadder(Game& game)
 {
   game.getPrintMaster()->ladderUsed();
@@ -107,6 +173,7 @@ void Item::useLadder(Game& game)
   game.getCurrentPlayer()->setItem(nullptr);
   setFound(false);
 }
+
 void Item::useRope(Game& game)
 {
   std::vector<std::vector<Tile*>>& board = game.getBoard();
@@ -117,7 +184,6 @@ void Item::useRope(Game& game)
   {
     current_player->getItem()->setFound(false);
     current_player->setItem(nullptr);
-    game.getPrintMaster()->printGameIfNecessary();
 
     for (PlayerColor color : Player::player_colors_)
     {
@@ -125,12 +191,12 @@ void Item::useRope(Game& game)
       {
         Player* player = current_tile->getPlayer(color);
         player->setTied(true);
-        std::cout << ROPE_TIED_1 << player->getPlayerColorAsString() << ROPE_TIED_2 << std::endl;
+        game.getPrintMaster()->tiedUpPlayer(player->getPlayerColorAsString());
       }
     }
   }
   else
   {
-    std::cout << ROPE_NO_PLAYER << std::endl;
+    game.getPrintMaster()->noPlayerToTieUp();
   }
 }

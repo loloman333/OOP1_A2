@@ -349,10 +349,6 @@ void Tile::rotate(Direction dir)
   }
 
   int new_rotation = (static_cast<size_t>(getRotation()) + step);
-  // if (new_rotation < 0)
-  // {
-  //   new_rotation = static_cast<size_t>(Rotation::DEG270);
-  // }
   new_rotation += ROTATION_AMOUNT;
   new_rotation %= ROTATION_AMOUNT;
 
@@ -388,6 +384,19 @@ Player* Tile::getPlayer(PlayerColor player_color)
     }
   }
   return nullptr;
+}
+
+bool Tile::addWallInDirection(Direction direction)
+{
+  if (isWallInDirection(direction))
+  {
+    return false;
+  }
+  else
+  {
+    walls_.push_back(direction);
+    return true;
+  }
 }
 
 void Tile::removeWallInDirection(Direction direction)

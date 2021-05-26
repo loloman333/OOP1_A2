@@ -80,6 +80,7 @@ class Tile
     void print();
     void rotate(Direction dir);
     bool isPlayerColorOnTile(PlayerColor color);
+    bool addWallInDirection(Direction direction);
     void removeWallInDirection(Direction direction);
 };
 
