@@ -62,3 +62,20 @@ void Item::use()
     break;
   }
 }
+
+void Item::useBricks()
+{
+
+}
+void Item::useDynamite()
+{
+
+}
+void Item::useLadder()
+{
+
+}
+void Item::useRope()
+{
+
+}
