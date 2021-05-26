@@ -292,3 +292,33 @@ void PrintMaster::impossibleMove()
 {
   std::cout << IMPOSSIBLE_MOVE << std::endl;
 }
+
+void PrintMaster::invalidInsertPosition()
+{
+  std::cout << INVALID_POSITION << std::endl;
+}
+
+void PrintMaster::tiedUpPlayer(std::string player)
+{
+  std::cout << ROPE_TIED_1 << player << ROPE_TIED_2 << std::endl;
+}  
+
+void PrintMaster::noPlayerToTieUp()
+{
+  std::cout << ROPE_NO_PLAYER << std::endl;
+}
+
+void PrintMaster::whereWall()
+{
+  std::cout << UI_WHERE_WALL;
+}
+
+void PrintMaster::wallExists()
+{ 
+  std::cout << UI_WALL_EXISTS << std::endl;
+}
+
+void PrintMaster::wallBuilt()
+{ 
+  std::cout << UI_WALL_BUILT << std::endl;
+}

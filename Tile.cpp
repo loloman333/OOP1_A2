@@ -385,3 +385,16 @@ Player* Tile::getPlayer(PlayerColor player_color)
   }
   return nullptr;
 }
+
+bool Tile::addWallInDirection(Direction direction)
+{
+  if (isWallInDirection(direction))
+  {
+    return false;
+  }
+  else
+  {
+    walls_.push_back(direction);
+    return true;
+  }
+}

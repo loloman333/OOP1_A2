@@ -383,7 +383,7 @@ bool CommandMaster::checkInsertParameter(std::vector <std::string> tokens)
       }
       else
       {
-        std::cout << INVALID_POSITION << std::endl;
+        game_.getPrintMaster()->invalidInsertPosition();
       }
     }
     else

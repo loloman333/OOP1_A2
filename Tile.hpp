@@ -80,6 +80,7 @@ class Tile
     void print();
     void rotate(Direction dir);
     bool isPlayerColorOnTile(PlayerColor color);
+    bool addWallInDirection(Direction direction);
 };
 
 #endif //A2_TILE_HPP

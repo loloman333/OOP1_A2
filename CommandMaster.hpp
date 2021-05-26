@@ -20,19 +20,6 @@ const size_t MOVE_LEFT = 4;
 const size_t MOVE_BOTTOM = 6;
 const size_t MOVE_RIGHT = 8;
 
-const std::string COMMAND_INVALID = "Invalid command: ";
-const std::string COMMAND_INVALID_PARAMETER = "Invalid parameter: ";
-const std::string COMMAND_WRONG_NUMBER_ARGUMENTS = "Wrong number of arguments!";
-const std::string COMMAND_TAKES_NO_ARGUMENTS = "This command does not take any arguments!";
-const std::string COMMAND_NOT_ALLOWED = " is currently not allowed";
-const std::string IMPOSSIBLE_MOVE = "Impossible move!";
-const std::string ALL_TREASURES_FOUND = "All Treasures found, return to your startfield to win!";
-const std::string CURRENT_TREASURE = "Current Treasure: ";
-const std::string TREASURE_NUMBER = " Nr.: ";
-const std::string FREE_TILE = "Free tile:";
-const std::string INVALID_POSITION = "Invalid Position!";
-const std::string ROPE_CANT_MOVE = "You can't move because you are tied up";
-
 class Player;
 class Tile;
 class Treasure;

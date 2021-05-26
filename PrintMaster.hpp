@@ -28,6 +28,27 @@ const std::string UI_COLUMN_LABELS = "        1        2        3        4      
 const std::string UI_TREASURE_COUNTER = "Treasure: ";
 const std::string UI_PLAYER_BASE = "Player ";
 
+const std::string COMMAND_INVALID = "Invalid command: ";
+const std::string COMMAND_INVALID_PARAMETER = "Invalid parameter: ";
+const std::string COMMAND_WRONG_NUMBER_ARGUMENTS = "Wrong number of arguments!";
+const std::string COMMAND_TAKES_NO_ARGUMENTS = "This command does not take any arguments!";
+const std::string COMMAND_NOT_ALLOWED = " is currently not allowed";
+const std::string IMPOSSIBLE_MOVE = "Impossible move!";
+const std::string ALL_TREASURES_FOUND = "All Treasures found, return to your startfield to win!";
+const std::string CURRENT_TREASURE = "Current Treasure: ";
+const std::string TREASURE_NUMBER = " Nr.: ";
+const std::string FREE_TILE = "Free tile:";
+const std::string INVALID_POSITION = "Invalid Position!";
+const std::string ROPE_CANT_MOVE = "You can't move because you are tied up";
+
+const std::string UI_LADDER_PROMPT = "You can go in all directions, with your next move. Choose wisely!";
+const std::string UI_WHERE_WALL = "Where do you want to build the wall? ";
+const std::string UI_WALL_EXISTS = "Wall already exists!";
+const std::string UI_WALL_BUILT = "Wall built";
+const std::string ROPE_NO_PLAYER = "No player to tie up here.";
+const std::string ROPE_TIED_1 = "Player ";
+const std::string ROPE_TIED_2 = " tied up.";
+
 const size_t UI_PLAYER_TITLE_OFFSET = 58;
 const size_t UI_ARROW_OFFSET = 17;
 
@@ -59,8 +80,14 @@ public:
   void resetUI();
   void printWin(std::string color);
   void printGame();
-
+  
+  // Items
+  void tiedUpPlayer(std::string player);
+  void noPlayerToTieUp();
   void ladderUsed();
+  void whereWall();
+  void wallExists();
+  void wallBuilt();
 
   // Error messages
   void invalidCommand(std::string command);
@@ -70,6 +97,7 @@ public:
   void commandNotAllowed(std::vector<std::string> tokens);
   void commandNotAllowed(std::string command);
   void impossibleMove();
+  void invalidInsertPosition();
 };
 
 #endif // A2_PRINTMASTER_HPP
