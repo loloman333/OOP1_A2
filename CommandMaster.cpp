@@ -112,7 +112,14 @@ void CommandMaster::showTreasure(std::vector<std::string> tokens)
   else
   {
     show_treasure_ = true;
-    game_.getPrintMaster()->printGameIfNecessary();
+    if(show_gamefield_)
+    {
+      game_.getPrintMaster()->printGame();
+    }
+    else
+    {
+      game_.getPrintMaster()->printTreasure();
+    }
   }
 }
 
@@ -411,10 +418,6 @@ void CommandMaster::insertTile(std::vector <std::string> tokens)
   last_insert_row_col_ = tokens[2];
   last_insert_direction_ = tokens[1];
   game_.getPrintMaster()->printGame();
-  if(show_treasure_)
-  {
-    game_.getPrintMaster()->printTreasure();
-  }
 }
 
 void CommandMaster::insertRow(std::vector <std::string> tokens)

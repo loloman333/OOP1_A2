@@ -26,6 +26,11 @@ void PrintMaster::printGame()
   printBoard();
   std::cout << ui_lines[2] << std::endl;
   std::cout << ui_lines[3] << std::endl;
+
+  if(game_.getCommandMaster()->getShowTreasure())
+  {
+    printTreasure();
+  }
 }
 
 void PrintMaster::printWin(std::string color)
@@ -209,11 +214,6 @@ void PrintMaster::printGameIfNecessary()
   if(game_.getCommandMaster()->getShowGamefield())
   {
     game_.getPrintMaster()->printGame();
-  }
-
-  if(game_.getCommandMaster()->getShowTreasure())
-  {
-    printTreasure();
   }
 }
 
