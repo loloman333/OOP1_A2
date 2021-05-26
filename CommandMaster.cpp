@@ -17,6 +17,7 @@
 
 #include <iostream>
 #include <algorithm>
+#include <sstream>
 
 CommandMaster::CommandMaster(Game& game) : game_{game} {};
 
@@ -31,23 +32,9 @@ bool CommandMaster::handleCommand()
 std::vector<std::string> CommandMaster::tokenize(std::string input)
 {
   std::vector<std::string> tokens;
-  std::string token = "";
-  for(size_t i = 0; i < input.size(); i++)
-  {
-    if(input[i] == ' ')
-    {
-      if(token.size() > 0)
-      {
-        tokens.push_back(token);
-        token = "";
-      }
-    }
-    else
-    {
-      token.push_back(input[i]);
-    }
-  }
-  if(token.size() > 0)
+  std::istringstream tokens_stream(input);
+  std::string token;
+  while(tokens_stream >> token)
   {
     tokens.push_back(token);
   }
