@@ -308,21 +308,27 @@ bool CommandMaster::checkInsertParameter(std::vector <std::string> tokens)
     {
       return false;
     }
-
-    if (isInMoveableRowOrCol(row_col))
+    if(row_col > BOARD_SIZE - BOARD_SIZE && row_col < BOARD_SIZE + 1)
     {
-      if (checkLastInsert(tokens))
+      if (isInMoveableRowOrCol(row_col))
       {
-        return true;
+        if (checkLastInsert(tokens))
+        {
+          return true;
+        }
+        else
+        {
+          game_.getPrintMaster()->commandNotAllowed(tokens);
+        }
       }
       else
       {
-       game_.getPrintMaster()->commandNotAllowed(tokens);
+        std::cout << INVALID_POSITION << std::endl;
       }
     }
     else
     {
-      std::cout << INVALID_POSITION << std::endl;
+      game_.getPrintMaster()->invalidParameter(tokens[2]);
     }
   }
   else
@@ -356,10 +362,6 @@ bool CommandMaster::isValidInsertDirection(std::string direction)
 
 bool CommandMaster::isInMoveableRowOrCol(size_t row_col)
 {
-  if (row_col < 1 || row_col > 7)
-  {
-    return false;
-  }
   return ((row_col - 1) % 2 == 1);
 }
 
