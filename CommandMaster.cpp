@@ -233,7 +233,6 @@ bool CommandMaster::finish(std::vector<std::string> tokens)
     Item* item_to_collect;
     if (checkCollectItem(item_to_collect))
     {
-      std::cout << "collect item" << std::endl;
       currentPlayerCollectItem(item_to_collect);
     }
 
@@ -710,6 +709,12 @@ bool CommandMaster::isMovePossible(Direction direction, size_t movement, int &ro
     if(row >= 7 || col >= 7)
     {
       return false;
+    }
+    Player* current_player = game_.getCurrentPlayer();
+    if(current_player->getUsingLadder())
+    {
+      current_player->setUsingLadder(false);
+      return true;
     }
     Tile* current_tile = game_.getBoard()[row][col];
     bool wall_in_front = current_tile->isWallInDirection(direction);

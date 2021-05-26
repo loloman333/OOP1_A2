@@ -73,7 +73,8 @@ void Item::useDynamite()
 }
 void Item::useLadder()
 {
-
+  game_.getPrintMaster()->ladderUsed();
+  game_.getCurrentPlayer().setUsingLadder(true);
 }
 void Item::useRope()
 {

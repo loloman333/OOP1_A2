@@ -27,6 +27,7 @@ class Player
     size_t row_;
     size_t col_;
     Item* item_ = nullptr;
+    bool using_ladder_ = false;
 
   public: 
     Player(PlayerColor player_color);
@@ -38,6 +39,7 @@ class Player
     size_t getRow();
     size_t getCol();
     Item* getItem();
+    bool getUsingLadder();
 
     static const std::vector<PlayerColor> player_colors_; 
 
@@ -47,6 +49,7 @@ class Player
     void setCol(size_t col);
     void setRowCol(size_t row, size_t column);
     void setItem(Item* item);
+    void setUsingLadder(bool using_ladder);
 
     void incrementNrFoundTreasures();
 };

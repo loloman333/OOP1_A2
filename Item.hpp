@@ -12,6 +12,8 @@
 
 #include <string>
 
+const std::string UI_LADDER_PROMPT = "You can go in all directions, with your next move. Choose wisely!";
+
 enum class ItemType {ROPE, DYNAMITE, BRICKS, LADDER};
 
 class Item

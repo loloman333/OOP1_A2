@@ -60,6 +60,11 @@ Item* Player::getItem()
   return item_;
 }
 
+bool Player::getUsingLadder()
+{
+  return using_ladder_;
+}
+
 void Player::setNrFoundTreasures(size_t nr_found_treasures)
 {
   nr_found_treasures_ = nr_found_treasures;
@@ -89,6 +94,11 @@ void Player::setRowCol(size_t row, size_t column)
 void Player::setItem(Item* item)
 {
   item_ = item;
+}
+
+void Player::setUsingLadder(bool using_ladder)
+{
+  using_ladder_ = using_ladder;
 }
 
 void Player::incrementNrFoundTreasures()
