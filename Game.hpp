@@ -53,6 +53,7 @@ private:
   void fillBoard();
   void fillStaticTiles(size_t& treasure_index);
   void fillVariableTiles(size_t& treasure_index);
+  void addNewItemTilesToVector(std::vector<Tile*>& vector);
   void addNewNormalTilesToVector(std::vector<Tile*>& vector, TileType type, size_t count);
   void addNewTreasureTilesToVector(std::vector<Tile*>& vector, TileType type, size_t count, size_t& treasure_index);
   bool isInMoveableLine(size_t row_index, size_t col_index);

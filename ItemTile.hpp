@@ -24,8 +24,8 @@ class ItemTile : public Tile
     Item* item_;
 
   public:
-    ItemTile(TileType type, Item* treasure);
-
+    ItemTile(TileType type, Item* item);
+    
     Item* getItem();
     void setFound(bool collected);
     bool getFound();

@@ -53,3 +53,8 @@ bool ItemTile::hasItem()
   }
   return true;
 }
+
+Item* ItemTile::getItem()
+{
+  return item_;
+}

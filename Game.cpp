@@ -8,8 +8,10 @@
 
 #include "Game.hpp"
 #include "StartTile.hpp"
+#include "ItemTile.hpp"
 #include "TreasureTile.hpp"
 #include "NormalTile.hpp"
+#include "Item.hpp"
 #include "Treasure.hpp"
 #include "Random.hpp"
 #include "Player.hpp"
@@ -185,9 +187,20 @@ void Game::fillStaticTiles(size_t& treasure_index)
 void Game::fillVariableTiles(size_t& treasure_index)
 {
   std::vector<Tile*> tiles;
-  addNewNormalTilesToVector(tiles, TileType::L, 11);
-  addNewNormalTilesToVector(tiles, TileType::I, 11);
-  addNewTreasureTilesToVector(tiles, TileType::T, 12, treasure_index);
+
+  if (bonus_items_)
+  {
+    addNewItemTilesToVector(tiles);
+    addNewNormalTilesToVector(tiles, TileType::L, 9);
+    addNewNormalTilesToVector(tiles, TileType::I, 9);
+    addNewTreasureTilesToVector(tiles, TileType::T, 12, treasure_index);
+  } 
+  else
+  {
+    addNewNormalTilesToVector(tiles, TileType::L, 11);
+    addNewNormalTilesToVector(tiles, TileType::I, 11);
+    addNewTreasureTilesToVector(tiles, TileType::T, 12, treasure_index);
+  }
 
   for (size_t row_index = 0; row_index < board_.size(); row_index++)
   {
@@ -206,6 +219,14 @@ void Game::fillVariableTiles(size_t& treasure_index)
     }
   }
   free_tile_ = tiles[0];
+}
+
+void Game::addNewItemTilesToVector(std::vector<Tile*>& vector)
+{
+  vector.push_back(new ItemTile(TileType::X, new Item(ItemType::BRICKS)));
+  vector.push_back(new ItemTile(TileType::O, new Item(ItemType::DYNAMITE)));
+  vector.push_back(new ItemTile(TileType::X, new Item(ItemType::LADDER)));
+  vector.push_back(new ItemTile(TileType::X, new Item(ItemType::ROPE)));
 }
 
 void Game::addNewNormalTilesToVector(std::vector<Tile*>& vector, TileType type, size_t count)
@@ -288,6 +309,10 @@ void Game::deleteBoard()
   {
     for (Tile* tile : row)
     {
+      if (tile->hasItem())
+      {
+        delete dynamic_cast<ItemTile*>(tile)->getItem();
+      }
       delete tile;
     }
   }
