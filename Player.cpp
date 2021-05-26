@@ -101,6 +101,11 @@ void Player::setUsingLadder(bool using_ladder)
   using_ladder_ = using_ladder;
 }
 
+void Player::setTied(bool tied)
+{
+  tied_ = tied;
+}
+
 void Player::incrementNrFoundTreasures()
 {
   nr_found_treasures_++;
