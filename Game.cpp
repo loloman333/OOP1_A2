@@ -58,10 +58,9 @@ int Game::run()
 
     while (gameIsRunning())
     {
-      print_master_->printGameIfNecessary();
+      print_master_->printGame();
       playRound();
     }
-
   }
   catch (std::bad_alloc)
   {
@@ -79,6 +78,7 @@ void Game::gameStart()
   size_t player_count = 0;
   while (player_count == 0)
   {
+
     std::cout << UI_PLAYER_COUNT;
     std::getline(std::cin, input);
 

@@ -182,7 +182,6 @@ void Item::useRope(Game& game)
   {
     current_player->getItem()->setFound(false);
     current_player->setItem(nullptr);
-    game.getPrintMaster()->printGameIfNecessary();
 
     for (PlayerColor color : Player::player_colors_)
     {
