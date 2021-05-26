@@ -14,6 +14,7 @@
 #include "Tile.hpp"
 #include "Treasure.hpp"
 #include "TreasureTile.hpp"
+#include "Item.hpp"
 
 #include <iostream>
 #include <algorithm>

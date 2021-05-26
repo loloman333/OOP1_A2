@@ -25,6 +25,8 @@ public:
   bool getFound();
 
   void setFound(bool found);
+
+  void use();
 };
 
 
