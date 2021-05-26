@@ -191,7 +191,9 @@ void Item::useRope(Game& game)
       {
         Player* player = current_tile->getPlayer(color);
         player->setTied(true);
-        game.getPrintMaster()->tiedUpPlayer(player->getPlayerColorAsString());
+        std::string player_color = player->getPlayerColorAsString();
+        std::transform(player_color.begin(), player_color.end(), player_color.begin(), ::toupper);
+        game.getPrintMaster()->tiedUpPlayer(player_color);
       }
     }
   }
