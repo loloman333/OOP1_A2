@@ -50,11 +50,9 @@ int Game::run()
     fillTreasures();
     gameStart();
 
-    if (gameIsRunning())
-    {
-      fillBoard();
-      distributeTreasures();
-    }
+    fillBoard();
+    distributeTreasures();
+
 
     while (gameIsRunning())
     {
@@ -105,7 +103,7 @@ void Game::gameStart()
     else if(std::cin.eof())
     {
       quitGame();
-      return;
+      player_count = 2;
     }
     else
     {
