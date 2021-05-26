@@ -14,8 +14,6 @@
 #include <vector>
 
 const std::vector<std::string> WALL_VALID_RESPONSES{"top", "left", "bottom", "right"};
-const std::string UI_LADDER_PROMPT = "You can go in all directions, with your next move. Choose wisely!";
-const std::string UI_NO_ITEM = "No item collected";
 
 class Game;
 class Tile;

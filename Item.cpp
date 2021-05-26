@@ -143,7 +143,7 @@ void Item::useDynamite(Game& game)
   int row = game.getCurrentPlayer()->getRow();
   int col = game.getCurrentPlayer()->getCol();
   game.getBoard()[row][col]->setType(TileType::X);
-  if(row + 1 < BOARD_SIZE)
+  if(row + 1 < static_cast<int>(BOARD_SIZE))
   {
     game.getBoard()[row + 1][col]->removeWallInDirection(Direction::TOP);
   }
@@ -155,7 +155,7 @@ void Item::useDynamite(Game& game)
   {
     game.getBoard()[row - 1][col]->removeWallInDirection(Direction::BOTTOM);
   }
-  if(col + 1 < BOARD_SIZE)
+  if(col + 1 < static_cast<int>(BOARD_SIZE))
   {
     game.getBoard()[row][col + 1]->removeWallInDirection(Direction::LEFT);
   }

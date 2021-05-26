@@ -45,6 +45,7 @@ const std::string UI_LADDER_PROMPT = "You can go in all directions, with your ne
 const std::string UI_WHERE_WALL = "Where do you want to build the wall? ";
 const std::string UI_WALL_EXISTS = "Wall already exists!";
 const std::string UI_WALL_BUILT = "Wall built";
+const std::string UI_NO_ITEM = "No item collected";
 const std::string ROPE_NO_PLAYER = "No player to tie up here.";
 const std::string ROPE_TIED_1 = "Player ";
 const std::string ROPE_TIED_2 = " tied up.";
@@ -89,7 +90,6 @@ public:
   void whereWall();
   void wallExists();
   void wallBuilt();
-  void ladderUsed();
   void noItem();
   void printBomb();
 
