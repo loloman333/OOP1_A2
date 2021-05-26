@@ -12,6 +12,7 @@
 #include "Tile.hpp"
 #include "Player.hpp"
 #include "Treasure.hpp"
+#include "Item.hpp"
 #include <iostream>
 
 PrintMaster::PrintMaster(Game& game) : game_{game} {};
@@ -245,6 +246,11 @@ void PrintMaster::printFreeTile()
 {
   std::cout << FREE_TILE << std::endl;
   game_.getFreeTile()->print();
+}
+
+void PrintMaster::ladderUsed()
+{
+  std::cout << UI_LADDER_PROMPT << std::endl;
 }
 
 void PrintMaster::invalidCommand(std::string command)

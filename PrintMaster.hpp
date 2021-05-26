@@ -60,6 +60,8 @@ public:
   void printWin(std::string color);
   void printGame();
 
+  void ladderUsed();
+
   // Error messages
   void invalidCommand(std::string command);
   void invalidParameter(std::string parameter);

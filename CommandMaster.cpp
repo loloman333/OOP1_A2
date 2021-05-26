@@ -233,7 +233,6 @@ bool CommandMaster::finish(std::vector<std::string> tokens)
     Item* item_to_collect;
     if (checkCollectItem(item_to_collect))
     {
-      std::cout << "collect item" << std::endl;
       currentPlayerCollectItem(item_to_collect);
     }
 
@@ -702,12 +701,23 @@ void CommandMaster::getMovementModifier(Direction direction, int &row_modifier, 
 bool CommandMaster::isMovePossible(Direction direction, size_t movement, int &row_modifier, int &col_modifier)
 {
   Direction opposite_direction = getOppositeDirection(direction);
-
+  Player* current_player = game_.getCurrentPlayer();
+  if(current_player->getUsingLadder())
+  {
+    size_t row_location = (movement * row_modifier) + current_player->getRow();
+    size_t col_location = (movement * col_modifier) + current_player->getCol();
+    if(row_location > 0 && row_location < BOARD_SIZE && col_location > 0 && col_location < BOARD_SIZE)
+    {
+      current_player->setUsingLadder(false);
+      current_player->getItem()->setFound(false);
+      return true;
+    }
+  }
   for(size_t index = 0; index <= movement; index++)
   {
     size_t row = game_.getCurrentPlayer()->getRow() + (index * row_modifier);
     size_t col = game_.getCurrentPlayer()->getCol() + (index * col_modifier);
-    if(row >= 7 || col >= 7)
+    if(row >= BOARD_SIZE || col >= BOARD_SIZE)
     {
       return false;
     }

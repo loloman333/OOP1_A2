@@ -377,3 +377,15 @@ bool Tile::containsPlayer()
   }
   return true;
 }
+
+Player* Tile::getPlayer(PlayerColor player_color)
+{
+  for(Player* player : players_)
+  {
+    if(player->getPlayerColor() == player_color)
+    {
+      return player;
+    }
+  }
+  return nullptr;
+}

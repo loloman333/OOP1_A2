@@ -8,6 +8,11 @@
 //
 
 #include "Item.hpp"
+#include "Game.hpp"
+#include "Player.hpp"
+#include "Tile.hpp"
+#include "PrintMaster.hpp"
+#include "ItemTile.hpp"
 
 Item::Item(ItemType item_type) : item_type_{item_type} {};
 
@@ -46,5 +51,58 @@ void Item::setFound(bool found)
 
 void Item::use()
 {
+  Game& game = Game::instance();
+  switch (item_type_)
+  {
+  case ItemType::BRICKS:
+    useBricks(game);
+    break;
+  case ItemType::DYNAMITE:
+    useDynamite(game);
+    break;
+  case ItemType::LADDER:
+    useLadder(game);
+    break;
+  case ItemType::ROPE:
+    useRope(game);
+    break;
+  }
+}
 
+void Item::useBricks(Game& game)
+{
+
+}
+void Item::useDynamite(Game& game)
+{
+
+}
+void Item::useLadder(Game& game)
+{
+  game.getPrintMaster()->ladderUsed();
+  game.getCurrentPlayer()->setUsingLadder(true);
+}
+void Item::useRope(Game& game)
+{
+  std::vector<std::vector<Tile*>>& board = game.getBoard();
+  Player* current_player = game.getCurrentPlayer();
+  Tile* current_tile = board[current_player->getRow()][current_player->getCol()];
+
+  if (current_tile->getPlayers().size() > 1)
+  {
+    for (PlayerColor color : Player::player_colors_)
+    {
+      if(current_tile->isPlayerColorOnTile(color) && color != current_player->getPlayerColor())
+      {
+        Player* player = current_tile->getPlayer(color);
+        player->setTied(true);
+        std::cout << ROPE_TIED_1 << player->getPlayerColorAsString() << ROPE_TIED_2 << std::endl;
+      }
+    }
+    current_player->setItem(nullptr);
+  }
+  else
+  {
+    std::cout << ROPE_NO_PLAYER << std::endl;
+  }
 }
