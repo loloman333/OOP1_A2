@@ -43,3 +43,8 @@ void Item::setFound(bool found)
 {
   found_ = found;
 }
+
+void Item::use()
+{
+
+}

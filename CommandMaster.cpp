@@ -14,6 +14,7 @@
 #include "Tile.hpp"
 #include "Treasure.hpp"
 #include "TreasureTile.hpp"
+#include "Item.hpp"
 
 #include <iostream>
 #include <algorithm>
@@ -81,6 +82,10 @@ bool CommandMaster::executeCommand(std::vector<std::string>& tokens)
   else if(command == "finish" || command == "f")
   {
     return finish(tokens);
+  }
+  else if(command == "item")
+  {
+    useItem();
   }
   else if(std::find(PLAYER_MOVEMENT.begin(), PLAYER_MOVEMENT.end(), command) != PLAYER_MOVEMENT.end())
   {
@@ -753,4 +758,13 @@ bool CommandMaster::stringToSizeT(std::string token, size_t& number)
 bool CommandMaster::getShowGamefield()
 {
   return show_gamefield_;
+}
+
+void CommandMaster::useItem()
+{
+  Player* current = game_.getCurrentPlayer();
+  if(!(current->getItem() == nullptr))
+  {
+    game_.getCurrentPlayer()->getItem()->use();
+  }
 }

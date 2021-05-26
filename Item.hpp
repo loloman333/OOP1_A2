@@ -28,6 +28,8 @@ public:
   bool getFound();
 
   void setFound(bool found);
+
+  void use();
 };
 
 #endif //A2_ITEM_HPP

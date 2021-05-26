@@ -95,6 +95,9 @@ private:
   Direction getOppositeDirection(Direction direction);
   void moveNotAllowed(std::string command);
 
+  //Item
+  void useItem();
+
 public:
 
   CommandMaster(Game& game);
