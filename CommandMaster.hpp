@@ -31,6 +31,7 @@ const std::string CURRENT_TREASURE = "Current Treasure: ";
 const std::string TREASURE_NUMBER = " Nr.: ";
 const std::string FREE_TILE = "Free tile:";
 const std::string INVALID_POSITION = "Invalid Position!";
+const std::string ROPE_CANT_MOVE = "You can't move because you are tied up";
 
 class Player;
 class Tile;

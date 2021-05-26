@@ -241,6 +241,7 @@ bool CommandMaster::finish(std::vector<std::string> tokens)
       return true;
     }
 
+    game_.getCurrentPlayer()->setTied(false);
     game_.nextPlayer();
     return true;
   }
@@ -569,17 +570,24 @@ void CommandMaster::movePlayer(std::vector<std::string> tokens)
         size_t movement = getAmount(tokens);
         if(movement != 0)
         {
-          int row_modifier = 0;
-          int col_modifier = 0;
-          getMovementModifier(direction, row_modifier, col_modifier);
-          if(isMovePossible(direction, movement, row_modifier, col_modifier))
+          if(!game_.getCurrentPlayer()->getTied())
           {
-            moveInDirection(game_.getCurrentPlayer(), movement, row_modifier, col_modifier);
-            game_.getPrintMaster()->printGameIfNecessary();
+            int row_modifier = 0;
+            int col_modifier = 0;
+            getMovementModifier(direction, row_modifier, col_modifier);
+            if(isMovePossible(direction, movement, row_modifier, col_modifier))
+            {
+              moveInDirection(game_.getCurrentPlayer(), movement, row_modifier, col_modifier);
+              game_.getPrintMaster()->printGameIfNecessary();
+            }
+            else
+            {
+              game_.getPrintMaster()->impossibleMove();
+            }
           }
           else
           {
-            game_.getPrintMaster()->impossibleMove();
+            std::cout << ROPE_CANT_MOVE << std::endl;
           }
         }
       }

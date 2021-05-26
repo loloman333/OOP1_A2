@@ -65,6 +65,11 @@ bool Player::getUsingLadder()
   return using_ladder_;
 }
 
+bool Player::getTied()
+{
+  return tied_;
+}
+
 void Player::setNrFoundTreasures(size_t nr_found_treasures)
 {
   nr_found_treasures_ = nr_found_treasures;

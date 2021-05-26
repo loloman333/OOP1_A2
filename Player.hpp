@@ -41,6 +41,7 @@ class Player
     size_t getCol();
     Item* getItem();
     bool getUsingLadder();
+    bool getTied();
 
     static const std::vector<PlayerColor> player_colors_; 
 
