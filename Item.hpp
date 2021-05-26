@@ -10,6 +10,8 @@
 #ifndef A2_ITEM_HPP
 #define A2_ITEM_HPP
 
+#include <string>
+
 enum class ItemType {ROPE, DYNAMITE, BRICKS, LADDER};
 
 class Item
@@ -22,10 +24,10 @@ public:
   Item(ItemType item_type);
 
   ItemType getItemType();
+  std::string getItemTypeAsString();
   bool getFound();
 
   void setFound(bool found);
 };
-
 
 #endif //A2_ITEM_HPP

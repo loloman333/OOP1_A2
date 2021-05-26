@@ -222,7 +222,7 @@ bool CommandMaster::finish(std::vector<std::string> tokens)
     size_t player_column = game_.getCurrentPlayer()->getCol();
     if (game_.getBoard()[player_row][player_column]->hasTreasure())
     {
-      TreasureTile *tile = dynamic_cast<TreasureTile *>(game_.getBoard()[player_row][player_column]);
+      TreasureTile* tile = dynamic_cast<TreasureTile *>(game_.getBoard()[player_row][player_column]);
       if (currentPlayerNeedsTreasure(tile->getTreasure()))
       {
         currentPlayerCollectTreasure(tile->getTreasure());

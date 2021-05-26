@@ -1,33 +1,38 @@
 //---------------------------------------------------------------------------------------------------------------------
-// StartTile.hpp
+// ItemTile.hpp
 //
-// Class for Start Tile
+// Class for Item-Tile
 //
 // Authors: Triochter Bande (Grill Matthias, Killer Lorenz, Nagy Lukas)
 //---------------------------------------------------------------------------------------------------------------------
 //
 
-#ifndef A2_START_TILE_HPP
-#define A2_START_TILE_HPP
+#ifndef A2_ITEM_TILE_HPP
+#define A2_ITEM_TILE_HPP
 
 #include "Tile.hpp"
+#include <string>
+#include <vector>
 
-const size_t PLAYER_TILE_ROW = 2;
+const size_t ITEM_TILE_ROW = 2;
 
-enum class PlayerColor;
+class Item;
 
-class StartTile : public Tile
+class ItemTile : public Tile
 {
   private:
-    PlayerColor player_color_;
+    Item* item_;
 
   public:
-    StartTile(PlayerColor player_color);
+    ItemTile(TileType type, Item* treasure);
 
-    PlayerColor getPlayerColor();
+    Item* getItem();
+    void setFound(bool collected);
+    bool getFound();
+    bool hasItem();
 
     std::vector<std::string> getTileString();
 };
 
 
-#endif //A2_START_TILE_HPP
+#endif //A2_ITEM_TILE_HPP

@@ -16,6 +16,24 @@ ItemType Item::getItemType()
   return item_type_;
 }
 
+std::string Item::getItemTypeAsString()
+{
+  switch (item_type_)
+  {
+  case ItemType::BRICKS:
+    return "BRI";
+
+  case ItemType::DYNAMITE:
+    return "DYN";
+
+  case ItemType::ROPE:
+    return "ROP";
+
+  case ItemType::LADDER:
+    return "LAD";
+  }
+}
+
 bool Item::getFound()
 {
   return found_;

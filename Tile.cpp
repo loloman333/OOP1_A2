@@ -351,6 +351,11 @@ bool Tile::hasTreasure()
   return false;
 }
 
+bool Tile::hasItem()
+{
+  return false;
+}
+
 bool Tile::containsPlayer()
 {
   if(players_.size() == 0)

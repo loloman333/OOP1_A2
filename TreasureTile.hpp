@@ -14,6 +14,8 @@
 #include <string>
 #include <vector>
 
+const size_t TREASURE_TILE_ROW = 2;
+
 class Treasure;
 
 class TreasureTile : public Tile
