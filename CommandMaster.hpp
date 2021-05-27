@@ -183,12 +183,50 @@ private:
 
 public:
 
+  //---------------------------------------------------------------------------------------------------------------------
+  ///
+  /// constructor with a reference to the game
+  ///
+  /// @param game the game on which the CommandMaster operstes
+  //
   CommandMaster(Game& game);
+
+  //---------------------------------------------------------------------------------------------------------------------
+  ///
+  /// tokenize takes the string input and splits it up into tokens for the other commands to operate with
+  ///
+  /// @param input the string of the whole command
+  //
   std::vector<std::string> tokenize(std::string input);
+
+  //---------------------------------------------------------------------------------------------------------------------
+  ///
+  /// handles all command  the user inputs on his turn and returns if the game should end or not
+  ///
+  /// @returns true if the game should be ended else false
+  //
   bool handleCommand();
+
+  //---------------------------------------------------------------------------------------------------------------------
+  ///
+  /// resets the round so round specific flags are on their standard values
+  //
   void reset();
 
+  //---------------------------------------------------------------------------------------------------------------------
+  ///
+  /// Getter for the showTreasure variable
+  ///
+  /// @returns the value of showTreasure
+  //
   bool getShowTreasure();
+
+  //---------------------------------------------------------------------------------------------------------------------
+  ///
+  /// Getter for the showGamefield variable
+  ///
+  /// @returns the value of showGamefield
+  //
   bool getShowGamefield();
 };
 
