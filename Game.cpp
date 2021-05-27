@@ -85,15 +85,15 @@ void Game::gameStart()
     input_vector = command_master_->tokenize(input);
     if(input_vector.size() == 1)
     {
-      if(input_vector[0] == TWO_PLAYERS)
+      if(input_vector[PLAYER_COUNT_INDEX] == TWO_PLAYERS)
       {
         player_count = 2;
       }
-      else if(input_vector[0] == THREE_PLAYERS)
+      else if(input_vector[PLAYER_COUNT_INDEX] == THREE_PLAYERS)
       {
         player_count = 3;
       }
-      else if(input_vector[0] == FOUR_PLAYERS)
+      else if(input_vector[PLAYER_COUNT_INDEX] == FOUR_PLAYERS)
       {
         player_count = 4;
       }
@@ -124,7 +124,7 @@ void Game::playRound()
   Player* player = getCurrentPlayer();
   std::string current_output = player->getPlayerColorAsString();
   std::transform(current_output.begin(), current_output.end(), current_output.begin(), ::toupper);
-  current_output += " > ";
+  current_output += PROMPT;
 
   bool stop = false;
   while(!stop)
@@ -192,15 +192,15 @@ void Game::fillVariableTiles(size_t& treasure_index)
   if (bonus_items_)
   {
     addNewItemTilesToVector(tiles);
-    addNewNormalTilesToVector(tiles, TileType::L, 9);
-    addNewNormalTilesToVector(tiles, TileType::I, 9);
-    addNewTreasureTilesToVector(tiles, TileType::T, 12, treasure_index);
+    addNewNormalTilesToVector(tiles, TileType::L, BONUS_GAME_NORMAL_L_TILES);
+    addNewNormalTilesToVector(tiles, TileType::I, BONUS_GAME_NORMAL_I_TILES);
+    addNewTreasureTilesToVector(tiles, TileType::T, BONUS_GAME_NORMAL_T_TILES, treasure_index);
   } 
   else
   {
-    addNewNormalTilesToVector(tiles, TileType::L, 11);
-    addNewNormalTilesToVector(tiles, TileType::I, 11);
-    addNewTreasureTilesToVector(tiles, TileType::T, 12, treasure_index);
+    addNewNormalTilesToVector(tiles, TileType::L, NORMAL_GAME_NORMAL_L_TILES);
+    addNewNormalTilesToVector(tiles, TileType::I, NORMAL_GAME_NORMAL_I_TILES);
+    addNewTreasureTilesToVector(tiles, TileType::T, NORMAL_GAME_NORMAL_T_TILES, treasure_index);
   }
 
   for (size_t row_index = 0; row_index < board_.size(); row_index++)
@@ -284,9 +284,14 @@ void Game::nextPlayer()
   current_player_index_ = (current_player_index_ + 1) % players_.size();
 }
 
-Player* Game::getCurrentPlayer()
+void Game::quitGame()
 {
-  return players_[current_player_index_];
+  quit_ = true;
+}
+
+bool Game::gameIsRunning()
+{
+  return !quit_;
 }
 
 void Game::distributeTreasures()
@@ -356,16 +361,6 @@ void Game::deletePlayers()
   }
 }
 
-void Game::quitGame()
-{
-  quit_ = true;
-}
-
-bool Game::gameIsRunning()
-{
-  return !quit_;
-}
-
 Tile* Game::getFreeTile()
 {
   return free_tile_;
@@ -384,6 +379,11 @@ std::vector<std::vector<Tile*>>& Game::getBoard()
 std::vector<Player*>& Game::getPlayers()
 {
   return players_;
+}
+
+Player* Game::getCurrentPlayer()
+{
+  return players_[current_player_index_];
 }
 
 std::vector<Treasure*>& Game::getTreasures()

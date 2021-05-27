@@ -394,6 +394,17 @@ public:
 
   //-------------------------------------------------------------------------------------------------------------------
   ///
+  /// Checks if given string only contains numbers
+  /// https://stackoverflow.com/questions/8888748/how-to-check-if-given-c-string-or-char-contains-only-digits
+  ///
+  /// @param string to check
+  ///
+  /// @return true if only contains numbers
+  //
+  bool is_digits(const std::string &str);
+
+  //-------------------------------------------------------------------------------------------------------------------
+  ///
   /// resets the round so round specific flags are on their standard values
   //
   void reset();

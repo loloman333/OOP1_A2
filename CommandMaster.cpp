@@ -685,6 +685,10 @@ size_t CommandMaster::getAmount(std::vector<std::string> tokens)
   {
     if(!stringToSizeT(tokens[SECOND_ARGUMENT_INDEX], amount))
     {
+      if (is_digits(tokens[SECOND_ARGUMENT_INDEX]))
+      {
+        game_.getPrintMaster()->impossibleMove();
+      }
       return 0;
     }
 
@@ -825,9 +829,13 @@ bool CommandMaster::stringToSizeT(std::string token, size_t& number)
     {
       number = std::stoi(token);
     }
-    catch (...)
+    catch (std::invalid_argument)
     {
       game_.getPrintMaster()->invalidParameter(token);
+      return false;
+    }
+    catch (std::out_of_range)
+    {
       return false;
     }
   }
@@ -850,4 +858,9 @@ void CommandMaster::useItem()
   {
     game_.getPrintMaster()->noItem();
   }
+}
+
+bool CommandMaster::is_digits(const std::string &str)
+{
+  return std::all_of(str.begin(), str.end(), ::isdigit); // C++11
 }

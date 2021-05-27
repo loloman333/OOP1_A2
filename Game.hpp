@@ -17,10 +17,20 @@
 const size_t BOARD_SIZE = 7;
 const size_t EXIT_DEFAULT = 0;
 const size_t EXIT_MEMORY_ERROR = 1;
+const size_t PLAYER_COUNT_INDEX = 0;
+
+const size_t NORMAL_GAME_NORMAL_L_TILES = 11;
+const size_t NORMAL_GAME_NORMAL_I_TILES = 11;
+const size_t NORMAL_GAME_NORMAL_T_TILES = 12;
+
+const size_t BONUS_GAME_NORMAL_L_TILES = 9;
+const size_t BONUS_GAME_NORMAL_I_TILES = 9;
+const size_t BONUS_GAME_NORMAL_T_TILES = 12;
 
 const std::string TWO_PLAYERS = "2";
-const std::string THREE_PLAYERS = "2";
-const std::string FOUR_PLAYERS = "2";
+const std::string THREE_PLAYERS = "3";
+const std::string FOUR_PLAYERS = "4";
+const std::string PROMPT = " > ";
 
 class Tile;
 class Player;
@@ -105,6 +115,12 @@ private:
   /// Starts the game, asks for the player count
   //
   void gameStart();
+
+  //--------------------------------------------------------------------------------------------------------------------
+  ///
+  /// Plays one round
+  //
+  void playRound();
 
   //--------------------------------------------------------------------------------------------------------------------
   ///
