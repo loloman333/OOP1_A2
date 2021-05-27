@@ -1,6 +1,8 @@
 //---------------------------------------------------------------------------------------------------------------------
 // CommandMaster.cpp
 //
+// The CommandMaster handles all commands entered in the command line
+// and calls the corresponding functions in other classes
 //
 // Authors: Triochter Bande (Grill Matthias, Killer Lorenz, Nagy Lukas)
 //---------------------------------------------------------------------------------------------------------------------
@@ -48,7 +50,7 @@ bool CommandMaster::executeCommand(std::vector<std::string>& tokens)
   std::string command = "";
   if(tokens.size() > 0)
   {
-    command = tokens[0];
+    command = tokens[COMMAND_INDEX];
   }
 
   if(std::cin.eof() || command == "quit" || command == "exit")
@@ -162,7 +164,7 @@ void CommandMaster::rotateFreeTile(std::vector<std::string> tokens)
   {
     if (tokens.size() == 2)
     {
-      std::string direction = tokens[1];
+      std::string direction = tokens[FIRST_ARGUMENT_INDEX];
       if(direction == "l" || direction == "left")
       {
         game_.getFreeTile()->rotate(Direction::LEFT);
@@ -183,7 +185,7 @@ void CommandMaster::rotateFreeTile(std::vector<std::string> tokens)
   }
   else
   {
-    game_.getPrintMaster()->commandNotAllowed(tokens[0]);
+    game_.getPrintMaster()->commandNotAllowed(tokens[COMMAND_INDEX]);
   }
 }
 
@@ -195,16 +197,16 @@ void CommandMaster::gameField(std::vector<std::string> tokens)
   }
   else if (tokens.size() == 2)
   {
-    if (tokens[1] == "on")
+    if (tokens[FIRST_ARGUMENT_INDEX] == "on")
     {
       show_gamefield_ = true;
     }
-    else if (tokens[1] == "off")
+    else if (tokens[FIRST_ARGUMENT_INDEX] == "off")
     {
       show_gamefield_ = false;
     }
     else{
-      game_.getPrintMaster()->invalidParameter(tokens[1]);
+      game_.getPrintMaster()->invalidParameter(tokens[FIRST_ARGUMENT_INDEX]);
     }
   }
   else
@@ -247,7 +249,7 @@ bool CommandMaster::finish(std::vector<std::string> tokens)
   }
   else
   {
-    game_.getPrintMaster()->commandNotAllowed(tokens[0]);
+    game_.getPrintMaster()->commandNotAllowed(tokens[COMMAND_INDEX]);
     return false;
   }
 }
@@ -355,16 +357,16 @@ void CommandMaster::insert(std::vector <std::string> tokens)
   }
   else
   {
-    game_.getPrintMaster()->commandNotAllowed(tokens[0]);
+    game_.getPrintMaster()->commandNotAllowed(tokens[COMMAND_INDEX]);
   }
 }
 
 bool CommandMaster::checkInsertParameter(std::vector <std::string> tokens)
 {
-  if (isValidInsertDirection(tokens[1]))
+  if (isValidInsertDirection(tokens[FIRST_ARGUMENT_INDEX]))
   {
     size_t row_col;
-    if (!stringToSizeT(tokens[2], row_col))
+    if (!stringToSizeT(tokens[SECOND_ARGUMENT_INDEX], row_col))
     {
       return false;
     }
@@ -388,12 +390,12 @@ bool CommandMaster::checkInsertParameter(std::vector <std::string> tokens)
     }
     else
     {
-      game_.getPrintMaster()->invalidParameter(tokens[2]);
+      game_.getPrintMaster()->invalidParameter(tokens[SECOND_ARGUMENT_INDEX]);
     }
   }
   else
   {
-    game_.getPrintMaster()->invalidParameter(tokens[1]);
+    game_.getPrintMaster()->invalidParameter(tokens[FIRST_ARGUMENT_INDEX]);
   }
 
   return false;
@@ -427,21 +429,21 @@ bool CommandMaster::isInMoveableRowOrCol(size_t row_col)
 
 bool CommandMaster::checkLastInsert(std::vector <std::string> tokens)
 {
-  if (tokens[1] == "t" || tokens[1] == "top")
+  if (tokens[FIRST_ARGUMENT_INDEX] == "t" || tokens[FIRST_ARGUMENT_INDEX] == "top")
   {
-    return compareLastInsert("b", "bottom", tokens[2]);
+    return compareLastInsert("b", "bottom", tokens[SECOND_ARGUMENT_INDEX]);
   }
-  else if (tokens[1] == "l" || tokens[1] == "left")
+  else if (tokens[FIRST_ARGUMENT_INDEX] == "l" || tokens[FIRST_ARGUMENT_INDEX] == "left")
   {
-    return compareLastInsert("r", "right", tokens[2]);
+    return compareLastInsert("r", "right", tokens[SECOND_ARGUMENT_INDEX]);
   }
-  else if (tokens[1] == "b" || tokens[1] == "bottom")
+  else if (tokens[FIRST_ARGUMENT_INDEX] == "b" || tokens[FIRST_ARGUMENT_INDEX] == "bottom")
   {
-    return compareLastInsert("t", "top", tokens[2]);
+    return compareLastInsert("t", "top", tokens[SECOND_ARGUMENT_INDEX]);
   }
   else
   {
-    return compareLastInsert("l", "left", tokens[2]);
+    return compareLastInsert("l", "left", tokens[SECOND_ARGUMENT_INDEX]);
   }
 }
 
@@ -459,36 +461,37 @@ bool CommandMaster::compareLastInsert(std::string direction, std::string alias, 
 
 void CommandMaster::insertTile(std::vector <std::string> tokens)
 {
-  if (tokens[1] == "t" || tokens[1] == "top")
+  if (tokens[FIRST_ARGUMENT_INDEX] == "t" || tokens[FIRST_ARGUMENT_INDEX] == "top")
   {
     insertColumn(tokens);
   }
-  else if (tokens[1] == "l" || tokens[1] == "left")
+  else if (tokens[FIRST_ARGUMENT_INDEX] == "l" || tokens[FIRST_ARGUMENT_INDEX] == "left")
   {
     insertRow(tokens);
   }
-  else if (tokens[1] == "b" || tokens[1] == "bottom")
+  else if (tokens[FIRST_ARGUMENT_INDEX] == "b" || tokens[FIRST_ARGUMENT_INDEX] == "bottom")
   {
     insertColumn(tokens);
   }
-  else if (tokens[1] == "r" || tokens[1] == "right")
+  else if (tokens[FIRST_ARGUMENT_INDEX] == "r" || tokens[FIRST_ARGUMENT_INDEX] == "right")
   {
     insertRow(tokens);
   }
-  last_insert_row_col_ = tokens[2];
-  last_insert_direction_ = tokens[1];
+  last_insert_row_col_ = tokens[SECOND_ARGUMENT_INDEX];
+  last_insert_direction_ = tokens[FIRST_ARGUMENT_INDEX];
   game_.getPrintMaster()->printGame();
 }
 
 void CommandMaster::insertRow(std::vector <std::string> tokens)
 {
-  size_t row = std::stoi(tokens[2]) - 1;
+  size_t row = std::stoi(tokens[SECOND_ARGUMENT_INDEX]) - 1;
+  size_t last_tile_index = BOARD_SIZE - 1;
   Tile* temp_free_tile = game_.getFreeTile();
   std::vector<std::vector<Tile*>>& board = game_.getBoard();
-  if (tokens[1] == "l" || tokens[1] == "left")
+  if (tokens[FIRST_ARGUMENT_INDEX] == "l" || tokens[FIRST_ARGUMENT_INDEX] == "left")
   {
-    game_.setFreeTile(board[row][6]);
-    for(size_t column = 6; column > 0; column--)
+    game_.setFreeTile(board[row][last_tile_index]);
+    for(size_t column = last_tile_index; column > 0; column--)
     {
       board[row][column] = board[row][column - 1];
       playersUpdateRowColumn(board[row][column]->getPlayers(), row, column);
@@ -499,7 +502,7 @@ void CommandMaster::insertRow(std::vector <std::string> tokens)
   else
   {
     game_.setFreeTile(board[row][0]);
-    for(size_t column = 0; column < 6; column++)
+    for(size_t column = 0; column < last_tile_index; column++)
     {
       board[row][column] = board[row][column + 1];
       playersUpdateRowColumn(board[row][column]->getPlayers(), row, column);
@@ -511,13 +514,14 @@ void CommandMaster::insertRow(std::vector <std::string> tokens)
 
 void CommandMaster::insertColumn(std::vector <std::string> tokens)
 {
-  size_t column = std::stoi(tokens[2]) - 1;
+  size_t column = std::stoi(tokens[SECOND_ARGUMENT_INDEX]) - 1;
+  size_t last_tile_index = BOARD_SIZE - 1;
   Tile* temp_free_tile = game_.getFreeTile();
   std::vector<std::vector<Tile*>>& board = game_.getBoard();
 
-  if (tokens[1] == "t" || tokens[1] == "top")
+  if (tokens[FIRST_ARGUMENT_INDEX] == "t" || tokens[FIRST_ARGUMENT_INDEX] == "top")
   {
-    game_.setFreeTile(board[6][column]);
+    game_.setFreeTile(board[last_tile_index][column]);
     for(size_t row = BOARD_SIZE - 1; row > 0; row--)
     {
       board[row][column] = board[row - 1][column];
@@ -595,7 +599,7 @@ void CommandMaster::movePlayer(std::vector<std::string> tokens)
   }
   else
   {
-    moveNotAllowed(tokens[0]);
+    moveNotAllowed(tokens[COMMAND_INDEX]);
   }
 }
 
@@ -649,7 +653,7 @@ Direction CommandMaster::getDirection(std::vector<std::string> tokens)
   {
     for(size_t index = 0; index < PLAYER_MOVEMENT.size(); index++)
     {
-      if(tokens[0] == PLAYER_MOVEMENT[index])
+      if(tokens[COMMAND_INDEX] == PLAYER_MOVEMENT[index])
       {
         if(index < MOVE_TOP)
         {
@@ -670,16 +674,16 @@ Direction CommandMaster::getDirection(std::vector<std::string> tokens)
       }
     }
   }
-  game_.getPrintMaster()->invalidParameter(tokens[1]);
+  game_.getPrintMaster()->invalidParameter(tokens[FIRST_ARGUMENT_INDEX]);
   return Direction::UNDEFINED;
 }
 
 size_t CommandMaster::getAmount(std::vector<std::string> tokens)
 {
   size_t amount = 0;
-  if(tokens[0] == "go" && tokens.size() == 3)
+  if(tokens[COMMAND_INDEX] == "go" && tokens.size() == 3)
   {
-    if(!stringToSizeT(tokens[2], amount))
+    if(!stringToSizeT(tokens[SECOND_ARGUMENT_INDEX], amount))
     {
       return 0;
     }
