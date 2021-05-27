@@ -1,10 +1,11 @@
-//---------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 // TreasureTile.cpp
 //
-// Class for Treasure-Tile
+// The TreasureTile class is a subclass of "Tile". It represents a treasure on
+// the board.
 //
 // Authors: Triochter Bande (Grill Matthias, Killer Lorenz, Nagy Lukas)
-//---------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 //
 
 #include "TreasureTile.hpp"
@@ -18,32 +19,7 @@ TreasureTile::TreasureTile(Treasure* treasure)
 TreasureTile::TreasureTile(TileType type, Treasure* treasure) 
 : Tile(type), treasure_{treasure} {}
 
-Treasure* TreasureTile::getTreasure()
-{
-  return treasure_;
-}
-
-bool TreasureTile::getFound()
-{
-  return treasure_->getFound();
-}
-
-void TreasureTile::setTreasure(Treasure* treasure)
-{
-  treasure_ = treasure;
-}
-
-void TreasureTile::setFound(bool found)
-{
-  treasure_->setFound(found);
-}
-
-void TreasureTile::foundTreasure()
-{
-  treasure_->setFound(true);
-}
-
-std::string TreasureTile::getTreasureId()
+std::string TreasureTile::createTreasureId()
 {
   int treasure_id = treasure_->getTreasureId();
   std::string treasure = "T";
@@ -55,28 +31,6 @@ std::string TreasureTile::getTreasureId()
 
   treasure.append(std::to_string(treasure_id));
   return treasure;
-}
-
-std::vector<std::string> TreasureTile::getTileString()
-{
-  std::vector<std::string> tileString = getRawTileString();
-  if (getFound())
-  {
-    return tileString;
-  }
-
-  // add missing treasure string to tile
-  std::string treasure_id = getTreasureId();
-  if (tileString[TREASURE_TILE_ROW][0] == ' ') // check if there is a wall
-  {
-    tileString[TREASURE_TILE_ROW].replace(INDEX_WITHOUT_WALL, treasure_id.length(), treasure_id);
-  }
-  else
-  {
-    tileString[TREASURE_TILE_ROW].replace(INDEX_WITH_WALL, treasure_id.length(), treasure_id);
-  }
-
-  return tileString;
 }
 
 Rotation TreasureTile::calculateRotation(size_t treasure_id)
@@ -103,6 +57,33 @@ Rotation TreasureTile::calculateRotation(size_t treasure_id)
   }
 }
 
+void TreasureTile::foundTreasure()
+{
+  treasure_->setFound(true);
+}
+
+std::vector<std::string> TreasureTile::getTileString()
+{
+  std::vector<std::string> tileString = getRawTileString();
+  if (getFound())
+  {
+    return tileString;
+  }
+
+  // add missing treasure string to tile
+  std::string treasure_id = createTreasureId();
+  if (tileString[TREASURE_TILE_ROW][0] == ' ') // check if there is a wall
+  {
+    tileString[TREASURE_TILE_ROW].replace(INDEX_WITHOUT_WALL, treasure_id.length(), treasure_id);
+  }
+  else
+  {
+    tileString[TREASURE_TILE_ROW].replace(INDEX_WITH_WALL, treasure_id.length(), treasure_id);
+  }
+
+  return tileString;
+}
+
 bool TreasureTile::hasTreasure()
 {
   if (getFound())
@@ -115,4 +96,24 @@ bool TreasureTile::hasTreasure()
 bool TreasureTile::isSingleDigit(size_t number)
 {
   return (number < 10);
+}
+
+Treasure* TreasureTile::getTreasure()
+{
+  return treasure_;
+}
+
+bool TreasureTile::getFound()
+{
+  return treasure_->getFound();
+}
+
+void TreasureTile::setTreasure(Treasure* treasure)
+{
+  treasure_ = treasure;
+}
+
+void TreasureTile::setFound(bool found)
+{
+  treasure_->setFound(found);
 }

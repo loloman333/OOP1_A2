@@ -154,7 +154,7 @@ class Player
     ///-----------------------------------------------------------------------------------------------------------------  
     /// Setter for tied_
     ///
-    /// @param tied new flag if the player is teid up by the rope item
+    /// @param tied new flag if the player is tied up by the rope item
     ///
     void setTied(bool tied);
 
