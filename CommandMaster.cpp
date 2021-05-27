@@ -366,11 +366,19 @@ bool CommandMaster::checkInsertParameter(std::vector <std::string> tokens)
   if (isValidInsertDirection(tokens[FIRST_ARGUMENT_INDEX]))
   {
     size_t row_col;
-    if (!stringToSizeT(tokens[SECOND_ARGUMENT_INDEX], row_col))
+    try
     {
+      if (!stringToSizeT(tokens[SECOND_ARGUMENT_INDEX], row_col))
+      {
+        return false;
+      }
+    }
+    catch(...)
+    {
+      game_.getPrintMaster()->invalidParameter(tokens[SECOND_ARGUMENT_INDEX]);
       return false;
     }
-    if(row_col > BOARD_SIZE - BOARD_SIZE && row_col < BOARD_SIZE + 1)
+    if(row_col > 0 && row_col < BOARD_SIZE + 1)
     {
       if (isInMoveableRowOrCol(row_col))
       {
@@ -397,7 +405,6 @@ bool CommandMaster::checkInsertParameter(std::vector <std::string> tokens)
   {
     game_.getPrintMaster()->invalidParameter(tokens[FIRST_ARGUMENT_INDEX]);
   }
-
   return false;
 }
 
@@ -683,13 +690,27 @@ size_t CommandMaster::getAmount(std::vector<std::string> tokens)
   size_t amount = 0;
   if(tokens[COMMAND_INDEX] == "go" && tokens.size() == 3)
   {
-    if(!stringToSizeT(tokens[SECOND_ARGUMENT_INDEX], amount))
+    try
     {
-      if (is_digits(tokens[SECOND_ARGUMENT_INDEX]))
+      if(!stringToSizeT(tokens[SECOND_ARGUMENT_INDEX], amount))
+      {
+        game_.getPrintMaster()->invalidParameter(tokens[2]);
+      }
+    }
+    catch (std::out_of_range)
+    {
+      if(is_digits(tokens[SECOND_ARGUMENT_INDEX]))
       {
         game_.getPrintMaster()->impossibleMove();
       }
-      return 0;
+      else
+      {
+        game_.getPrintMaster()->invalidParameter(tokens[2]);
+      }
+    }
+    catch (std::invalid_argument)
+    {
+      game_.getPrintMaster()->invalidParameter(tokens[2]);
     }
 
     return amount;
@@ -825,19 +846,7 @@ bool CommandMaster::stringToSizeT(std::string token, size_t& number)
   }
   else
   {
-    try
-    {
-      number = std::stoi(token);
-    }
-    catch (std::invalid_argument)
-    {
-      game_.getPrintMaster()->invalidParameter(token);
-      return false;
-    }
-    catch (std::out_of_range)
-    {
-      return false;
-    }
+    number = std::stoi(token);
   }
   return true;
 }
