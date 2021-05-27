@@ -364,7 +364,7 @@ private:
   ///
   /// uses the item of the current player, if the player has none an error is printed
   //
-  void useItem();
+  void useItem(std::vector<std::string> tokens);
 
 public:
 

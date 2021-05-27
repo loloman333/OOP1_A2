@@ -88,7 +88,7 @@ bool CommandMaster::executeCommand(std::vector<std::string>& tokens)
   }
   else if(command == "item" && game_.getBonusItemsFlag())
   {
-    useItem();
+    useItem(tokens);
   }
   else if(std::find(PLAYER_MOVEMENT.begin(), PLAYER_MOVEMENT.end(), command) != PLAYER_MOVEMENT.end())
   {
@@ -605,6 +605,10 @@ void CommandMaster::movePlayer(std::vector<std::string> tokens)
               game_.getPrintMaster()->impossibleMove();
             }
           }
+          else
+          {
+            game_.getPrintMaster()->playerRoped();
+          }
         }
         else if (movement == 0)
         {
@@ -818,9 +822,8 @@ Direction CommandMaster::getOppositeDirection(Direction direction)
 
 void CommandMaster::moveNotAllowed(std::string command)
 {
-  if(command == PLAYER_MOVEMENT[ARROW_UP_INDEX])
+  if (command == PLAYER_MOVEMENT[ARROW_UP_INDEX])
   {
-    
     command = "arrow up";
   }
   else if(command == PLAYER_MOVEMENT[ARROW_LEFT_INDEX])
@@ -861,20 +864,27 @@ bool CommandMaster::getShowGamefield()
   return show_gamefield_;
 }
 
-void CommandMaster::useItem()
+void CommandMaster::useItem(std::vector<std::string> tokens)
 {
-  Player* current_player = game_.getCurrentPlayer();
-  if(current_player->getItem() != nullptr)
+  if(tokens.size() == 1)
   {
-    current_player->getItem()->use();
+    Player* current_player = game_.getCurrentPlayer();
+    if(current_player->getItem() != nullptr)
+    {
+      current_player->getItem()->use();
+    }
+    else
+    {
+      game_.getPrintMaster()->noItem();
+    }
   }
   else
   {
-    game_.getPrintMaster()->noItem();
+    game_.getPrintMaster()->commandTakesNoArguments();
   }
 }
 
 bool CommandMaster::is_digits(const std::string &str)
 {
-  return std::all_of(str.begin(), str.end(), ::isdigit); // C++11
+  return std::all_of(str.begin(), str.end(), ::isdigit);
 }

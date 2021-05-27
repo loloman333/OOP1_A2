@@ -251,7 +251,12 @@ void PrintMaster::printTreasure()
 void PrintMaster::tiedUpPlayer(std::string player)
 {
   std::cout << ROPE_TIED_1 << player << ROPE_TIED_2 << std::endl;
-} 
+}
+
+void PrintMaster::playerRoped()
+{
+  std::cout << ROPE_CANT_MOVE << std::endl;
+}
 
 void PrintMaster::ladderUsed()
 {
