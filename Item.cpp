@@ -1,7 +1,8 @@
 //---------------------------------------------------------------------------------------------------------------------
 // Item.cpp
 //
-// Class for Item
+// The Item class represent an item that can be collected and used by players
+// Implements the functionality for using items
 //
 // Authors: Triochter Bande (Grill Matthias, Killer Lorenz, Nagy Lukas)
 //---------------------------------------------------------------------------------------------------------------------
@@ -92,52 +93,6 @@ void Item::useBricks(Game& game)
   setBricksInDirection(direction, current_tile);
 }
 
-bool Item::isValidResponse(std::string response)
-{
-  return std::find(WALL_VALID_RESPONSES.begin(), WALL_VALID_RESPONSES.end(), response) != WALL_VALID_RESPONSES.end();
-}
-
-void Item::setBricksInDirection(Direction direction, Tile* tile)
-{ 
-  Game& game = Game::instance();
-
-  if (tile->addWallInDirection(direction))
-  {
-    game.getCurrentPlayer()->setItem(nullptr);
-    setFound(false);
-    game.getPrintMaster()->printGame();
-    game.getPrintMaster()->wallBuilt();
-  }
-  else
-  {
-    game.getPrintMaster()->wallExists();
-  }
-}
-
-Direction Item::getDirectionFromString(std::string string)
-{
-  if (string == "top")
-  {
-    return Direction::TOP;
-  } 
-  else if (string == "left")
-  {
-    return Direction::LEFT;
-  } 
-  else if (string == "bottom")
-  {
-    return Direction::BOTTOM;
-  } 
-  else if (string == "right")
-  {
-    return Direction::RIGHT;
-  } 
-  else
-  {
-    return Direction::UNDEFINED;
-  }
-}
-
 void Item::useDynamite(Game& game)
 {
   int row = game.getCurrentPlayer()->getRow();
@@ -163,7 +118,6 @@ void Item::useDynamite(Game& game)
   setFound(false);
   game.getPrintMaster()->printGame();
   game.getPrintMaster()->printBomb();
-  
 }
 
 void Item::useLadder(Game& game)
@@ -200,5 +154,51 @@ void Item::useRope(Game& game)
   else
   {
     game.getPrintMaster()->noPlayerToTieUp();
+  }
+}
+
+bool Item::isValidResponse(std::string response)
+{
+  return std::find(WALL_VALID_RESPONSES.begin(), WALL_VALID_RESPONSES.end(), response) != WALL_VALID_RESPONSES.end();
+}
+
+Direction Item::getDirectionFromString(std::string string)
+{
+  if (string == "top")
+  {
+    return Direction::TOP;
+  } 
+  else if (string == "left")
+  {
+    return Direction::LEFT;
+  } 
+  else if (string == "bottom")
+  {
+    return Direction::BOTTOM;
+  } 
+  else if (string == "right")
+  {
+    return Direction::RIGHT;
+  } 
+  else
+  {
+    return Direction::UNDEFINED;
+  }
+}
+
+void Item::setBricksInDirection(Direction direction, Tile* tile)
+{ 
+  Game& game = Game::instance();
+
+  if (tile->addWallInDirection(direction))
+  {
+    game.getCurrentPlayer()->setItem(nullptr);
+    setFound(false);
+    game.getPrintMaster()->printGame();
+    game.getPrintMaster()->wallBuilt();
+  }
+  else
+  {
+    game.getPrintMaster()->wallExists();
   }
 }

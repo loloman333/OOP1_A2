@@ -1,7 +1,8 @@
 //---------------------------------------------------------------------------------------------------------------------
 // Player.cpp
 //
-// Class for Player
+// The Player class represents a Player on the board. 
+// It has several variables getter and setter for a player.  
 //
 // Authors: Triochter Bande (Grill Matthias, Killer Lorenz, Nagy Lukas)
 //---------------------------------------------------------------------------------------------------------------------

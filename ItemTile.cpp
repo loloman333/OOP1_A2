@@ -1,7 +1,8 @@
 //---------------------------------------------------------------------------------------------------------------------
 // ItemTile.cpp
 //
-// Class for Item-Tile
+// The Item Tile class represents a tile that contains an item that can be picked up.
+// It is a subclass of "Tile" and implements all necessary functions.
 //
 // Authors: Triochter Bande (Grill Matthias, Killer Lorenz, Nagy Lukas)
 //---------------------------------------------------------------------------------------------------------------------
@@ -13,15 +14,28 @@
 ItemTile::ItemTile(TileType type, Item* item) 
   : Tile(type, Rotation::DEG0), item_{item} {}
 
+Item* ItemTile::getItem()
+{
+  return item_;
+}
+
+bool ItemTile::getFound()
+{
+  return item_->getFound();
+}
 
 void ItemTile::setFound(bool found)
 {
   item_->setFound(found);
 }
 
-bool ItemTile::getFound()
+bool ItemTile::hasItem()
 {
-  return item_->getFound();
+  if (getFound())
+  {
+    return false;
+  }
+  return true;
 }
 
 std::vector<std::string> ItemTile::getTileString()
@@ -43,18 +57,4 @@ std::vector<std::string> ItemTile::getTileString()
   }
 
   return tileString;
-}
-
-bool ItemTile::hasItem()
-{
-  if (getFound())
-  {
-    return false;
-  }
-  return true;
-}
-
-Item* ItemTile::getItem()
-{
-  return item_;
 }

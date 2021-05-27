@@ -313,7 +313,7 @@ void Game::deleteBoard()
   }
 }
 
-void Game::deleteItemsFromPlayers()
+void Game::deleteItemsFromPlayers() 
 {
   for (Player* player : players_)
   {
