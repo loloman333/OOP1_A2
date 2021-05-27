@@ -53,7 +53,7 @@ bool CommandMaster::executeCommand(std::vector<std::string>& tokens)
     command = tokens[COMMAND_INDEX];
   }
 
-  if(std::cin.eof() || command == "quit" || command == "exit")
+  if(std::cin.eof())
   {
     game_.quitGame();
     return true;
@@ -93,6 +93,18 @@ bool CommandMaster::executeCommand(std::vector<std::string>& tokens)
   else if(std::find(PLAYER_MOVEMENT.begin(), PLAYER_MOVEMENT.end(), command) != PLAYER_MOVEMENT.end())
   {
     movePlayer(tokens);
+  }
+  else if(command == "quit" || command == "exit")
+  {
+    if (tokens.size() == 1)
+    {
+      game_.quitGame();
+      return true;
+    }
+    else
+    {
+      game_.getPrintMaster()->commandTakesNoArguments();
+    }
   }
   else if(command == "")
   {
