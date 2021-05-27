@@ -1,6 +1,7 @@
 //---------------------------------------------------------------------------------------------------------------------
 // NormalTile.cpp
 //
+// Represents a normal Tile with no further functionality than the super class Tile
 //
 // Authors: Triochter Bande (Grill Matthias, Killer Lorenz, Nagy Lukas)
 //---------------------------------------------------------------------------------------------------------------------

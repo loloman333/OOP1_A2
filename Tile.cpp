@@ -1,6 +1,7 @@
 //---------------------------------------------------------------------------------------------------------------------
-// Tile.hpp
+// Tile.cpp
 //
+// Tile class represents a tile on the Board, is a super class for other tiles and can have walls and players on it
 //
 // Authors: Triochter Bande (Grill Matthias, Killer Lorenz, Nagy Lukas)
 //---------------------------------------------------------------------------------------------------------------------
@@ -116,7 +117,6 @@ Direction Tile::calcDirection(Direction dir, Rotation rot)
 std::vector<std::string> Tile::getRawTileString()
 {
   std::vector<std::string> tile_vector;
-  //setWalls(); TODO why is this called here
   fillTileString(tile_vector);
   addPlayersToTile(tile_vector);
 
@@ -201,36 +201,9 @@ void Tile::generateWalls()
   updateWallsAccordingToRotation();
 }
 
-std::vector<bool> Tile::calcWalls()
-{
-  std::vector<bool> walls_to_fill{false,false,false,false};
-  for(size_t index = 0; index < walls_.size(); index++)
-  {
-    if(walls_[index] == Direction::TOP)
-    {
-      walls_to_fill[static_cast<int>(Direction::TOP)] = true;
-    }
-    else if(walls_[index] == Direction::LEFT)
-    {
-      walls_to_fill[static_cast<int>(Direction::LEFT)] = true;
-    }
-    else if(walls_[index] == Direction::BOTTOM)
-    {
-      walls_to_fill[static_cast<int>(Direction::BOTTOM)] = true;
-    }
-    else if(walls_[index] == Direction::RIGHT)
-    {
-      walls_to_fill[static_cast<int>(Direction::RIGHT)] = true;
-    }
-  }
-  return walls_to_fill;
-}
-
 void Tile::fillTileString(std::vector<std::string>& tile)
 {
   std::vector<std::string> template_tile;
-  std::vector<bool> walls_to_fill = calcWalls();
-
   for(size_t row = 0; row < TILE_HEIGHT ; row++)
   {
     template_tile.push_back("");
@@ -240,19 +213,19 @@ void Tile::fillTileString(std::vector<std::string>& tile)
       {
         template_tile[row].append(WALL);
       }
-      else if(walls_to_fill[static_cast<int>(Direction::TOP)] && row == TOP_ROW)
+      else if(isWallInDirection(Direction::TOP) && row == TOP_ROW)
       {
         template_tile[row].append(WALL);
       }
-      else if(walls_to_fill[static_cast<int>(Direction::LEFT)] && col <= LEFT_COLUMN)
+      else if(isWallInDirection(Direction::LEFT) && col <= LEFT_COLUMN)
       {
         template_tile[row].append(WALL);
       }
-      else if(walls_to_fill[static_cast<int>(Direction::BOTTOM)] && row == BOTTOM_ROW)
+      else if(isWallInDirection(Direction::BOTTOM) && row == BOTTOM_ROW)
       {
         template_tile[row].append(WALL);
       }
-      else if(walls_to_fill[static_cast<int>(Direction::RIGHT)] && col >= RIGHT_COLUMN)
+      else if(isWallInDirection(Direction::RIGHT) && col >= RIGHT_COLUMN)
       {
         template_tile[row].append(WALL);
       }
@@ -280,19 +253,19 @@ void Tile::addPlayersToTile(std::vector<std::string>& tile_vector)
       }
     }
 
-    int position = 3;
-    if (players_.size() == 4)
+    int position = STANDARD_POSITION;
+    if (players_.size() == MAX_PLAYERS)
     {
-      position = 2;
+      position = MAX_PLAYER_POSITION;
     }
 
-    if (tile_vector[3][0] == ' ')
+    if (tile_vector[PLAYER_ROW][0] == ' ')
     {
-      tile_vector[3].replace(position, player_string.size(), player_string);
+      tile_vector[PLAYER_ROW].replace(position, player_string.size(), player_string);
     }
     else
     {
-      tile_vector[3].replace(position + 4, player_string.size(), player_string);
+      tile_vector[PLAYER_ROW].replace(position + WALL_SIZE, player_string.size(), player_string);
     }
   }
 }
@@ -363,15 +336,6 @@ bool Tile::hasTreasure()
 bool Tile::hasItem()
 {
   return false;
-}
-
-bool Tile::containsPlayer()
-{
-  if(players_.size() == 0)
-  {
-    return false;
-  }
-  return true;
 }
 
 Player* Tile::getPlayer(PlayerColor player_color)
