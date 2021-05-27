@@ -34,52 +34,16 @@ void PrintMaster::printGame()
   }
 }
 
-void PrintMaster::printWin(std::string color)
-{
-  std::cout << UI_WIN_1 << color << UI_WIN_2 << std::endl;
-}
-
-void PrintMaster::resetUI()
-{
-  std::cout << UI_CLEAR;
-  printGame();
-}
-
-void PrintMaster::printBoard()
-{
-  size_t row_label_index = 2;
-  size_t line_index = 0;
-  size_t row_index = 1;
-  for (std::vector<Tile*> row : game_.getBoard())
-  {
-    std::vector<std::vector<std::string>> tile_strings;
-    for (Tile* tile : row)
-    {
-      tile_strings.push_back(tile->getTileString());
-    }
-
-    for (size_t tile_line_index = 0; tile_line_index < TILE_HEIGHT; tile_line_index++)
-    {
-      bool print_arrow = false;
-
-      printLeftUI(row_index, line_index, row_label_index, print_arrow);
-      printTilesOfLine(tile_strings, tile_line_index);
-      printRightUI(print_arrow);
-      line_index++;
-    }
-  }
-}
-
 std::vector<std::string> PrintMaster::generateUILines()
 {
   size_t player_index_titles = 0;
   size_t player_index_treasures = 0;
 
   size_t title_row_at = 0;
-  size_t title_row_mod = 2;
+  size_t title_row_mod = UI_TITLE_ROW_MOD;
 
   size_t arrow_base_at = 0;
-  size_t arrow_base_mod = 3;
+  size_t arrow_base_mod = UI_ARROW_BASE_MOD;
 
   std::vector<std::string> lines;
 
@@ -101,11 +65,11 @@ std::vector<std::string> PrintMaster::generateUILines()
     }
     else
     {
-      if (index == 1)
+      if (index == UI_BOTTOM_ARROW_TIPS_AT)
       {
         addArrowTipsToLine(line, Direction::BOTTOM);
       }
-      else if (index == 2)
+      else if (index == UI_TOP_ARROW_TIPS_AT)
       {
         addArrowTipsToLine(line, Direction::TOP);
       }
@@ -171,6 +135,31 @@ void PrintMaster::addArrowTipsToLine(std::string& line, Direction direction)
   line.replace(UI_ARROW_OFFSET, arrows.length(), arrows);
 }
 
+void PrintMaster::printBoard()
+{
+  size_t row_label_index = UI_FIRST_ROW_LABEL_INDEX;
+  size_t line_index = 0;
+  size_t row_index = 1;
+  for (std::vector<Tile*> row : game_.getBoard())
+  {
+    std::vector<std::vector<std::string>> tile_strings;
+    for (Tile* tile : row)
+    {
+      tile_strings.push_back(tile->getTileString());
+    }
+
+    for (size_t tile_line_index = 0; tile_line_index < TILE_HEIGHT; tile_line_index++)
+    {
+      bool print_arrow = false;
+
+      printLeftUI(row_index, line_index, row_label_index, print_arrow);
+      printTilesOfLine(tile_strings, tile_line_index);
+      printRightUI(print_arrow);
+      line_index++;
+    }
+  }
+}
+
 void PrintMaster::printLeftUI(size_t& row_index, size_t line_index, size_t& row_label_index, bool& print_arrow)
 {
   if (line_index == row_label_index)
@@ -210,12 +199,29 @@ void PrintMaster::printRightUI(bool print_arrow)
   std::cout << std::endl;
 }
 
+void PrintMaster::printWin(std::string color)
+{
+  std::cout << UI_WIN_1 << color << UI_WIN_2 << std::endl;
+}
+
+void PrintMaster::resetUI()
+{
+  std::cout << UI_CLEAR;
+  printGame();
+}
+
 void PrintMaster::printGameIfNecessary()
 {
   if(game_.getCommandMaster()->getShowGamefield())
   {
     game_.getPrintMaster()->printGame();
   }
+}
+
+void PrintMaster::printFreeTile()
+{
+  std::cout << FREE_TILE << std::endl;
+  game_.getFreeTile()->print();
 }
 
 void PrintMaster::printTreasure()
@@ -242,11 +248,10 @@ void PrintMaster::printTreasure()
   }
 }
 
-void PrintMaster::printFreeTile()
+void PrintMaster::tiedUpPlayer(std::string player)
 {
-  std::cout << FREE_TILE << std::endl;
-  game_.getFreeTile()->print();
-}
+  std::cout << ROPE_TIED_1 << player << ROPE_TIED_2 << std::endl;
+} 
 
 void PrintMaster::ladderUsed()
 {
@@ -261,6 +266,26 @@ void PrintMaster::noItem()
 void PrintMaster::printBomb()
 {
   std::cout << UI_BOMB << std::endl;
+}
+
+void PrintMaster::noPlayerToTieUp()
+{
+  std::cout << ROPE_NO_PLAYER << std::endl;
+}
+
+void PrintMaster::whereWall()
+{
+  std::cout << UI_WHERE_WALL;
+}
+
+void PrintMaster::wallExists()
+{ 
+  std::cout << UI_WALL_EXISTS << std::endl;
+}
+
+void PrintMaster::wallBuilt()
+{ 
+  std::cout << UI_WALL_BUILT << std::endl;
 }
 
 void PrintMaster::invalidCommand(std::string command)
@@ -306,29 +331,4 @@ void PrintMaster::impossibleMove()
 void PrintMaster::invalidInsertPosition()
 {
   std::cout << INVALID_POSITION << std::endl;
-}
-
-void PrintMaster::tiedUpPlayer(std::string player)
-{
-  std::cout << ROPE_TIED_1 << player << ROPE_TIED_2 << std::endl;
-}  
-
-void PrintMaster::noPlayerToTieUp()
-{
-  std::cout << ROPE_NO_PLAYER << std::endl;
-}
-
-void PrintMaster::whereWall()
-{
-  std::cout << UI_WHERE_WALL;
-}
-
-void PrintMaster::wallExists()
-{ 
-  std::cout << UI_WALL_EXISTS << std::endl;
-}
-
-void PrintMaster::wallBuilt()
-{ 
-  std::cout << UI_WALL_BUILT << std::endl;
-}
+} 
