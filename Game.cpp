@@ -1,9 +1,11 @@
-//---------------------------------------------------------------------------------------------------------------------
-// Game.cpp
+//----------------------------------------------------------------------------------------------------------------------
+// Game.hpp
 //
+// The Game class is the main class of this project.
+// It implements the logic and controlls the flow of the game.
 //
 // Authors: Triochter Bande (Grill Matthias, Killer Lorenz, Nagy Lukas)
-//---------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 //
 
 #include "Game.hpp"
@@ -83,15 +85,15 @@ void Game::gameStart()
     input_vector = command_master_->tokenize(input);
     if(input_vector.size() == 1)
     {
-      if(input_vector[0] == "2")
+      if(input_vector[0] == TWO_PLAYERS)
       {
         player_count = 2;
       }
-      else if(input_vector[0] == "3")
+      else if(input_vector[0] == THREE_PLAYERS)
       {
         player_count = 3;
       }
-      else if(input_vector[0] == "4")
+      else if(input_vector[0] == FOUR_PLAYERS)
       {
         player_count = 4;
       }
