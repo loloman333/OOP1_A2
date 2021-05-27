@@ -93,11 +93,58 @@ void Item::useBricks(Game& game)
   setBricksInDirection(direction, current_tile);
 }
 
+bool Item::isValidResponse(std::string response)
+{
+  return std::find(WALL_VALID_RESPONSES.begin(), WALL_VALID_RESPONSES.end(), response) != WALL_VALID_RESPONSES.end();
+}
+
+Direction Item::getDirectionFromString(std::string string)
+{
+  if (string == "top")
+  {
+    return Direction::TOP;
+  }
+  else if (string == "left")
+  {
+    return Direction::LEFT;
+  }
+  else if (string == "bottom")
+  {
+    return Direction::BOTTOM;
+  }
+  else if (string == "right")
+  {
+    return Direction::RIGHT;
+  }
+  else
+  {
+    return Direction::UNDEFINED;
+  }
+}
+
+void Item::setBricksInDirection(Direction direction, Tile* tile)
+{
+  Game& game = Game::instance();
+
+  if (tile->addWallInDirection(direction))
+  {
+    game.getCurrentPlayer()->setItem(nullptr);
+    setFound(false);
+    game.getPrintMaster()->printGame();
+    game.getPrintMaster()->wallBuilt();
+  }
+  else
+  {
+    game.getPrintMaster()->wallExists();
+  }
+}
+
 void Item::useDynamite(Game& game)
 {
   int row = game.getCurrentPlayer()->getRow();
   int col = game.getCurrentPlayer()->getCol();
   game.getBoard()[row][col]->setType(TileType::X);
+
   if(row + 1 < static_cast<int>(BOARD_SIZE))
   {
     game.getBoard()[row + 1][col]->removeWallInDirection(Direction::TOP);
@@ -114,6 +161,7 @@ void Item::useDynamite(Game& game)
   {
     game.getBoard()[row][col + 1]->removeWallInDirection(Direction::LEFT);
   }
+
   game.getCurrentPlayer()->setItem(nullptr);
   setFound(false);
   game.getPrintMaster()->printGame();
@@ -154,51 +202,5 @@ void Item::useRope(Game& game)
   else
   {
     game.getPrintMaster()->noPlayerToTieUp();
-  }
-}
-
-bool Item::isValidResponse(std::string response)
-{
-  return std::find(WALL_VALID_RESPONSES.begin(), WALL_VALID_RESPONSES.end(), response) != WALL_VALID_RESPONSES.end();
-}
-
-Direction Item::getDirectionFromString(std::string string)
-{
-  if (string == "top")
-  {
-    return Direction::TOP;
-  } 
-  else if (string == "left")
-  {
-    return Direction::LEFT;
-  } 
-  else if (string == "bottom")
-  {
-    return Direction::BOTTOM;
-  } 
-  else if (string == "right")
-  {
-    return Direction::RIGHT;
-  } 
-  else
-  {
-    return Direction::UNDEFINED;
-  }
-}
-
-void Item::setBricksInDirection(Direction direction, Tile* tile)
-{ 
-  Game& game = Game::instance();
-
-  if (tile->addWallInDirection(direction))
-  {
-    game.getCurrentPlayer()->setItem(nullptr);
-    setFound(false);
-    game.getPrintMaster()->printGame();
-    game.getPrintMaster()->wallBuilt();
-  }
-  else
-  {
-    game.getPrintMaster()->wallExists();
   }
 }

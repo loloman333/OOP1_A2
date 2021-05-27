@@ -365,16 +365,17 @@ bool Tile::addWallInDirection(Direction direction)
 
 void Tile::removeWallInDirection(Direction direction)
 {
-  size_t remove =  walls_.size();
+  size_t remove_index = walls_.size();
   for(size_t index = 0; index < walls_.size(); index++)
   {
     if(walls_[index] == direction)
     {
-      remove = index;
+      remove_index = index;
     }
   }
-  if(remove != walls_.size())
+
+  if(remove_index != walls_.size())
   {
-    walls_.erase(walls_.begin() + remove);
+    walls_.erase(walls_.begin() + remove_index);
   }
 }
