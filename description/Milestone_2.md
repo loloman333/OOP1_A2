@@ -101,7 +101,7 @@ The Player RED has won the game!\n
 Das Zurückschieben von Gangkarten ist auch nicht erlaubt. Wurde vorher beispielsweise `insert top 4` eingegeben, so wird beim nächsten Spieler `"i b 4" is currently not allowed` ausgegeben, wenn versucht wurde dies einzugeben. Dabei werden überschüssige Leerzeichen aus dem Befehl entfernt.
 Ergänzung: Es wird sehr wohl unterschieden ob ein Befehl zur Gänge nicht erlaubt ist, oder nur mit speziellen Parametern. Im obigen Fall haben wir zuerst `insert top 4` eingegeben, und wie wir wissen ist `i b 4` dann für den nächsten Spieler nicht erlaubt, und es wird deswegen `"i b 4" is currently not allowed` ausgegeben. Denn es gibt in dem Fall andere insert-Befehle, welche die Spielregeln nicht verletzen würden.
 - Wird bei einem Befehl mit Parametern eine falsche Anzahl an Parametern eingegeben wird `Wrong number of arguments!` ausgegeben.
-Ist ein Parameter nicht korrekt (z.B. "go right 2.5" oder "rotate up" oder "insert diagonal"), wird `Invalid parameter: "<parameter>"` ausgegeben werden. Beispiel für die Eingabe `rotate  World!` (Vorsicht, zwei Leerzeichen): `Invalid parameter: "World!"`  
+Ist ein Parameter nicht korrekt (z.B. "go right 2.5" oder "rotate up" oder "insert diagonal 4"), wird `Invalid parameter: "<parameter>"` ausgegeben werden. Beispiel für die Eingabe `rotate  World!` (Vorsicht, zwei Leerzeichen): `Invalid parameter: "World!"`  
 Wird bei einem Befehl ein Parameter eingegeben, obwohl der Befehl keine Parameter verwendet, wird `This command does not take any arguments!` ausgegeben. 
 - Kann eine Bewegung nicht ausgeführt werden, wird `Impossible move!` ausgegeben.
 - Kann die Karte bei der angegebenen Stelle nicht eingefügt werden, wird `Invalid Position!` ausgegeben.
