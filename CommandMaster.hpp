@@ -304,7 +304,7 @@ private:
   /// @param tokens the command tokens that have to be handled
   /// @returns the amount to be moved
   //
-  size_t getAmount(std::vector<std::string> tokens);
+  int getAmount(std::vector<std::string> tokens);
 
   //-------------------------------------------------------------------------------------------------------------------
   ///

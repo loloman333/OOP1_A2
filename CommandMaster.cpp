@@ -368,10 +368,7 @@ bool CommandMaster::checkInsertParameter(std::vector <std::string> tokens)
     size_t row_col;
     try
     {
-      if (!stringToSizeT(tokens[SECOND_ARGUMENT_INDEX], row_col))
-      {
-        return false;
-      }
+      stringToSizeT(tokens[SECOND_ARGUMENT_INDEX], row_col);
     }
     catch(...)
     {
@@ -578,15 +575,15 @@ void CommandMaster::movePlayer(std::vector<std::string> tokens)
       Direction direction = getDirection(tokens);
       if(direction != Direction::UNDEFINED)
       {
-        size_t movement = getAmount(tokens);
-        if(movement != 0)
+        int movement = getAmount(tokens);
+        if (movement > 0)
         {
-          if(!game_.getCurrentPlayer()->getTied())
+          if (!game_.getCurrentPlayer()->getTied())
           {
             int row_modifier = 0;
             int col_modifier = 0;
             getMovementModifier(direction, row_modifier, col_modifier);
-            if(isMovePossible(direction, movement, row_modifier, col_modifier))
+            if (isMovePossible(direction, movement, row_modifier, col_modifier))
             {
               moveInDirection(game_.getCurrentPlayer(), movement, row_modifier, col_modifier);
               game_.getPrintMaster()->printGameIfNecessary();
@@ -596,10 +593,10 @@ void CommandMaster::movePlayer(std::vector<std::string> tokens)
               game_.getPrintMaster()->impossibleMove();
             }
           }
-          else
-          {
-            std::cout << ROPE_CANT_MOVE << std::endl;
-          }
+        }
+        else if (movement == 0)
+        {
+          game_.getPrintMaster()->invalidParameter(tokens[SECOND_ARGUMENT_INDEX]);
         }
       }
     }
@@ -685,17 +682,14 @@ Direction CommandMaster::getDirection(std::vector<std::string> tokens)
   return Direction::UNDEFINED;
 }
 
-size_t CommandMaster::getAmount(std::vector<std::string> tokens)
+int CommandMaster::getAmount(std::vector<std::string> tokens)
 {
   size_t amount = 0;
   if(tokens[COMMAND_INDEX] == "go" && tokens.size() == 3)
   {
     try
     {
-      if(!stringToSizeT(tokens[SECOND_ARGUMENT_INDEX], amount))
-      {
-        game_.getPrintMaster()->invalidParameter(tokens[2]);
-      }
+      stringToSizeT(tokens[SECOND_ARGUMENT_INDEX], amount);
     }
     catch (std::out_of_range)
     {
@@ -705,14 +699,15 @@ size_t CommandMaster::getAmount(std::vector<std::string> tokens)
       }
       else
       {
-        game_.getPrintMaster()->invalidParameter(tokens[2]);
+        game_.getPrintMaster()->invalidParameter(tokens[SECOND_ARGUMENT_INDEX]);
       }
+      return -1;
     }
     catch (std::invalid_argument)
     {
-      game_.getPrintMaster()->invalidParameter(tokens[2]);
+      game_.getPrintMaster()->invalidParameter(tokens[SECOND_ARGUMENT_INDEX]);
+      return -1;
     }
-
     return amount;
   }
   else
@@ -838,11 +833,9 @@ bool CommandMaster::getShowTreasure()
 
 bool CommandMaster::stringToSizeT(std::string token, size_t& number)
 {
-  if (token.find(".") != std::string::npos || token.find(",") != std::string::npos
-      || token.find("-") != std::string::npos)
+  if (!is_digits(token))
   {
-    game_.getPrintMaster()->invalidParameter(token);
-    return false;
+    throw std::invalid_argument("");
   }
   else
   {
