@@ -1,7 +1,8 @@
 //---------------------------------------------------------------------------------------------------------------------
-// Treasure.cpp
+// Treasures.cpp
 //
-// Class for Treasures
+// The treasure class represent a Treasure.
+// Players need to collect these treasures to win the game.
 //
 // Authors: Triochter Bande (Grill Matthias, Killer Lorenz, Nagy Lukas)
 //---------------------------------------------------------------------------------------------------------------------

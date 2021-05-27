@@ -1,11 +1,13 @@
 //---------------------------------------------------------------------------------------------------------------------
-// Treasure.hpp
+// Treasures.hpp
 //
-// Class for Treasures
+// The treasure class represent a Treasure.
+// Players need to collect these treasures to win the game.
 //
 // Authors: Triochter Bande (Grill Matthias, Killer Lorenz, Nagy Lukas)
 //---------------------------------------------------------------------------------------------------------------------
 //
+
 
 #ifndef A2_TREASURE_HPP
 #define A2_TREASURE_HPP
@@ -47,12 +49,44 @@ class Treasure
     bool found_ = false;
 
   public:
+
+    ///-----------------------------------------------------------------------------------------------------------------
+    /// Constructor for the Treasure class
+    /// Sets name_ and treasure_id_ of the Treasure
+    ///
+    /// @param name of the treasure
+    /// @param treasure_id of the treasure
+    ///
     Treasure(std::string name, size_t treasure_id);
 
+
+    ///-----------------------------------------------------------------------------------------------------------------
+    /// Getter for name_
+    ///
+    /// @return name of the Treasure
+    ///
     std::string getName();
+
+    ///-----------------------------------------------------------------------------------------------------------------
+    /// Getter for treasure_id_
+    ///
+    /// @return treasure_id of the Treasure
+    ///
     size_t getTreasureId();
+
+    ///-----------------------------------------------------------------------------------------------------------------
+    /// Getter for found_
+    ///
+    /// @return found, indicates whether the treasure was collected
+    ///
     bool getFound();
 
+
+    ///-----------------------------------------------------------------------------------------------------------------
+    /// Setter for found_
+    ///
+    /// @param found, indicates whether the treasure was collected
+    ///
     void setFound(bool found);
 };
 
