@@ -601,7 +601,7 @@ void CommandMaster::movePlayer(std::vector<std::string> tokens)
 
 bool CommandMaster::checkMoveInput(std::vector<std::string> tokens)
 {
-  if(tokens[0] == "go")
+  if(tokens[COMMAND_INDEX] == "go")
   {
     if(tokens.size() > 1 && tokens.size() < 4)
     {
@@ -626,21 +626,21 @@ bool CommandMaster::checkMoveInput(std::vector<std::string> tokens)
 
 Direction CommandMaster::getDirection(std::vector<std::string> tokens)
 {
-  if(tokens[0] == "go")
+  if(tokens[COMMAND_INDEX] == "go")
   {
-    if(tokens[1] == "up")
+    if(tokens[MOVEMENT_DIRECTION_INDEX] == "up")
     {
       return Direction::TOP;
     }
-    else if(tokens[1] == "left")
+    else if(tokens[MOVEMENT_DIRECTION_INDEX] == "left")
     {
       return Direction::LEFT;
     }
-    else if(tokens[1] == "down")
+    else if(tokens[MOVEMENT_DIRECTION_INDEX] == "down")
     {
       return Direction::BOTTOM;
     }
-    else if(tokens[1] == "right")
+    else if(tokens[MOVEMENT_DIRECTION_INDEX] == "right")
     {
       return Direction::RIGHT;
     }
@@ -782,20 +782,20 @@ Direction CommandMaster::getOppositeDirection(Direction direction)
 
 void CommandMaster::moveNotAllowed(std::string command)
 {
-  if(command == PLAYER_MOVEMENT[1])
+  if(command == PLAYER_MOVEMENT[ARROW_UP_INDEX])
   {
     
     command = "arrow up";
   }
-  else if(command == PLAYER_MOVEMENT[3])
+  else if(command == PLAYER_MOVEMENT[ARROW_LEFT_INDEX])
   {
     command = "arrow left";
   }
-  else if(command == PLAYER_MOVEMENT[5])
+  else if(command == PLAYER_MOVEMENT[ARROW_DOWN_INDEX])
   {
     command = "arrow down";
   }
-  else if(command == PLAYER_MOVEMENT[7])
+  else if(command == PLAYER_MOVEMENT[ARROW_RIGHT_INDEX])
   {
     command = "arrow right";
   }

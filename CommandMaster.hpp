@@ -1,7 +1,8 @@
 //---------------------------------------------------------------------------------------------------------------------
 // CommandMaster.hpp
 //
-// Class for CommandMaster
+// The commandmaster handles all commands entered in the command line
+// and calls the corresponding functions in other classes
 //
 // Authors: Triochter Bande (Grill Matthias, Killer Lorenz, Nagy Lukas)
 //---------------------------------------------------------------------------------------------------------------------
@@ -19,6 +20,12 @@ const size_t MOVE_TOP = 2;
 const size_t MOVE_LEFT = 4;
 const size_t MOVE_BOTTOM = 6;
 const size_t MOVE_RIGHT = 8;
+const size_t ARROW_UP_INDEX = 1;
+const size_t ARROW_LEFT_INDEX = 3;
+const size_t ARROW_DOWN_INDEX = 5;
+const size_t ARROW_RIGHT_INDEX = 7;
+const size_t MOVEMENT_DIRECTION_INDEX = 1;
+const size_t COMMAND_INDEX = 0;
 
 class Player;
 class Tile;
@@ -78,17 +85,100 @@ private:
   void notUsed();
 
   // Move
+
+  //---------------------------------------------------------------------------------------------------------------------
+  ///
+  /// moves the current player to the location given in the command tokens
+  ///
+  /// @param tokens the command tokens that have to be handled
+  //
   void movePlayer(std::vector<std::string> tokens);
+
+  //---------------------------------------------------------------------------------------------------------------------
+  ///
+  /// checks if the command tokens of the movement command are corrent
+  ///
+  /// @param tokens the command tokens that have to be handled
+  /// @returns true if the input is correct else false
+  //
   bool checkMoveInput(std::vector<std::string> tokens);
+
+  //---------------------------------------------------------------------------------------------------------------------
+  ///
+  /// gets the direction to be moved from the command tokens
+  ///
+  /// @param tokens the command tokens that have to be handled
+  /// @returns the direction the move has to go
+  //
   Direction getDirection(std::vector<std::string> tokens);
+
+  //---------------------------------------------------------------------------------------------------------------------
+  ///
+  /// checks if the command tokens of the movement command are corrent
+  ///
+  /// @param tokens the command tokens that have to be handled
+  /// @returns the amount to be moved
+  //
   size_t getAmount(std::vector<std::string> tokens);
+
+  //---------------------------------------------------------------------------------------------------------------------
+  ///
+  /// calculates the modifier on the row and column that have to be added to move in specified direction
+  /// row_modifier = 0 if the movement is in column direction only 
+  /// else it is 1 or -1 depending on moving forwards or backwards
+  /// col_modifier = 0 if the movement is in row direction only
+  /// else it is 1 or -1 depending on moving forwards or backwards
+  ///
+  /// @param direction the direction in which the move happens
+  /// @param row_modifier the modifier that is added to the movement to walk in specified direction
+  /// @param col_modifier the modifier that is added to the movement to walk in specified direction
+  //
   void getMovementModifier(Direction direction, int &row_modifier, int &col_modifier);
-  bool isMovePossible(Direction direction, size_t movement, int &row_movement, int &col_movement);
-  void moveInDirection(Player* player, size_t movement, int &row_movement, int &col_movement);
+
+  //---------------------------------------------------------------------------------------------------------------------
+  ///
+  /// checks if the movement is possible or if walls or the edge are in the way
+  ///
+  /// @param direction the direction to be moved in
+  /// @param movement the amount of tiles to be moved
+  /// @param row_modifier the modifier to be used when moving in row direction
+  /// @param col_modifier the modifier to be used when moving in column direction
+  /// @returns true if the move is possible else false
+  //
+  bool isMovePossible(Direction direction, size_t movement, int &row_modifier, int &col_modifier);
+
+  //---------------------------------------------------------------------------------------------------------------------
+  ///
+  /// moves the player in the specified direction
+  ///
+  /// @param player the player to be moved
+  /// @param movement the amount of tiles to be moved
+  /// @param row_modifier the modifier to be used when moving in row direction
+  /// @param col_modifier the modifier to be used when moving in column direction
+  //
+  void moveInDirection(Player* player, size_t movement, int &row_modifier, int &col_modifier);
+
+  //---------------------------------------------------------------------------------------------------------------------
+  ///
+  /// gets the direction opposite of the one given
+  ///
+  /// @param direction the direction from which the opposite is needed
+  /// @returns the direction in the opposite direction
+  //
   Direction getOppositeDirection(Direction direction);
+
+  //---------------------------------------------------------------------------------------------------------------------
+  ///
+  /// prints the error Message that the move is not allowed
+  ///
+  /// @param command the command string that is not allowed and needs to be printed
+  //
   void moveNotAllowed(std::string command);
 
-  //Item
+  //---------------------------------------------------------------------------------------------------------------------
+  ///
+  /// uses the item of the current player, if the player has none an error is printed
+  //
   void useItem();
 
 public:
