@@ -21,40 +21,37 @@ TreasureTile::TreasureTile(TileType type, Treasure* treasure)
 
 std::string TreasureTile::createTreasureId()
 {
-  int treasure_id = treasure_->getTreasureId();
-  std::string treasure = "T";
+  size_t treasure_id = treasure_->getTreasureId();
+  std::string treasure_string = TREASURE_STRING_T;
 
   if (isSingleDigit(treasure_id))
   {
-    treasure.append("0");
+    treasure_string.append(TREASURE_STRING_0);
   }
 
-  treasure.append(std::to_string(treasure_id));
-  return treasure;
+  treasure_string.append(std::to_string(treasure_id));
+  return treasure_string;
 }
 
 Rotation TreasureTile::calculateRotation(size_t treasure_id)
 {
-  std::vector<size_t> deg_0 = {1, 2, 5};
-  std::vector<size_t> deg_90 = {3, 4, 7};
-  std::vector<size_t> deg_180 = {8, 11, 12};
-
-  if (std::count(deg_0.begin(), deg_0.end(), treasure_id))
+  if (std::count(TREASURE_DEG_0.begin(), TREASURE_DEG_0.end(), treasure_id))
   {
     return Rotation::DEG0;
   }
-  else if (std::count(deg_90.begin(), deg_90.end(), treasure_id))
+  else if (std::count(TREASURE_DEG_90.begin(), TREASURE_DEG_90.end(), treasure_id))
   {
     return Rotation::DEG90;
   }
-  else if (std::count(deg_180.begin(), deg_180.end(), treasure_id))
+  else if (std::count(TREASURE_DEG_180.begin(), TREASURE_DEG_180.end(), treasure_id))
   {
     return Rotation::DEG180;
   }
-  else
+  else if (std::count(TREASURE_DEG_270.begin(), TREASURE_DEG_270.end(), treasure_id))
   {
     return Rotation::DEG270;
   }
+  return Rotation::DEG0;
 }
 
 void TreasureTile::foundTreasure()
@@ -64,24 +61,27 @@ void TreasureTile::foundTreasure()
 
 std::vector<std::string> TreasureTile::getTileString()
 {
-  std::vector<std::string> tileString = getRawTileString();
+  std::vector<std::string> tile_string = getRawTileString();
   if (getFound())
   {
-    return tileString;
+    return tile_string;
   }
 
-  // add missing treasure string to tile
+  addTreasureIdToTile(tile_string);
+  return tile_string;
+}
+
+void TreasureTile::addTreasureIdToTile(std::vector<std::string>& tile_string)
+{
   std::string treasure_id = createTreasureId();
-  if (tileString[TREASURE_TILE_ROW][0] == ' ') // check if there is a wall
+  if (tile_string[TREASURE_TILE_ROW][0] == ' ') // check if there is a wall
   {
-    tileString[TREASURE_TILE_ROW].replace(INDEX_WITHOUT_WALL, treasure_id.length(), treasure_id);
+    tile_string[TREASURE_TILE_ROW].replace(INDEX_WITHOUT_WALL, treasure_id.length(), treasure_id);
   }
   else
   {
-    tileString[TREASURE_TILE_ROW].replace(INDEX_WITH_WALL, treasure_id.length(), treasure_id);
+    tile_string[TREASURE_TILE_ROW].replace(INDEX_WITH_WALL, treasure_id.length(), treasure_id);
   }
-
-  return tileString;
 }
 
 bool TreasureTile::hasTreasure()
@@ -95,7 +95,7 @@ bool TreasureTile::hasTreasure()
 
 bool TreasureTile::isSingleDigit(size_t number)
 {
-  return (number < 10);
+  return (number <= MAX_SINGLE_DIGIT);
 }
 
 Treasure* TreasureTile::getTreasure()

@@ -16,6 +16,14 @@
 #include <vector>
 
 const size_t TREASURE_TILE_ROW = 2;
+const size_t MAX_SINGLE_DIGIT = 9;
+const std::string TREASURE_STRING_T = "T";
+const std::string TREASURE_STRING_0 = "0";
+
+const std::vector<size_t> TREASURE_DEG_0 = {1, 2, 5};
+const std::vector<size_t> TREASURE_DEG_90 = {3, 4, 7};
+const std::vector<size_t> TREASURE_DEG_180 = {8, 11, 12};
+const std::vector<size_t> TREASURE_DEG_270 = {6, 9, 10};
 
 class Treasure;
 
@@ -82,6 +90,14 @@ class TreasureTile : public Tile
     /// @return vector<string> which represents the tile
     //
     std::vector<std::string> getTileString();
+
+    //------------------------------------------------------------------------------------------------------------------
+    ///
+    /// If necessary adds treasure id to the tile string
+    ///
+    /// @param tile_string reference
+    //
+    void addTreasureIdToTile(std::vector<std::string>& tile_string);
 
     //------------------------------------------------------------------------------------------------------------------
     ///
