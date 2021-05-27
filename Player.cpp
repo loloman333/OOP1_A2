@@ -75,11 +75,6 @@ void Player::setNrFoundTreasures(size_t nr_found_treasures)
   nr_found_treasures_ = nr_found_treasures;
 }
 
-void Player::setPlayerColor(PlayerColor player_color)
-{
-  player_color_ = player_color;
-}
-
 void Player::setCol(size_t col)
 {
   col_ = col;

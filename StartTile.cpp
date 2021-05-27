@@ -1,7 +1,8 @@
 //---------------------------------------------------------------------------------------------------------------------
 // StartTile.cpp
 //
-// Class for Start Tile
+// The Start Tile class represents a tile in the corner of the board where players can start the game.
+// It is a subclass of "Tile" and implements all necessary functions
 //
 // Authors: Triochter Bande (Grill Matthias, Killer Lorenz, Nagy Lukas)
 //---------------------------------------------------------------------------------------------------------------------
