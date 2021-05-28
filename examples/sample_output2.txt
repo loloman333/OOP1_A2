@@ -322,7 +322,7 @@ Treasure: 0/8    V                 V                 V    Treasure: 0/8
 Player Green(G)  Ʌ                 Ʌ                 Ʌ
 Treasure: 0/8    |                 |                 |
 RED > d
-RED > go right 3
+RED > go right 0003
 RED > go right 55
 Impossible move!
 RED > go right 0
