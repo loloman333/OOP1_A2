@@ -127,10 +127,11 @@ void Item::setBricksInDirection(Direction direction, Tile* tile)
 
   if (tile->addWallInDirection(direction))
   {
-    game.getCurrentPlayer()->setItem(nullptr);
-    setFound(false);
     game.getPrintMaster()->printGame();
     game.getPrintMaster()->wallBuilt();
+    game.getCurrentPlayer()->setItem(nullptr);
+    setFound(false);
+    
   }
   else
   {
@@ -161,10 +162,10 @@ void Item::useDynamite(Game& game)
     game.getBoard()[row][col + 1]->removeWallInDirection(Direction::LEFT);
   }
 
-  game.getCurrentPlayer()->setItem(nullptr);
-  setFound(false);
   game.getPrintMaster()->printGame();
   game.getPrintMaster()->printBomb();
+  game.getCurrentPlayer()->setItem(nullptr);
+  setFound(false);
 }
 
 void Item::useLadder(Game& game)
