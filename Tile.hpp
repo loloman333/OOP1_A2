@@ -149,6 +149,21 @@ class Tile
     //
     virtual ~Tile() = default;
 
+    //-------------------------------------------------------------------------------------------------------------------
+    ///
+    /// copy constructor of the Tile class
+    ///
+    /// @param tile the tile to be copied
+    //
+    Tile(const Tile& tile) = delete;
+
+    //-------------------------------------------------------------------------------------------------------------------
+    ///
+    /// assignment operator of the Tile class
+    ///
+    /// @param tile the tile to be copied
+    //
+    Tile& operator=(const Tile& tile) = delete;
 
     //---------------------------------------------------------------------------------------------------------------------
     ///

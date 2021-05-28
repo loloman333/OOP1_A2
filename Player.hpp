@@ -44,6 +44,28 @@ class Player
     //
     Player(PlayerColor player_color);
 
+    //-------------------------------------------------------------------------------------------------------------------
+    ///
+    /// destructor of the Player class
+    //
+    ~Player() = default;
+
+    //-------------------------------------------------------------------------------------------------------------------
+    ///
+    /// copy constructor of the Player class
+    ///
+    /// @param player the player to be copied
+    //
+    Player(const Player& player) = delete;
+
+    //-------------------------------------------------------------------------------------------------------------------
+    ///
+    /// assignment operator of the Player class
+    ///
+    /// @param player the player to be copied
+    //
+    Player& operator=(const Player& player) = delete;
+
     //-----------------------------------------------------------------------------------------------------------------
     ///
     /// A getter for covered_stack_

@@ -34,6 +34,28 @@ class ItemTile : public Tile
     /// @param item Pointer to the item the tile should hold
     ///
     ItemTile(TileType type, Item* item);
+
+  //-------------------------------------------------------------------------------------------------------------------
+  ///
+  /// destructor of the ItemTile class
+  //
+  ~ItemTile() = default;
+
+  //-------------------------------------------------------------------------------------------------------------------
+  ///
+  /// copy constructor of the ItemTile class
+  ///
+  /// @param item_tile the item_tile to be copied
+  //
+  ItemTile(const ItemTile& item_tile) = delete;
+
+  //-------------------------------------------------------------------------------------------------------------------
+  ///
+  /// assignment operator of the ItemTile class
+  ///
+  /// @param item_tile the item_tile to be copied
+  //
+  ItemTile& operator=(const ItemTile& item_tile) = delete;
     
     ///-----------------------------------------------------------------------------------------------------------------  
     /// Getter for item_

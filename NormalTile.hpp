@@ -36,6 +36,28 @@ class NormalTile : public Tile
     //
     NormalTile(TileType type);
 
+  //-------------------------------------------------------------------------------------------------------------------
+  ///
+  /// destructor of the NormalTile class
+  //
+  ~NormalTile() = default;
+
+  //-------------------------------------------------------------------------------------------------------------------
+  ///
+  /// copy constructor of the NormalTile class
+  ///
+  /// @param normal_tile the normal_tile to be copied
+  //
+  NormalTile(const NormalTile& normal_tile) = delete;
+
+  //-------------------------------------------------------------------------------------------------------------------
+  ///
+  /// assignment operator of the NormalTile class
+  ///
+  /// @param normal_tile the normal_tile to be copied
+  //
+  NormalTile& operator=(const NormalTile& normal_tile) = delete;
+
     //------------------------------------------------------------------------------------------------------------------
     ///
     /// generates the string vector of the tile

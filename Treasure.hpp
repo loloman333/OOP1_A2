@@ -60,6 +60,27 @@ class Treasure
     //
     Treasure(std::string name, size_t treasure_id);
 
+    //-------------------------------------------------------------------------------------------------------------------
+    ///
+    /// destructor of the Treasure class
+    //
+    ~Treasure() = default;
+
+    //-------------------------------------------------------------------------------------------------------------------
+    ///
+    /// copy constructor of the Treasure class
+    ///
+    /// @param treasure the treasure to be copied
+    //
+    Treasure(const Treasure& treasure) = delete;
+
+    //-------------------------------------------------------------------------------------------------------------------
+    ///
+    /// assignment operator of the Treasure class
+    ///
+    /// @param treasure the treasure to be copied
+    //
+    Treasure& operator=(const Treasure& treasure) = delete;
 
     //------------------------------------------------------------------------------------------------------------------
     ///
