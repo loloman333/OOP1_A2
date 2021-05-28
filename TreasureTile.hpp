@@ -82,6 +82,28 @@ class TreasureTile : public Tile
     //
     TreasureTile(TileType type, Treasure* treasure);
 
+    //-------------------------------------------------------------------------------------------------------------------
+    ///
+    /// destructor of the TreasureTile class
+    //
+    ~TreasureTile() = default;
+
+    //-------------------------------------------------------------------------------------------------------------------
+    ///
+    /// copy constructor of the TreasureTile class
+    ///
+    /// @param treasure_tile the treasure_tile to be copied
+    //
+    TreasureTile(const TreasureTile& treasure_tile) = delete;
+
+    //-------------------------------------------------------------------------------------------------------------------
+    ///
+    /// assignment operator of the TreasureTile class
+    ///
+    /// @param treasure_tile the treasure_tile to be copied
+    //
+    TreasureTile& operator=(const TreasureTile& treasure_tile) = delete;
+
 
     //------------------------------------------------------------------------------------------------------------------
     ///

@@ -98,6 +98,28 @@ public:
   //
   Item(ItemType item_type);
 
+  //-------------------------------------------------------------------------------------------------------------------
+  ///
+  /// destructor of the Item class
+  //
+  ~Item() = default;
+
+  //-------------------------------------------------------------------------------------------------------------------
+  ///
+  /// copy constructor of the Item class
+  ///
+  /// @param item the item to be copied
+  //
+  Item(const Item& item) = default;
+
+  //-------------------------------------------------------------------------------------------------------------------
+  ///
+  /// assignment operator of the Item class
+  ///
+  /// @param item the item to be copied
+  //
+  Item& operator=(const Item& item) = default;
+
   //--------------------------------------------------------------------------------------------------------------------
   ///
   /// A getter for item_type_

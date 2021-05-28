@@ -32,6 +32,28 @@ class StartTile : public Tile
     ///
     StartTile(PlayerColor player_color);
 
+    //-------------------------------------------------------------------------------------------------------------------
+    ///
+    /// destructor of the StartTile class
+    //
+    ~StartTile() = default;
+
+    //-------------------------------------------------------------------------------------------------------------------
+    ///
+    /// copy constructor of the StartTile class
+    ///
+    /// @param start_tile the start_tile to be copied
+    //
+    StartTile(const StartTile& start_tile) = delete;
+
+    //-------------------------------------------------------------------------------------------------------------------
+    ///
+    /// assignment operator of the StartTile class
+    ///
+    /// @param start_tile the start_tile to be copied
+    //
+    StartTile& operator=(const StartTile& start_tile) = delete;
+
     ///-----------------------------------------------------------------------------------------------------------------  
     /// Getter for player_color_;
     ///

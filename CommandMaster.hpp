@@ -378,6 +378,28 @@ public:
 
   //-------------------------------------------------------------------------------------------------------------------
   ///
+  /// destructor of the CommandMaster class
+  //
+  ~CommandMaster() = default;
+
+  //-------------------------------------------------------------------------------------------------------------------
+  ///
+  /// copy constructor of the CommandMaster class
+  ///
+  /// @param command_master the command_master to be copied
+  //
+  CommandMaster(const CommandMaster& command_master) = delete;
+
+  //-------------------------------------------------------------------------------------------------------------------
+  ///
+  /// assignment operator of the CommandMaster class
+  ///
+  /// @param command_master the command_master to be copied
+  //
+  CommandMaster& operator=(const CommandMaster& command_master) = delete;
+
+  //-------------------------------------------------------------------------------------------------------------------
+  ///
   /// tokenize takes the string input and splits it up into tokens for the other commands to operate with
   ///
   /// @param input the string of the whole command

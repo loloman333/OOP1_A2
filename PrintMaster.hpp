@@ -159,6 +159,28 @@ public:
   //
   PrintMaster(Game& game);
 
+  //-------------------------------------------------------------------------------------------------------------------
+  ///
+  /// destructor of the PrintMaster class
+  //
+  ~PrintMaster() = default;
+
+  //-------------------------------------------------------------------------------------------------------------------
+  ///
+  /// copy constructor of the PrintMaster class
+  ///
+  /// @param print_master the print_master to be copied
+  //
+  PrintMaster(const PrintMaster& print_master) = delete;
+
+  //-------------------------------------------------------------------------------------------------------------------
+  ///
+  /// assignment operator of the PrintMaster class
+  ///
+  /// @param print_master the print_master to be copied
+  //
+  PrintMaster& operator=(const PrintMaster& print_master) = delete;
+
   //-----------------------------------------------------------------------------------------------------------------
   ///
   /// Print the whole game with board, UI and everything that needs to be printed
