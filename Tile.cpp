@@ -1,17 +1,17 @@
-//---------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 // Tile.cpp
 //
 // Tile class represents a tile on the Board, is a super class for other tiles and can have walls and players on it
 //
 // Authors: Triochter Bande (Grill Matthias, Killer Lorenz, Nagy Lukas)
-//---------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 //
 
 #include "Tile.hpp"
 #include "Player.hpp"
 #include "stdlib.h"
 
-Tile::Tile(TileType type, Rotation rotation) : type_{type}, rotation_{rotation} 
+Tile::Tile(TileType type, Rotation rotation) : type_{type}, rotation_{rotation}
 {
   generateWalls();
 }
@@ -49,14 +49,14 @@ size_t Tile::getRotationValue()
 {
   switch (rotation_)
   {
-  case Rotation::DEG0:
-    return 0;
-  case Rotation::DEG90:
-    return 90;
-  case Rotation::DEG180:
-    return 180;
-  case Rotation::DEG270:
-    return 270;
+    case Rotation::DEG0:
+      return 0;
+    case Rotation::DEG90:
+      return 90;
+    case Rotation::DEG180:
+      return 180;
+    case Rotation::DEG270:
+      return 270;
   }
 }
 
@@ -64,26 +64,26 @@ std::string Tile::getTileTypeString()
 {
   switch (type_)
   {
-  case TileType::T:
-    return "T";
-  case TileType::L:
-    return "L";
-  case TileType::I:
-    return "I";
-  case TileType::O:
-    return "O";
-  case TileType::U:
-    return "U";
-  case TileType::X:
-    return "X";
-  default:
-    return nullptr;
+    case TileType::T:
+      return "T";
+    case TileType::L:
+      return "L";
+    case TileType::I:
+      return "I";
+    case TileType::O:
+      return "O";
+    case TileType::U:
+      return "U";
+    case TileType::X:
+      return "X";
+    default:
+      return nullptr;
   }
 }
 
 bool Tile::isCorner(size_t row, size_t col)
 {
-  if((row == TOP_ROW || row == BOTTOM_ROW) && (col <= LEFT_COLUMN || col >= RIGHT_COLUMN))
+  if ((row == TOP_ROW || row == BOTTOM_ROW) && (col <= LEFT_COLUMN || col >= RIGHT_COLUMN))
   {
     return true;
   }
@@ -92,9 +92,9 @@ bool Tile::isCorner(size_t row, size_t col)
 
 bool Tile::isWallInDirection(Direction direction)
 {
-  for(size_t index = 0; index < walls_.size(); index++)
+  for (size_t index = 0; index < walls_.size(); index++)
   {
-    if(walls_[index] == direction)
+    if (walls_[index] == direction)
     {
       return true;
     }
@@ -107,7 +107,7 @@ Direction Tile::calcDirection(Direction dir, Rotation rot)
   size_t dir_value = static_cast<size_t>(dir);
   size_t rot_value = static_cast<size_t>(rot);
   dir_value += rot_value;
-  if(dir_value >= DIRECTION_AMOUNT)
+  if (dir_value >= DIRECTION_AMOUNT)
   {
     dir_value -= DIRECTION_AMOUNT;
   }
@@ -135,11 +135,11 @@ void Tile::setWallsAccordingToTileType()
     case TileType::L:
       new_walls_.push_back(Direction::LEFT);
       new_walls_.push_back(Direction::BOTTOM);
-        break;
+      break;
     case TileType::I:
       new_walls_.push_back(Direction::LEFT);
       new_walls_.push_back(Direction::RIGHT);
-        break;
+      break;
     case TileType::O:
       new_walls_.push_back(Direction::LEFT);
       new_walls_.push_back(Direction::RIGHT);
@@ -150,7 +150,7 @@ void Tile::setWallsAccordingToTileType()
       new_walls_.push_back(Direction::RIGHT);
       new_walls_.push_back(Direction::LEFT);
       new_walls_.push_back(Direction::BOTTOM);
-        break;
+      break;
     case TileType::X:
       break;
   }
@@ -204,28 +204,28 @@ void Tile::generateWalls()
 void Tile::fillTileString(std::vector<std::string>& tile)
 {
   std::vector<std::string> template_tile;
-  for(size_t row = 0; row < TILE_HEIGHT ; row++)
+  for (size_t row = 0; row < TILE_HEIGHT; row++)
   {
     template_tile.push_back("");
-    for(size_t col = 0; col < TILE_WIDTH ; col++)
+    for (size_t col = 0; col < TILE_WIDTH; col++)
     {
-      if(isCorner(row,col))
+      if (isCorner(row, col))
       {
         template_tile[row].append(WALL);
       }
-      else if(isWallInDirection(Direction::TOP) && row == TOP_ROW)
+      else if (isWallInDirection(Direction::TOP) && row == TOP_ROW)
       {
         template_tile[row].append(WALL);
       }
-      else if(isWallInDirection(Direction::LEFT) && col <= LEFT_COLUMN)
+      else if (isWallInDirection(Direction::LEFT) && col <= LEFT_COLUMN)
       {
         template_tile[row].append(WALL);
       }
-      else if(isWallInDirection(Direction::BOTTOM) && row == BOTTOM_ROW)
+      else if (isWallInDirection(Direction::BOTTOM) && row == BOTTOM_ROW)
       {
         template_tile[row].append(WALL);
       }
-      else if(isWallInDirection(Direction::RIGHT) && col >= RIGHT_COLUMN)
+      else if (isWallInDirection(Direction::RIGHT) && col >= RIGHT_COLUMN)
       {
         template_tile[row].append(WALL);
       }
@@ -242,7 +242,7 @@ void Tile::addPlayersToTile(std::vector<std::string>& tile_vector)
 {
   if (!players_.empty())
   {
-    
+
     std::string player_string = "P";
 
     for (PlayerColor color : Player::player_colors_)
@@ -282,7 +282,7 @@ bool Tile::isPlayerColorOnTile(PlayerColor color)
   return false;
 }
 
-void Tile::addPlayer(Player *player)
+void Tile::addPlayer(Player* player)
 {
   players_.push_back(player);
 }
@@ -299,9 +299,9 @@ void Tile::print()
 void Tile::removePlayer(std::string player_color)
 {
   size_t location = 0;
-  for(size_t index = 0; index < players_.size(); index++)
+  for (size_t index = 0; index < players_.size(); index++)
   {
-    if(players_[index]->getPlayerColorAsString() == player_color)
+    if (players_[index]->getPlayerColorAsString() == player_color)
     {
       location = index;
     }
@@ -315,7 +315,7 @@ void Tile::rotate(Direction dir)
   if (dir == Direction::LEFT)
   {
     step = 1;
-  } 
+  }
   else if (dir == Direction::RIGHT)
   {
     step = -1;
@@ -340,9 +340,9 @@ bool Tile::hasItem()
 
 Player* Tile::getPlayer(PlayerColor player_color)
 {
-  for(Player* player : players_)
+  for (Player* player : players_)
   {
-    if(player->getPlayerColor() == player_color)
+    if (player->getPlayerColor() == player_color)
     {
       return player;
     }
@@ -366,15 +366,15 @@ bool Tile::addWallInDirection(Direction direction)
 void Tile::removeWallInDirection(Direction direction)
 {
   size_t remove_index = walls_.size();
-  for(size_t index = 0; index < walls_.size(); index++)
+  for (size_t index = 0; index < walls_.size(); index++)
   {
-    if(walls_[index] == direction)
+    if (walls_[index] == direction)
     {
       remove_index = index;
     }
   }
 
-  if(remove_index != walls_.size())
+  if (remove_index != walls_.size())
   {
     walls_.erase(walls_.begin() + remove_index);
   }

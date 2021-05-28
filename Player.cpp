@@ -1,11 +1,11 @@
-//---------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 // Player.cpp
 //
-// The Player class represents a Player on the board. 
-// It has several variables getter and setter for a player.  
+// The Player class represents a Player on the board.
+// It has several variables getter and setter for a player.
 //
 // Authors: Triochter Bande (Grill Matthias, Killer Lorenz, Nagy Lukas)
-//---------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 //
 
 #include "Player.hpp"
@@ -13,10 +13,10 @@
 
 Player::Player(PlayerColor player_color) : nr_found_treasures_{0}, player_color_(player_color) {}
 
-const std::vector<PlayerColor> Player::player_colors_ = 
-    {PlayerColor::RED, PlayerColor::YELLOW, PlayerColor::GREEN, PlayerColor::BLUE};
+const std::vector<PlayerColor> Player::player_colors_ = {PlayerColor::RED, PlayerColor::YELLOW, PlayerColor::GREEN,
+                                                         PlayerColor::BLUE};
 
-std::vector<Treasure*>& Player::getCoveredStackRef() 
+std::vector<Treasure*>& Player::getCoveredStackRef()
 {
   return covered_stack_;
 }

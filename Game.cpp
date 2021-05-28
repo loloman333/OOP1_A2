@@ -9,21 +9,22 @@
 //
 
 #include "Game.hpp"
-#include "StartTile.hpp"
-#include "ItemTile.hpp"
-#include "TreasureTile.hpp"
-#include "NormalTile.hpp"
-#include "Item.hpp"
-#include "Treasure.hpp"
-#include "Random.hpp"
-#include "Player.hpp"
-#include "Tile.hpp"
 #include "CommandMaster.hpp"
+#include "Item.hpp"
+#include "ItemTile.hpp"
+#include "NormalTile.hpp"
+#include "Player.hpp"
 #include "PrintMaster.hpp"
+#include "Random.hpp"
+#include "StartTile.hpp"
+#include "Tile.hpp"
+#include "Treasure.hpp"
+#include "TreasureTile.hpp"
 
 #include <algorithm>
 
-Game::Game(){
+Game::Game()
+{
   command_master_ = new CommandMaster(*this);
   print_master_ = new PrintMaster(*this);
 }
@@ -55,7 +56,6 @@ int Game::run()
     fillBoard();
     distributeTreasures();
 
-
     while (gameIsRunning())
     {
       print_master_->printGame();
@@ -83,17 +83,17 @@ void Game::gameStart()
     std::getline(std::cin, input);
 
     input_vector = command_master_->tokenize(input);
-    if(input_vector.size() == 1)
+    if (input_vector.size() == 1)
     {
-      if(input_vector[PLAYER_COUNT_INDEX] == TWO_PLAYERS)
+      if (input_vector[PLAYER_COUNT_INDEX] == TWO_PLAYERS)
       {
         player_count = 2;
       }
-      else if(input_vector[PLAYER_COUNT_INDEX] == THREE_PLAYERS)
+      else if (input_vector[PLAYER_COUNT_INDEX] == THREE_PLAYERS)
       {
         player_count = 3;
       }
-      else if(input_vector[PLAYER_COUNT_INDEX] == FOUR_PLAYERS)
+      else if (input_vector[PLAYER_COUNT_INDEX] == FOUR_PLAYERS)
       {
         player_count = 4;
       }
@@ -102,7 +102,7 @@ void Game::gameStart()
         std::cout << UI_WRONG_COUNT << std::endl;
       }
     }
-    else if(std::cin.eof())
+    else if (std::cin.eof())
     {
       quitGame();
       player_count = 2;
@@ -113,7 +113,7 @@ void Game::gameStart()
     }
   }
 
-  for(size_t index = 0; index < player_count; index++)
+  for (size_t index = 0; index < player_count; index++)
   {
     addPlayer(Player::player_colors_[index]);
   }
@@ -127,7 +127,7 @@ void Game::playRound()
   current_output += PROMPT;
 
   bool stop = false;
-  while(!stop)
+  while (!stop)
   {
     std::cout << current_output;
     stop = command_master_->handleCommand();
@@ -195,7 +195,7 @@ void Game::fillVariableTiles(size_t& treasure_index)
     addNewNormalTilesToVector(tiles, TileType::L, BONUS_GAME_NORMAL_L_TILES);
     addNewNormalTilesToVector(tiles, TileType::I, BONUS_GAME_NORMAL_I_TILES);
     addNewTreasureTilesToVector(tiles, TileType::T, BONUS_GAME_NORMAL_T_TILES, treasure_index);
-  } 
+  }
   else
   {
     addNewNormalTilesToVector(tiles, TileType::L, NORMAL_GAME_NORMAL_L_TILES);
@@ -213,7 +213,7 @@ void Game::fillVariableTiles(size_t& treasure_index)
         board_[row_index][col_index] = tiles[random_index];
 
         size_t random_rotation = Oop::Random::getInstance().getRandomOrientation();
-        board_[row_index][col_index]->setRotation((Rotation)random_rotation);
+        board_[row_index][col_index]->setRotation((Rotation) random_rotation);
 
         tiles.erase(tiles.begin() + random_index);
       }
@@ -263,7 +263,7 @@ bool Game::isInMoveableLine(size_t row_index, size_t col_index)
 void Game::fillTreasures()
 {
   size_t id = 1;
-  for(std::string treasure_name : TREASURE_NAMES)
+  for (std::string treasure_name : TREASURE_NAMES)
   {
     Treasure* treasure = new Treasure(treasure_name, id);
 
@@ -320,7 +320,7 @@ void Game::deleteBoard()
   }
 }
 
-void Game::deleteItemsFromPlayers() 
+void Game::deleteItemsFromPlayers()
 {
   for (Player* player : players_)
   {
@@ -406,9 +406,7 @@ void Game::setFreeTile(Tile* tile)
   free_tile_ = tile;
 }
 
-
 void Game::setBonus(bool choice)
 {
   bonus_items_ = choice;
 }
-

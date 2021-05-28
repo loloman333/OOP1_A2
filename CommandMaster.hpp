@@ -1,11 +1,11 @@
-//---------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 // CommandMaster.hpp
 //
 // The CommandMaster handles all commands entered in the command line
 // and calls the corresponding functions in other classes
 //
 // Authors: Triochter Bande (Grill Matthias, Killer Lorenz, Nagy Lukas)
-//---------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 //
 
 #ifndef A2_COMMANDMASTER_HPP
@@ -52,7 +52,7 @@ private:
   std::string last_insert_direction_ = "";
   std::string last_insert_row_col_ = "";
 
-  //-------------------------------------------------------------------------------------------------------------------
+  //--------------------------------------------------------------------------------------------------------------------
   ///
   /// takes the tokens of the command and executes the corresponding command
   ///
@@ -61,7 +61,7 @@ private:
   //
   bool executeCommand(std::vector<std::string>& tokens);
 
-  //-------------------------------------------------------------------------------------------------------------------
+  //--------------------------------------------------------------------------------------------------------------------
   ///
   /// takes a string and a number reference and converts the given string into a size_t
   ///
@@ -71,16 +71,16 @@ private:
   //
   bool stringToSizeT(std::string token, size_t& number);
 
-  //-------------------------------------------------------------------------------------------------------------------
+  //--------------------------------------------------------------------------------------------------------------------
   ///
-  /// toggles printing the treasure name and id on 
+  /// toggles printing the treasure name and id on
   /// and prints the gameboard if not turned off
   ///
   /// @param tokens the command tokens that have to be handled
   //
   void showTreasure(std::vector<std::string> tokens);
 
-  //-------------------------------------------------------------------------------------------------------------------
+  //--------------------------------------------------------------------------------------------------------------------
   ///
   /// toggles the printing of the treasure off and clears the commandline
   ///
@@ -88,7 +88,7 @@ private:
   //
   void hideTreasure(std::vector<std::string> tokens);
 
-  //-------------------------------------------------------------------------------------------------------------------
+  //--------------------------------------------------------------------------------------------------------------------
   ///
   /// prints the free tile
   ///
@@ -96,7 +96,7 @@ private:
   //
   void showFreeTile(std::vector<std::string> tokens);
 
-  //-------------------------------------------------------------------------------------------------------------------
+  //--------------------------------------------------------------------------------------------------------------------
   ///
   /// rotates the free tile in given direction
   ///
@@ -104,7 +104,7 @@ private:
   //
   void rotateFreeTile(std::vector<std::string> tokens);
 
-  //-------------------------------------------------------------------------------------------------------------------
+  //--------------------------------------------------------------------------------------------------------------------
   ///
   /// toggles the printign of gamefield on/off or prints the gamefield depending on user input
   ///
@@ -112,7 +112,7 @@ private:
   //
   void gameField(std::vector<std::string> tokens);
 
-  //-------------------------------------------------------------------------------------------------------------------
+  //--------------------------------------------------------------------------------------------------------------------
   ///
   /// ends the current player's turn and checks if the game is won
   ///
@@ -121,7 +121,7 @@ private:
   //
   bool finish(std::vector<std::string> tokens);
 
-  //-------------------------------------------------------------------------------------------------------------------
+  //--------------------------------------------------------------------------------------------------------------------
   ///
   /// checks if the player needs the treasure he is standing on
   ///
@@ -130,7 +130,7 @@ private:
   //
   bool currentPlayerNeedsTreasure(Treasure* treasure);
 
-  //-------------------------------------------------------------------------------------------------------------------
+  //--------------------------------------------------------------------------------------------------------------------
   ///
   /// collects the treasure the player is standing on and updates the found treasures for the player
   ///
@@ -138,7 +138,7 @@ private:
   //
   void currentPlayerCollectTreasure(Treasure* treasure);
 
-  //-------------------------------------------------------------------------------------------------------------------
+  //--------------------------------------------------------------------------------------------------------------------
   ///
   /// collects the item the player is standing on
   ///
@@ -146,7 +146,7 @@ private:
   //
   void currentPlayerCollectItem(Item* item);
 
-  //-------------------------------------------------------------------------------------------------------------------
+  //--------------------------------------------------------------------------------------------------------------------
   ///
   /// checks if the current tile has a treasure and if the player needs it and sets the treasure reference to it
   ///
@@ -155,7 +155,7 @@ private:
   //
   bool checkCollectTreasure(Treasure*& treasure_to_collect);
 
-  //-------------------------------------------------------------------------------------------------------------------
+  //--------------------------------------------------------------------------------------------------------------------
   ///
   /// checks if the current tile has an item and if the player can pick up an item
   ///
@@ -164,7 +164,7 @@ private:
   //
   bool checkCollectItem(Item*& item_to_collect);
 
-  //-------------------------------------------------------------------------------------------------------------------
+  //--------------------------------------------------------------------------------------------------------------------
   ///
   /// checks if the current player has won the game
   ///
@@ -172,7 +172,7 @@ private:
   //
   bool checkWin();
 
-  //-------------------------------------------------------------------------------------------------------------------
+  //--------------------------------------------------------------------------------------------------------------------
   ///
   /// inserts the free tile where the command tells it to and checks for invalid inputs
   ///
@@ -180,7 +180,7 @@ private:
   //
   void insert(std::vector<std::string> tokens);
 
-  //-------------------------------------------------------------------------------------------------------------------
+  //--------------------------------------------------------------------------------------------------------------------
   ///
   /// checks where the free tile should be placed and inserts it
   ///
@@ -188,7 +188,7 @@ private:
   //
   void insertTile(std::vector<std::string> tokens);
 
-  //-------------------------------------------------------------------------------------------------------------------
+  //--------------------------------------------------------------------------------------------------------------------
   ///
   /// moves the whole row one tile ahead and then places the free tile on the empty place
   ///
@@ -196,7 +196,7 @@ private:
   //
   void insertRow(std::vector<std::string> tokens);
 
-  //-------------------------------------------------------------------------------------------------------------------
+  //--------------------------------------------------------------------------------------------------------------------
   ///
   /// moves the whole column one tile ahead and then places the free tile on the empty place
   ///
@@ -204,7 +204,7 @@ private:
   //
   void insertColumn(std::vector<std::string> tokens);
 
-  //-------------------------------------------------------------------------------------------------------------------
+  //--------------------------------------------------------------------------------------------------------------------
   ///
   /// checks if the inert parameters are valid
   ///
@@ -213,7 +213,7 @@ private:
   //
   bool checkInsertParameter(std::vector<std::string> tokens);
 
-  //-------------------------------------------------------------------------------------------------------------------
+  //--------------------------------------------------------------------------------------------------------------------
   ///
   /// checks if the given row or column is movable or not
   ///
@@ -222,7 +222,7 @@ private:
   //
   bool isInMoveableRowOrCol(size_t row_col);
 
-  //-------------------------------------------------------------------------------------------------------------------
+  //--------------------------------------------------------------------------------------------------------------------
   ///
   /// checks if the given insert direction is valid
   ///
@@ -231,7 +231,7 @@ private:
   //
   bool isValidInsertDirection(std::string direction);
 
-  //-------------------------------------------------------------------------------------------------------------------
+  //--------------------------------------------------------------------------------------------------------------------
   ///
   /// checks if the new insert doesn't revert the last input
   ///
@@ -240,7 +240,7 @@ private:
   //
   bool checkLastInsert(std::vector<std::string> tokens);
 
-  //-------------------------------------------------------------------------------------------------------------------
+  //--------------------------------------------------------------------------------------------------------------------
   ///
   /// compares the last insert to the new insert
   ///
@@ -251,7 +251,7 @@ private:
   //
   bool compareLastInsert(std::string direction, std::string alias, std::string row_col);
 
-  //-------------------------------------------------------------------------------------------------------------------
+  //--------------------------------------------------------------------------------------------------------------------
   ///
   /// updates the players coordinates on the field if they have been moved with the insert
   ///
@@ -261,7 +261,7 @@ private:
   //
   void playersUpdateRowColumn(std::vector<Player*> players, size_t row, size_t column);
 
-  //-------------------------------------------------------------------------------------------------------------------
+  //--------------------------------------------------------------------------------------------------------------------
   ///
   /// moves a player onto another Tile
   ///
@@ -271,7 +271,7 @@ private:
   //
   void movePlayersToTile(Tile* from, size_t row, size_t column);
 
-  //-------------------------------------------------------------------------------------------------------------------
+  //--------------------------------------------------------------------------------------------------------------------
   ///
   /// moves the current player to the location given in the command tokens
   ///
@@ -279,7 +279,7 @@ private:
   //
   void movePlayer(std::vector<std::string> tokens);
 
-  //-------------------------------------------------------------------------------------------------------------------
+  //--------------------------------------------------------------------------------------------------------------------
   ///
   /// checks if the command tokens of the movement command are corrent
   ///
@@ -288,7 +288,7 @@ private:
   //
   bool checkMoveInput(std::vector<std::string> tokens);
 
-  //-------------------------------------------------------------------------------------------------------------------
+  //--------------------------------------------------------------------------------------------------------------------
   ///
   /// gets the direction to be moved from the command tokens
   ///
@@ -297,7 +297,7 @@ private:
   //
   Direction getDirection(std::vector<std::string> tokens);
 
-  //-------------------------------------------------------------------------------------------------------------------
+  //--------------------------------------------------------------------------------------------------------------------
   ///
   /// checks if the command tokens of the movement command are corrent
   ///
@@ -306,10 +306,10 @@ private:
   //
   int getAmount(std::vector<std::string> tokens);
 
-  //-------------------------------------------------------------------------------------------------------------------
+  //--------------------------------------------------------------------------------------------------------------------
   ///
   /// calculates the modifier on the row and column that have to be added to move in specified direction
-  /// row_modifier = 0 if the movement is in column direction only 
+  /// row_modifier = 0 if the movement is in column direction only
   /// else it is 1 or -1 depending on moving forwards or backwards
   /// col_modifier = 0 if the movement is in row direction only
   /// else it is 1 or -1 depending on moving forwards or backwards
@@ -318,9 +318,9 @@ private:
   /// @param row_modifier the modifier that is added to the movement to walk in specified direction
   /// @param col_modifier the modifier that is added to the movement to walk in specified direction
   //
-  void getMovementModifier(Direction direction, int &row_modifier, int &col_modifier);
+  void getMovementModifier(Direction direction, int& row_modifier, int& col_modifier);
 
-  //-------------------------------------------------------------------------------------------------------------------
+  //--------------------------------------------------------------------------------------------------------------------
   ///
   /// checks if the movement is possible or if walls or the edge are in the way
   ///
@@ -330,9 +330,9 @@ private:
   /// @param col_modifier the modifier to be used when moving in column direction
   /// @returns true if the move is possible else false
   //
-  bool isMovePossible(Direction direction, size_t movement, int &row_modifier, int &col_modifier);
+  bool isMovePossible(Direction direction, size_t movement, int& row_modifier, int& col_modifier);
 
-  //-------------------------------------------------------------------------------------------------------------------
+  //--------------------------------------------------------------------------------------------------------------------
   ///
   /// moves the player in the specified direction
   ///
@@ -341,9 +341,9 @@ private:
   /// @param row_modifier the modifier to be used when moving in row direction
   /// @param col_modifier the modifier to be used when moving in column direction
   //
-  void moveInDirection(Player* player, size_t movement, int &row_modifier, int &col_modifier);
+  void moveInDirection(Player* player, size_t movement, int& row_modifier, int& col_modifier);
 
-  //-------------------------------------------------------------------------------------------------------------------
+  //--------------------------------------------------------------------------------------------------------------------
   ///
   /// gets the direction opposite of the one given
   ///
@@ -352,7 +352,7 @@ private:
   //
   Direction getOppositeDirection(Direction direction);
 
-  //-------------------------------------------------------------------------------------------------------------------
+  //--------------------------------------------------------------------------------------------------------------------
   ///
   /// prints the error Message that the move is not allowed
   ///
@@ -360,15 +360,14 @@ private:
   //
   void moveNotAllowed(std::string command);
 
-  //-------------------------------------------------------------------------------------------------------------------
+  //--------------------------------------------------------------------------------------------------------------------
   ///
   /// uses the item of the current player, if the player has none an error is printed
   //
   void useItem(std::vector<std::string> tokens);
 
 public:
-
-  //-------------------------------------------------------------------------------------------------------------------
+  //--------------------------------------------------------------------------------------------------------------------
   ///
   /// constructor with a reference to the game
   ///
@@ -376,13 +375,13 @@ public:
   //
   CommandMaster(Game& game);
 
-  //-------------------------------------------------------------------------------------------------------------------
+  //--------------------------------------------------------------------------------------------------------------------
   ///
   /// destructor of the CommandMaster class
   //
   ~CommandMaster() = default;
 
-  //-------------------------------------------------------------------------------------------------------------------
+  //--------------------------------------------------------------------------------------------------------------------
   ///
   /// copy constructor of the CommandMaster class
   ///
@@ -390,7 +389,7 @@ public:
   //
   CommandMaster(const CommandMaster& command_master) = delete;
 
-  //-------------------------------------------------------------------------------------------------------------------
+  //--------------------------------------------------------------------------------------------------------------------
   ///
   /// assignment operator of the CommandMaster class
   ///
@@ -398,7 +397,7 @@ public:
   //
   CommandMaster& operator=(const CommandMaster& command_master) = delete;
 
-  //-------------------------------------------------------------------------------------------------------------------
+  //--------------------------------------------------------------------------------------------------------------------
   ///
   /// tokenize takes the string input and splits it up into tokens for the other commands to operate with
   ///
@@ -406,7 +405,7 @@ public:
   //
   std::vector<std::string> tokenize(std::string input);
 
-  //-------------------------------------------------------------------------------------------------------------------
+  //--------------------------------------------------------------------------------------------------------------------
   ///
   /// handles all command  the user inputs on his turn and returns if the game should end or not
   ///
@@ -414,7 +413,7 @@ public:
   //
   bool handleCommand();
 
-  //-------------------------------------------------------------------------------------------------------------------
+  //--------------------------------------------------------------------------------------------------------------------
   ///
   /// Checks if given string only contains numbers
   /// https://stackoverflow.com/questions/8888748/how-to-check-if-given-c-string-or-char-contains-only-digits
@@ -423,15 +422,15 @@ public:
   ///
   /// @return true if only contains numbers
   //
-  bool is_digits(const std::string &str);
+  bool is_digits(const std::string& str);
 
-  //-------------------------------------------------------------------------------------------------------------------
+  //--------------------------------------------------------------------------------------------------------------------
   ///
   /// resets the round so round specific flags are on their standard values
   //
   void reset();
 
-  //-------------------------------------------------------------------------------------------------------------------
+  //--------------------------------------------------------------------------------------------------------------------
   ///
   /// Getter for the showTreasure variable
   ///
@@ -439,7 +438,7 @@ public:
   //
   bool getShowTreasure();
 
-  //-------------------------------------------------------------------------------------------------------------------
+  //--------------------------------------------------------------------------------------------------------------------
   ///
   /// Getter for the showGamefield variable
   ///

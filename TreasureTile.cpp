@@ -13,11 +13,12 @@
 
 #include <algorithm>
 
-TreasureTile::TreasureTile(Treasure* treasure)
-: Tile(TileType::T, calculateRotation(treasure->getTreasureId())), treasure_{treasure}  {}
+TreasureTile::TreasureTile(Treasure* treasure) :
+    Tile(TileType::T, calculateRotation(treasure->getTreasureId())), treasure_{treasure}
+{
+}
 
-TreasureTile::TreasureTile(TileType type, Treasure* treasure) 
-: Tile(type), treasure_{treasure} {}
+TreasureTile::TreasureTile(TileType type, Treasure* treasure) : Tile(type), treasure_{treasure} {}
 
 std::string TreasureTile::createTreasureId()
 {

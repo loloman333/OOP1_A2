@@ -1,20 +1,20 @@
-//---------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 // Item.cpp
 //
 // The Item class represent an item that can be collected and used by players
 // Implements the functionality for using items
 //
 // Authors: Triochter Bande (Grill Matthias, Killer Lorenz, Nagy Lukas)
-//---------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 //
 
 #include "Item.hpp"
-#include "Game.hpp"
-#include "Player.hpp"
-#include "Tile.hpp"
-#include "PrintMaster.hpp"
 #include "CommandMaster.hpp"
+#include "Game.hpp"
 #include "ItemTile.hpp"
+#include "Player.hpp"
+#include "PrintMaster.hpp"
+#include "Tile.hpp"
 #include <algorithm>
 
 Item::Item(ItemType item_type) : item_type_{item_type} {};
@@ -28,17 +28,17 @@ std::string Item::getItemTypeAsString()
 {
   switch (item_type_)
   {
-  case ItemType::BRICKS:
-    return "BRI";
+    case ItemType::BRICKS:
+      return "BRI";
 
-  case ItemType::DYNAMITE:
-    return "DYN";
+    case ItemType::DYNAMITE:
+      return "DYN";
 
-  case ItemType::ROPE:
-    return "ROP";
+    case ItemType::ROPE:
+      return "ROP";
 
-  case ItemType::LADDER:
-    return "LAD";
+    case ItemType::LADDER:
+      return "LAD";
   }
 }
 
@@ -57,18 +57,18 @@ void Item::use()
   Game& game = Game::instance();
   switch (item_type_)
   {
-  case ItemType::BRICKS:
-    useBricks(game);
-    break;
-  case ItemType::DYNAMITE:
-    useDynamite(game);
-    break;
-  case ItemType::LADDER:
-    useLadder(game);
-    break;
-  case ItemType::ROPE:
-    useRope(game);
-    break;
+    case ItemType::BRICKS:
+      useBricks(game);
+      break;
+    case ItemType::DYNAMITE:
+      useDynamite(game);
+      break;
+    case ItemType::LADDER:
+      useLadder(game);
+      break;
+    case ItemType::ROPE:
+      useRope(game);
+      break;
   }
 }
 
@@ -82,14 +82,13 @@ void Item::useBricks(Game& game)
     game.getPrintMaster()->whereWall();
     std::getline(std::cin, answer);
     tokens = game.getCommandMaster()->tokenize(answer);
-  }
-  while (tokens.size() != 1 || !isValidResponse(tokens[0]));
+  } while (tokens.size() != 1 || !isValidResponse(tokens[0]));
 
   Direction direction = getDirectionFromString(tokens[0]);
 
   Player* current_player = game.getCurrentPlayer();
   Tile* current_tile = game.getBoard()[current_player->getRow()][current_player->getCol()];
-  
+
   setBricksInDirection(direction, current_tile);
 }
 
@@ -145,19 +144,19 @@ void Item::useDynamite(Game& game)
   int col = game.getCurrentPlayer()->getCol();
   game.getBoard()[row][col]->setType(TileType::X);
 
-  if(row + 1 < static_cast<int>(BOARD_SIZE))
+  if (row + 1 < static_cast<int>(BOARD_SIZE))
   {
     game.getBoard()[row + 1][col]->removeWallInDirection(Direction::TOP);
   }
-  if((col - 1) >= 0)
+  if ((col - 1) >= 0)
   {
     game.getBoard()[row][col - 1]->removeWallInDirection(Direction::RIGHT);
   }
-  if((row - 1) >= 0)
+  if ((row - 1) >= 0)
   {
     game.getBoard()[row - 1][col]->removeWallInDirection(Direction::BOTTOM);
   }
-  if(col + 1 < static_cast<int>(BOARD_SIZE))
+  if (col + 1 < static_cast<int>(BOARD_SIZE))
   {
     game.getBoard()[row][col + 1]->removeWallInDirection(Direction::LEFT);
   }
@@ -189,7 +188,7 @@ void Item::useRope(Game& game)
 
     for (PlayerColor color : Player::player_colors_)
     {
-      if(current_tile->isPlayerColorOnTile(color) && color != current_player->getPlayerColor())
+      if (current_tile->isPlayerColorOnTile(color) && color != current_player->getPlayerColor())
       {
         Player* player = current_tile->getPlayer(color);
         player->setTied(true);

@@ -1,18 +1,20 @@
-//---------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 // PrintMaster.cpp
 //
+// The PrintMaster Class manages all outputs that need to be made for a Game
+// That means it comes with a bunch of string constants and functions to print them
 //
 // Authors: Triochter Bande (Grill Matthias, Killer Lorenz, Nagy Lukas)
-//---------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 //
 
 #include "PrintMaster.hpp"
 #include "CommandMaster.hpp"
 #include "Game.hpp"
-#include "Tile.hpp"
-#include "Player.hpp"
-#include "Treasure.hpp"
 #include "Item.hpp"
+#include "Player.hpp"
+#include "Tile.hpp"
+#include "Treasure.hpp"
 #include <iostream>
 
 PrintMaster::PrintMaster(Game& game) : game_{game} {};
@@ -28,7 +30,7 @@ void PrintMaster::printGame()
   std::cout << ui_lines[2] << std::endl;
   std::cout << ui_lines[3] << std::endl;
 
-  if(game_.getCommandMaster()->getShowTreasure())
+  if (game_.getCommandMaster()->getShowTreasure())
   {
     printTreasure();
   }
@@ -212,7 +214,7 @@ void PrintMaster::resetUI()
 
 void PrintMaster::printGameIfNecessary()
 {
-  if(game_.getCommandMaster()->getShowGamefield())
+  if (game_.getCommandMaster()->getShowGamefield())
   {
     game_.getPrintMaster()->printGame();
   }
@@ -227,13 +229,13 @@ void PrintMaster::printFreeTile()
 void PrintMaster::printTreasure()
 {
   std::vector<Treasure*> covered_stack = game_.getCurrentPlayer()->getCoveredStackRef();
-  if(covered_stack.empty())
+  if (covered_stack.empty())
   {
     std::cout << ALL_TREASURES_FOUND << std::endl;
   }
   else
   {
-    Treasure *next_treasure = covered_stack.back();
+    Treasure* next_treasure = covered_stack.back();
     std::string treasure_name = next_treasure->getName();
     size_t treasure_id = next_treasure->getTreasureId();
     std::string id_string = "";
@@ -284,12 +286,12 @@ void PrintMaster::whereWall()
 }
 
 void PrintMaster::wallExists()
-{ 
+{
   std::cout << UI_WALL_EXISTS << std::endl;
 }
 
 void PrintMaster::wallBuilt()
-{ 
+{
   std::cout << UI_WALL_BUILT << std::endl;
 }
 
@@ -336,4 +338,4 @@ void PrintMaster::impossibleMove()
 void PrintMaster::invalidInsertPosition()
 {
   std::cout << INVALID_POSITION << std::endl;
-} 
+}

@@ -1,17 +1,17 @@
-//---------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 // StartTile.cpp
 //
 // The Start Tile class represents a tile in the corner of the board where players can start the game.
 // It is a subclass of "Tile" and implements all necessary functions
 //
 // Authors: Triochter Bande (Grill Matthias, Killer Lorenz, Nagy Lukas)
-//---------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 //
 
 #include "StartTile.hpp"
 #include "Player.hpp"
 
-StartTile::StartTile(PlayerColor player_color) : Tile{TileType::L}, player_color_{player_color} 
+StartTile::StartTile(PlayerColor player_color) : Tile{TileType::L}, player_color_{player_color}
 {
   Rotation rotation;
   switch (player_color)
@@ -42,7 +42,6 @@ std::vector<std::string> StartTile::getTileString()
 {
   std::vector<std::string> tileString = getRawTileString();
   std::string playerBase{'(', static_cast<char>(getPlayerColor()), ')'};
-
 
   if (tileString[PLAYER_TILE_ROW][0] == ' ')
   {

@@ -11,8 +11,8 @@
 #ifndef A2_GAME_HPP
 #define A2_GAME_HPP
 
-#include <vector>
 #include <string>
+#include <vector>
 
 const size_t BOARD_SIZE = 7;
 const size_t EXIT_DEFAULT = 0;
@@ -44,7 +44,6 @@ enum class Direction;
 class Game
 {
 private:
-
   CommandMaster* command_master_;
   PrintMaster* print_master_;
 
@@ -240,7 +239,6 @@ private:
   void deleteTile(Tile* tile);
 
 public:
-
   //--------------------------------------------------------------------------------------------------------------------
   ///
   /// Singleton
@@ -366,7 +364,6 @@ public:
   /// @param choice, true if you want to play a game with bonus items
   //
   void setBonus(bool choice);
-
 };
 
 #endif // A2_GAME_HPP

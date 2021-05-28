@@ -1,9 +1,10 @@
-//---------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 // main.cpp
 //
+// Reads cli parameter and starts the game with or without bonus items
 //
 // Authors: Triochter Bande (Grill Matthias, Killer Lorenz, Nagy Lukas)
-//---------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 //
 
 #include "Game.hpp"
@@ -18,14 +19,14 @@ const size_t EXIT_WRONG_ARGUMENTS = 2;
 
 int main(int argc, char* argv[])
 {
-  if(argc == NORMAL_GAME_ARGUMENT_COUNT)
+  if (argc == NORMAL_GAME_ARGUMENT_COUNT)
   {
     Game& game = Game::instance();
     return game.run();
   }
-  else if(argc == BONUS_GAME_ARGUMENT_COUNT)
+  else if (argc == BONUS_GAME_ARGUMENT_COUNT)
   {
-    if(std::string(argv[1]) == BONUS_ARGUEMT)
+    if (std::string(argv[1]) == BONUS_ARGUEMT)
     {
       Game& game = Game::instance();
       game.setBonus(true);

@@ -1,26 +1,26 @@
-//---------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 // CommandMaster.cpp
 //
 // The CommandMaster handles all commands entered in the command line
 // and calls the corresponding functions in other classes
 //
 // Authors: Triochter Bande (Grill Matthias, Killer Lorenz, Nagy Lukas)
-//---------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 //
 
 #include "CommandMaster.hpp"
-#include "PrintMaster.hpp"
 #include "Game.hpp"
+#include "Item.hpp"
+#include "ItemTile.hpp"
 #include "Player.hpp"
+#include "PrintMaster.hpp"
 #include "StartTile.hpp"
 #include "Tile.hpp"
 #include "Treasure.hpp"
 #include "TreasureTile.hpp"
-#include "Item.hpp"
-#include "ItemTile.hpp"
 
-#include <iostream>
 #include <algorithm>
+#include <iostream>
 #include <sstream>
 
 CommandMaster::CommandMaster(Game& game) : game_{game} {};
@@ -38,7 +38,7 @@ std::vector<std::string> CommandMaster::tokenize(std::string input)
   std::vector<std::string> tokens;
   std::istringstream tokens_stream(input);
   std::string token;
-  while(tokens_stream >> token)
+  while (tokens_stream >> token)
   {
     tokens.push_back(token);
   }
@@ -48,53 +48,53 @@ std::vector<std::string> CommandMaster::tokenize(std::string input)
 bool CommandMaster::executeCommand(std::vector<std::string>& tokens)
 {
   std::string command = "";
-  if(tokens.size() > 0)
+  if (tokens.size() > 0)
   {
     command = tokens[COMMAND_INDEX];
   }
 
-  if(std::cin.eof())
+  if (std::cin.eof())
   {
     game_.quitGame();
     return true;
   }
-  else if(command == "showtreasure" || command == "st")
+  else if (command == "showtreasure" || command == "st")
   {
     showTreasure(tokens);
   }
-  else if(command == "hidetreasure" || command == "ht")
+  else if (command == "hidetreasure" || command == "ht")
   {
     hideTreasure(tokens);
   }
-  else if(command == "showfreetile" || command == "sft")
+  else if (command == "showfreetile" || command == "sft")
   {
     showFreeTile(tokens);
   }
-  else if(command == "rotate")
+  else if (command == "rotate")
   {
     rotateFreeTile(tokens);
   }
-  else if(command == "insert" || command == "i")
+  else if (command == "insert" || command == "i")
   {
     insert(tokens);
   }
-  else if(command == "gamefield" || command == "g")
+  else if (command == "gamefield" || command == "g")
   {
     gameField(tokens);
   }
-  else if(command == "finish" || command == "f")
+  else if (command == "finish" || command == "f")
   {
     return finish(tokens);
   }
-  else if(command == "item" && game_.getBonusItemsFlag())
+  else if (command == "item" && game_.getBonusItemsFlag())
   {
     useItem(tokens);
   }
-  else if(std::find(PLAYER_MOVEMENT.begin(), PLAYER_MOVEMENT.end(), command) != PLAYER_MOVEMENT.end())
+  else if (std::find(PLAYER_MOVEMENT.begin(), PLAYER_MOVEMENT.end(), command) != PLAYER_MOVEMENT.end())
   {
     movePlayer(tokens);
   }
-  else if(command == "quit" || command == "exit")
+  else if (command == "quit" || command == "exit")
   {
     if (tokens.size() == 1)
     {
@@ -106,7 +106,7 @@ bool CommandMaster::executeCommand(std::vector<std::string>& tokens)
       game_.getPrintMaster()->commandTakesNoArguments();
     }
   }
-  else if(command == "")
+  else if (command == "")
   {
     return false;
   }
@@ -132,7 +132,7 @@ void CommandMaster::showTreasure(std::vector<std::string> tokens)
   else
   {
     show_treasure_ = true;
-    if(show_gamefield_)
+    if (show_gamefield_)
     {
       game_.getPrintMaster()->printGame();
     }
@@ -157,7 +157,6 @@ void CommandMaster::hideTreasure(std::vector<std::string> tokens)
   }
 }
 
-
 void CommandMaster::showFreeTile(std::vector<std::string> tokens)
 {
   if (tokens.size() == 1)
@@ -177,7 +176,7 @@ void CommandMaster::rotateFreeTile(std::vector<std::string> tokens)
     if (tokens.size() == 2)
     {
       std::string direction = tokens[FIRST_ARGUMENT_INDEX];
-      if(direction == "l" || direction == "left")
+      if (direction == "l" || direction == "left")
       {
         game_.getFreeTile()->rotate(Direction::LEFT);
       }
@@ -217,7 +216,8 @@ void CommandMaster::gameField(std::vector<std::string> tokens)
     {
       show_gamefield_ = false;
     }
-    else{
+    else
+    {
       game_.getPrintMaster()->invalidParameter(tokens[FIRST_ARGUMENT_INDEX]);
     }
   }
@@ -226,7 +226,6 @@ void CommandMaster::gameField(std::vector<std::string> tokens)
     game_.getPrintMaster()->printGame();
   }
 }
-
 
 bool CommandMaster::finish(std::vector<std::string> tokens)
 {
@@ -273,7 +272,7 @@ bool CommandMaster::checkCollectTreasure(Treasure*& treasure_to_collect)
 
   if (game_.getBoard()[player_row][player_column]->hasTreasure())
   {
-    TreasureTile* tile = dynamic_cast<TreasureTile *>(game_.getBoard()[player_row][player_column]);
+    TreasureTile* tile = dynamic_cast<TreasureTile*>(game_.getBoard()[player_row][player_column]);
     if (currentPlayerNeedsTreasure(tile->getTreasure()))
     {
       treasure_to_collect = tile->getTreasure();
@@ -304,10 +303,10 @@ bool CommandMaster::checkWin()
 {
   size_t player_row = game_.getCurrentPlayer()->getRow();
   size_t player_column = game_.getCurrentPlayer()->getCol();
-  
+
   if (game_.isCorner(player_row, player_column))
   {
-    StartTile *tile = dynamic_cast<StartTile *>(game_.getBoard()[player_row][player_column]);
+    StartTile* tile = dynamic_cast<StartTile*>(game_.getBoard()[player_row][player_column]);
     if (game_.getCurrentPlayer()->getPlayerColor() == tile->getPlayerColor())
     {
       if (game_.getCurrentPlayer()->getCoveredStackRef().empty())
@@ -350,13 +349,13 @@ void CommandMaster::currentPlayerCollectItem(Item* item)
   game_.getCurrentPlayer()->setItem(item);
 }
 
-void CommandMaster::insert(std::vector <std::string> tokens)
+void CommandMaster::insert(std::vector<std::string> tokens)
 {
   if (!inserted_)
   {
     if (tokens.size() == 3)
     {
-      if(checkInsertParameter(tokens))
+      if (checkInsertParameter(tokens))
       {
         insertTile(tokens);
         inserted_ = true;
@@ -373,7 +372,7 @@ void CommandMaster::insert(std::vector <std::string> tokens)
   }
 }
 
-bool CommandMaster::checkInsertParameter(std::vector <std::string> tokens)
+bool CommandMaster::checkInsertParameter(std::vector<std::string> tokens)
 {
   if (isValidInsertDirection(tokens[FIRST_ARGUMENT_INDEX]))
   {
@@ -382,12 +381,12 @@ bool CommandMaster::checkInsertParameter(std::vector <std::string> tokens)
     {
       stringToSizeT(tokens[SECOND_ARGUMENT_INDEX], row_col);
     }
-    catch(...)
+    catch (...)
     {
       game_.getPrintMaster()->invalidParameter(tokens[SECOND_ARGUMENT_INDEX]);
       return false;
     }
-    if(row_col > 0 && row_col < BOARD_SIZE + 1)
+    if (row_col > 0 && row_col < BOARD_SIZE + 1)
     {
       if (isInMoveableRowOrCol(row_col))
       {
@@ -443,7 +442,7 @@ bool CommandMaster::isInMoveableRowOrCol(size_t row_col)
   return ((row_col - 1) % 2 == 1);
 }
 
-bool CommandMaster::checkLastInsert(std::vector <std::string> tokens)
+bool CommandMaster::checkLastInsert(std::vector<std::string> tokens)
 {
   if (tokens[FIRST_ARGUMENT_INDEX] == "t" || tokens[FIRST_ARGUMENT_INDEX] == "top")
   {
@@ -475,7 +474,7 @@ bool CommandMaster::compareLastInsert(std::string direction, std::string alias, 
   return true;
 }
 
-void CommandMaster::insertTile(std::vector <std::string> tokens)
+void CommandMaster::insertTile(std::vector<std::string> tokens)
 {
   if (tokens[FIRST_ARGUMENT_INDEX] == "t" || tokens[FIRST_ARGUMENT_INDEX] == "top")
   {
@@ -498,7 +497,7 @@ void CommandMaster::insertTile(std::vector <std::string> tokens)
   game_.getPrintMaster()->printGame();
 }
 
-void CommandMaster::insertRow(std::vector <std::string> tokens)
+void CommandMaster::insertRow(std::vector<std::string> tokens)
 {
   size_t row = std::stoi(tokens[SECOND_ARGUMENT_INDEX]) - 1;
   size_t last_tile_index = BOARD_SIZE - 1;
@@ -507,7 +506,7 @@ void CommandMaster::insertRow(std::vector <std::string> tokens)
   if (tokens[FIRST_ARGUMENT_INDEX] == "l" || tokens[FIRST_ARGUMENT_INDEX] == "left")
   {
     game_.setFreeTile(board[row][last_tile_index]);
-    for(size_t column = last_tile_index; column > 0; column--)
+    for (size_t column = last_tile_index; column > 0; column--)
     {
       board[row][column] = board[row][column - 1];
       playersUpdateRowColumn(board[row][column]->getPlayers(), row, column);
@@ -518,7 +517,7 @@ void CommandMaster::insertRow(std::vector <std::string> tokens)
   else
   {
     game_.setFreeTile(board[row][0]);
-    for(size_t column = 0; column < last_tile_index; column++)
+    for (size_t column = 0; column < last_tile_index; column++)
     {
       board[row][column] = board[row][column + 1];
       playersUpdateRowColumn(board[row][column]->getPlayers(), row, column);
@@ -528,7 +527,7 @@ void CommandMaster::insertRow(std::vector <std::string> tokens)
   }
 }
 
-void CommandMaster::insertColumn(std::vector <std::string> tokens)
+void CommandMaster::insertColumn(std::vector<std::string> tokens)
 {
   size_t column = std::stoi(tokens[SECOND_ARGUMENT_INDEX]) - 1;
   size_t last_tile_index = BOARD_SIZE - 1;
@@ -538,7 +537,7 @@ void CommandMaster::insertColumn(std::vector <std::string> tokens)
   if (tokens[FIRST_ARGUMENT_INDEX] == "t" || tokens[FIRST_ARGUMENT_INDEX] == "top")
   {
     game_.setFreeTile(board[last_tile_index][column]);
-    for(size_t row = BOARD_SIZE - 1; row > 0; row--)
+    for (size_t row = BOARD_SIZE - 1; row > 0; row--)
     {
       board[row][column] = board[row - 1][column];
       playersUpdateRowColumn(board[row][column]->getPlayers(), row, column);
@@ -549,7 +548,7 @@ void CommandMaster::insertColumn(std::vector <std::string> tokens)
   else
   {
     game_.setFreeTile(board[0][column]);
-    for(size_t row = 0; row < BOARD_SIZE - 1; row++)
+    for (size_t row = 0; row < BOARD_SIZE - 1; row++)
     {
       board[row][column] = board[row + 1][column];
       playersUpdateRowColumn(board[row][column]->getPlayers(), row, column);
@@ -561,7 +560,7 @@ void CommandMaster::insertColumn(std::vector <std::string> tokens)
 
 void CommandMaster::movePlayersToTile(Tile* from, size_t row, size_t column)
 {
-  for(Player* player : from->getPlayers())
+  for (Player* player : from->getPlayers())
   {
     game_.getBoard()[row][column]->addPlayer(player);
     player->setRowCol(row, column);
@@ -571,7 +570,7 @@ void CommandMaster::movePlayersToTile(Tile* from, size_t row, size_t column)
 
 void CommandMaster::playersUpdateRowColumn(std::vector<Player*> players, size_t row, size_t column)
 {
-  for(Player* player : players)
+  for (Player* player : players)
   {
     player->setRow(row);
     player->setCol(column);
@@ -582,10 +581,10 @@ void CommandMaster::movePlayer(std::vector<std::string> tokens)
 {
   if (inserted_)
   {
-    if(checkMoveInput(tokens))
+    if (checkMoveInput(tokens))
     {
       Direction direction = getDirection(tokens);
-      if(direction != Direction::UNDEFINED)
+      if (direction != Direction::UNDEFINED)
       {
         int movement = getAmount(tokens);
         if (movement > 0)
@@ -625,9 +624,9 @@ void CommandMaster::movePlayer(std::vector<std::string> tokens)
 
 bool CommandMaster::checkMoveInput(std::vector<std::string> tokens)
 {
-  if(tokens[COMMAND_INDEX] == "go")
+  if (tokens[COMMAND_INDEX] == "go")
   {
-    if(tokens.size() > 1 && tokens.size() < 4)
+    if (tokens.size() > 1 && tokens.size() < 4)
     {
       return true;
     }
@@ -637,7 +636,7 @@ bool CommandMaster::checkMoveInput(std::vector<std::string> tokens)
       return false;
     }
   }
-  else if(tokens.size() == 1)
+  else if (tokens.size() == 1)
   {
     return true;
   }
@@ -650,44 +649,44 @@ bool CommandMaster::checkMoveInput(std::vector<std::string> tokens)
 
 Direction CommandMaster::getDirection(std::vector<std::string> tokens)
 {
-  if(tokens[COMMAND_INDEX] == "go")
+  if (tokens[COMMAND_INDEX] == "go")
   {
-    if(tokens[MOVEMENT_DIRECTION_INDEX] == "up")
+    if (tokens[MOVEMENT_DIRECTION_INDEX] == "up")
     {
       return Direction::TOP;
     }
-    else if(tokens[MOVEMENT_DIRECTION_INDEX] == "left")
+    else if (tokens[MOVEMENT_DIRECTION_INDEX] == "left")
     {
       return Direction::LEFT;
     }
-    else if(tokens[MOVEMENT_DIRECTION_INDEX] == "down")
+    else if (tokens[MOVEMENT_DIRECTION_INDEX] == "down")
     {
       return Direction::BOTTOM;
     }
-    else if(tokens[MOVEMENT_DIRECTION_INDEX] == "right")
+    else if (tokens[MOVEMENT_DIRECTION_INDEX] == "right")
     {
       return Direction::RIGHT;
     }
   }
   else
   {
-    for(size_t index = 0; index < PLAYER_MOVEMENT.size(); index++)
+    for (size_t index = 0; index < PLAYER_MOVEMENT.size(); index++)
     {
-      if(tokens[COMMAND_INDEX] == PLAYER_MOVEMENT[index])
+      if (tokens[COMMAND_INDEX] == PLAYER_MOVEMENT[index])
       {
-        if(index < MOVE_TOP)
+        if (index < MOVE_TOP)
         {
           return Direction::TOP;
         }
-        else if(index < MOVE_LEFT)
+        else if (index < MOVE_LEFT)
         {
           return Direction::LEFT;
         }
-        else if(index < MOVE_BOTTOM)
+        else if (index < MOVE_BOTTOM)
         {
           return Direction::BOTTOM;
         }
-        else if(index < MOVE_RIGHT)
+        else if (index < MOVE_RIGHT)
         {
           return Direction::RIGHT;
         }
@@ -701,7 +700,7 @@ Direction CommandMaster::getDirection(std::vector<std::string> tokens)
 int CommandMaster::getAmount(std::vector<std::string> tokens)
 {
   size_t amount = 0;
-  if(tokens[COMMAND_INDEX] == "go" && tokens.size() == 3)
+  if (tokens[COMMAND_INDEX] == "go" && tokens.size() == 3)
   {
     try
     {
@@ -709,7 +708,7 @@ int CommandMaster::getAmount(std::vector<std::string> tokens)
     }
     catch (std::out_of_range)
     {
-      if(is_digits(tokens[SECOND_ARGUMENT_INDEX]))
+      if (is_digits(tokens[SECOND_ARGUMENT_INDEX]))
       {
         game_.getPrintMaster()->impossibleMove();
       }
@@ -732,57 +731,57 @@ int CommandMaster::getAmount(std::vector<std::string> tokens)
   }
 }
 
-void CommandMaster::getMovementModifier(Direction direction, int &row_modifier, int &col_modifier)
+void CommandMaster::getMovementModifier(Direction direction, int& row_modifier, int& col_modifier)
 {
   row_modifier = (static_cast<size_t>(direction) + 1) % 2;
   col_modifier = static_cast<size_t>(direction) % 2;
-  if(direction == Direction::LEFT)
+  if (direction == Direction::LEFT)
   {
     col_modifier = col_modifier * -1;
   }
-  if(direction == Direction::TOP)
+  if (direction == Direction::TOP)
   {
     row_modifier = row_modifier * -1;
   }
 }
 
-bool CommandMaster::isMovePossible(Direction direction, size_t movement, int &row_modifier, int &col_modifier)
+bool CommandMaster::isMovePossible(Direction direction, size_t movement, int& row_modifier, int& col_modifier)
 {
   int board_size_int = static_cast<int>(BOARD_SIZE);
 
   Direction opposite_direction = getOppositeDirection(direction);
   Player* current_player = game_.getCurrentPlayer();
-  if(current_player->getUsingLadder())
+  if (current_player->getUsingLadder())
   {
     int row_location = (movement * row_modifier) + current_player->getRow();
     int col_location = (movement * col_modifier) + current_player->getCol();
-    if(row_location >= 0 && row_location < board_size_int && col_location >= 0 && col_location < board_size_int)
+    if (row_location >= 0 && row_location < board_size_int && col_location >= 0 && col_location < board_size_int)
     {
       current_player->setUsingLadder(false);
       return true;
     }
   }
-  for(size_t index = 0; index <= movement; index++)
+  for (size_t index = 0; index <= movement; index++)
   {
     int row = game_.getCurrentPlayer()->getRow() + (index * row_modifier);
     int col = game_.getCurrentPlayer()->getCol() + (index * col_modifier);
-    
-    if(row >= board_size_int || col >= board_size_int || row < 0 || col < 0)
+
+    if (row >= board_size_int || col >= board_size_int || row < 0 || col < 0)
     {
       return false;
     }
     Tile* current_tile = game_.getBoard()[row][col];
     bool wall_in_front = current_tile->isWallInDirection(direction);
     bool wall_behind = current_tile->isWallInDirection(opposite_direction);
-    if(index == 0 && wall_in_front)
+    if (index == 0 && wall_in_front)
     {
       return false;
     }
-    else if(index != 0 && index != movement && (wall_behind || wall_in_front))
+    else if (index != 0 && index != movement && (wall_behind || wall_in_front))
     {
       return false;
     }
-    else if(index == movement && wall_behind)
+    else if (index == movement && wall_behind)
     {
       return false;
     }
@@ -790,7 +789,7 @@ bool CommandMaster::isMovePossible(Direction direction, size_t movement, int &ro
   return true;
 }
 
-void CommandMaster::moveInDirection(Player* player, size_t movement, int &row_modifier, int &col_modifier)
+void CommandMaster::moveInDirection(Player* player, size_t movement, int& row_modifier, int& col_modifier)
 {
   std::string player_color = player->getPlayerColorAsString();
   size_t old_row = player->getRow();
@@ -826,15 +825,15 @@ void CommandMaster::moveNotAllowed(std::string command)
   {
     command = "arrow up";
   }
-  else if(command == PLAYER_MOVEMENT[ARROW_LEFT_INDEX])
+  else if (command == PLAYER_MOVEMENT[ARROW_LEFT_INDEX])
   {
     command = "arrow left";
   }
-  else if(command == PLAYER_MOVEMENT[ARROW_DOWN_INDEX])
+  else if (command == PLAYER_MOVEMENT[ARROW_DOWN_INDEX])
   {
     command = "arrow down";
   }
-  else if(command == PLAYER_MOVEMENT[ARROW_RIGHT_INDEX])
+  else if (command == PLAYER_MOVEMENT[ARROW_RIGHT_INDEX])
   {
     command = "arrow right";
   }
@@ -866,10 +865,10 @@ bool CommandMaster::getShowGamefield()
 
 void CommandMaster::useItem(std::vector<std::string> tokens)
 {
-  if(tokens.size() == 1)
+  if (tokens.size() == 1)
   {
     Player* current_player = game_.getCurrentPlayer();
-    if(current_player->getItem() != nullptr)
+    if (current_player->getItem() != nullptr)
     {
       current_player->getItem()->use();
     }
@@ -884,7 +883,7 @@ void CommandMaster::useItem(std::vector<std::string> tokens)
   }
 }
 
-bool CommandMaster::is_digits(const std::string &str)
+bool CommandMaster::is_digits(const std::string& str)
 {
   return std::all_of(str.begin(), str.end(), ::isdigit);
 }

@@ -20,7 +20,13 @@ class Game;
 class Tile;
 enum class Direction;
 
-enum class ItemType {ROPE, DYNAMITE, BRICKS, LADDER};
+enum class ItemType
+{
+  ROPE,
+  DYNAMITE,
+  BRICKS,
+  LADDER
+};
 
 class Item
 {
@@ -29,7 +35,7 @@ private:
   bool found_ = false;
 
   //--------------------------------------------------------------------------------------------------------------------
-  ///  
+  ///
   /// Uses the brick item for the current player
   ///
   /// @param game A reference to the game object
@@ -37,7 +43,7 @@ private:
   void useBricks(Game& game);
 
   //--------------------------------------------------------------------------------------------------------------------
-  /// 
+  ///
   /// Uses the dynamite item for the current player
   ///
   /// @param game A reference to the game object
@@ -61,16 +67,16 @@ private:
   void useRope(Game& game);
 
   //--------------------------------------------------------------------------------------------------------------------
-  /// 
+  ///
   /// Checks if a string is in the list of valid responses
   ///
-  /// @param response the string to check 
+  /// @param response the string to check
   /// @return A boolean if a string is in the list of valid responses
   //
   bool isValidResponse(std::string response);
 
   //--------------------------------------------------------------------------------------------------------------------
-  ///  
+  ///
   /// Takes a string and return the corresponding Direction
   ///
   /// @param string the string to "convert" into a Direction
@@ -79,7 +85,7 @@ private:
   Direction getDirectionFromString(std::string string);
 
   //--------------------------------------------------------------------------------------------------------------------
-  /// 
+  ///
   /// Sets a Wall on the given tile in the given direction
   ///
   /// @param direction the direction to set the wall in
@@ -88,7 +94,6 @@ private:
   void setBricksInDirection(Direction direction, Tile* tile);
 
 public:
-
   //--------------------------------------------------------------------------------------------------------------------
   ///
   /// Constructor for the Item class
@@ -159,4 +164,4 @@ public:
   void use();
 };
 
-#endif //A2_ITEM_HPP
+#endif // A2_ITEM_HPP

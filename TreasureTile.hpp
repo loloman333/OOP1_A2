@@ -29,146 +29,141 @@ class Treasure;
 
 class TreasureTile : public Tile
 {
-  private:
+private:
+  Treasure* treasure_;
 
-    Treasure* treasure_;
+  //--------------------------------------------------------------------------------------------------------------------
+  ///
+  /// Creates string with treasure id for the tile string
+  ///
+  /// @return string with treasure id
+  //
+  std::string createTreasureId();
 
-    //------------------------------------------------------------------------------------------------------------------
-    ///
-    /// Creates string with treasure id for the tile string
-    ///
-    /// @return string with treasure id
-    //
-    std::string createTreasureId();
+  //--------------------------------------------------------------------------------------------------------------------
+  ///
+  /// Calculates rotation of tile, depending on treasure id
+  ///
+  /// @param treasure_id of treasure
+  ///
+  /// @return Rotation calculated depending on treasure id
+  //
+  Rotation calculateRotation(size_t treasure_id);
 
-    //------------------------------------------------------------------------------------------------------------------
-    ///
-    /// Calculates rotation of tile, depending on treasure id
-    ///
-    /// @param treasure_id of treasure
-    ///
-    /// @return Rotation calculated depending on treasure id
-    //
-    Rotation calculateRotation(size_t treasure_id);
+  //--------------------------------------------------------------------------------------------------------------------
+  ///
+  /// Checks if given number has one or more digits
+  ///
+  /// @param number to check
+  ///
+  /// @return true if number has one digit
+  //
+  bool isSingleDigit(size_t number);
 
-    //------------------------------------------------------------------------------------------------------------------
-    ///
-    /// Checks if given number has one or more digits
-    ///
-    /// @param number to check
-    ///
-    /// @return true if number has one digit
-    //
-    bool isSingleDigit(size_t number);
+public:
+  //--------------------------------------------------------------------------------------------------------------------
+  ///
+  /// Constructor for the TreasureTile class
+  /// Takes a tresure pointer and sets TileType to T
+  ///
+  /// @param treasure for the TreasureTile
+  //
+  TreasureTile(Treasure* treasure);
 
-  public:
+  //--------------------------------------------------------------------------------------------------------------------
+  ///
+  /// Constructor for the TreasureTile class
+  /// Takes a TileType and a Treasure pointer and sets variables
+  ///
+  /// @param type, TileType of the TreasureTile
+  /// @param treasure, treasure for the TreasureTile
+  //
+  TreasureTile(TileType type, Treasure* treasure);
 
-    //------------------------------------------------------------------------------------------------------------------
-    ///
-    /// Constructor for the TreasureTile class
-    /// Takes a tresure pointer and sets TileType to T
-    ///
-    /// @param treasure for the TreasureTile
-    //
-    TreasureTile(Treasure* treasure);
+  //--------------------------------------------------------------------------------------------------------------------
+  ///
+  /// destructor of the TreasureTile class
+  //
+  ~TreasureTile() = default;
 
-    //------------------------------------------------------------------------------------------------------------------
-    ///
-    /// Constructor for the TreasureTile class
-    /// Takes a TileType and a Treasure pointer and sets variables
-    ///
-    /// @param type, TileType of the TreasureTile
-    /// @param treasure, treasure for the TreasureTile
-    //
-    TreasureTile(TileType type, Treasure* treasure);
+  //--------------------------------------------------------------------------------------------------------------------
+  ///
+  /// copy constructor of the TreasureTile class
+  ///
+  /// @param treasure_tile the treasure_tile to be copied
+  //
+  TreasureTile(const TreasureTile& treasure_tile) = delete;
 
-    //-------------------------------------------------------------------------------------------------------------------
-    ///
-    /// destructor of the TreasureTile class
-    //
-    ~TreasureTile() = default;
+  //--------------------------------------------------------------------------------------------------------------------
+  ///
+  /// assignment operator of the TreasureTile class
+  ///
+  /// @param treasure_tile the treasure_tile to be copied
+  //
+  TreasureTile& operator=(const TreasureTile& treasure_tile) = delete;
 
-    //-------------------------------------------------------------------------------------------------------------------
-    ///
-    /// copy constructor of the TreasureTile class
-    ///
-    /// @param treasure_tile the treasure_tile to be copied
-    //
-    TreasureTile(const TreasureTile& treasure_tile) = delete;
+  //--------------------------------------------------------------------------------------------------------------------
+  ///
+  /// Virtual function of Tile.hpp
+  ///
+  /// @return vector<string> which represents the tile
+  //
+  std::vector<std::string> getTileString();
 
-    //-------------------------------------------------------------------------------------------------------------------
-    ///
-    /// assignment operator of the TreasureTile class
-    ///
-    /// @param treasure_tile the treasure_tile to be copied
-    //
-    TreasureTile& operator=(const TreasureTile& treasure_tile) = delete;
+  //--------------------------------------------------------------------------------------------------------------------
+  ///
+  /// If necessary adds treasure id to the tile string
+  ///
+  /// @param tile_string reference
+  //
+  void addTreasureIdToTile(std::vector<std::string>& tile_string);
 
+  //--------------------------------------------------------------------------------------------------------------------
+  ///
+  /// Virtual function from Tile.hpp
+  /// Checks if tile has a Treasure
+  ///
+  /// @return true if there is a treasure on the Tile and is not collected yet
+  //
+  bool hasTreasure();
 
-    //------------------------------------------------------------------------------------------------------------------
-    ///
-    /// Virtual function of Tile.hpp
-    ///
-    /// @return vector<string> which represents the tile
-    //
-    std::vector<std::string> getTileString();
+  //--------------------------------------------------------------------------------------------------------------------
+  ///
+  /// Marks treasure as found
+  //
+  void foundTreasure();
 
-    //------------------------------------------------------------------------------------------------------------------
-    ///
-    /// If necessary adds treasure id to the tile string
-    ///
-    /// @param tile_string reference
-    //
-    void addTreasureIdToTile(std::vector<std::string>& tile_string);
+  //--------------------------------------------------------------------------------------------------------------------
+  ///
+  /// Getter for treasure
+  ///
+  /// @return treasure pointer of treasure on tile
+  //
+  Treasure* getTreasure();
 
-    //------------------------------------------------------------------------------------------------------------------
-    ///
-    /// Virtual function from Tile.hpp
-    /// Checks if tile has a Treasure
-    ///
-    /// @return true if there is a treasure on the Tile and is not collected yet
-    //
-    bool hasTreasure();
+  //--------------------------------------------------------------------------------------------------------------------
+  ///
+  /// Getter for found
+  ///
+  /// @return true if treasure is marked as found
+  //
+  bool getFound();
 
-    //------------------------------------------------------------------------------------------------------------------
-    ///
-    /// Marks treasure as found
-    //
-    void foundTreasure();
+  //--------------------------------------------------------------------------------------------------------------------
+  ///
+  /// Setter for treasure
+  ///
+  /// @param treasure, sets treasure of tile
+  //
+  void setTreasure(Treasure* treasure);
 
-
-    //------------------------------------------------------------------------------------------------------------------
-    ///
-    /// Getter for treasure
-    ///
-    /// @return treasure pointer of treasure on tile
-    //
-    Treasure* getTreasure();
-
-    //------------------------------------------------------------------------------------------------------------------
-    ///
-    /// Getter for found
-    ///
-    /// @return true if treasure is marked as found
-    //
-    bool getFound();
-
-
-    //------------------------------------------------------------------------------------------------------------------
-    ///
-    /// Setter for treasure
-    ///
-    /// @param treasure, sets treasure of tile
-    //
-    void setTreasure(Treasure* treasure);
-
-    //------------------------------------------------------------------------------------------------------------------
-    ///
-    /// Setter for found
-    ///
-    /// @param collected, sets collected of treasure
-    //
-    void setFound(bool collected);
+  //--------------------------------------------------------------------------------------------------------------------
+  ///
+  /// Setter for found
+  ///
+  /// @param collected, sets collected of treasure
+  //
+  void setFound(bool collected);
 };
 
-#endif //A2_TREASURE_TILE_HPP
+#endif // A2_TREASURE_TILE_HPP
