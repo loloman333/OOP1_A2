@@ -60,6 +60,7 @@ const size_t UI_TOP_ARROW_TIPS_AT = 2;
 const size_t UI_TITLE_ROW_MOD = 2;
 const size_t UI_ARROW_BASE_MOD = 3;
 const size_t UI_FIRST_ROW_LABEL_INDEX = 2;
+const size_t UI_UP_ARROWS_EXTRA_SPACE = 3;
 
 class Game;
 enum class Direction;

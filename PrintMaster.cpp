@@ -95,7 +95,13 @@ void PrintMaster::addPlayerTitlesToLine(std::string& line, size_t& player_index)
       title += static_cast<char>(game_.getPlayers()[player_index]->getPlayerColor());
       title += ")";
 
-      line.replace(UI_PLAYER_TITLE_OFFSET * times, title.length(), title);
+      size_t actual_offset = UI_PLAYER_TITLE_OFFSET;
+      if (player_index == 3)
+      {
+        actual_offset += UI_UP_ARROWS_EXTRA_SPACE;
+      }
+
+      line.replace(actual_offset * times, title.length(), title);
       player_index++;
     }
   }
