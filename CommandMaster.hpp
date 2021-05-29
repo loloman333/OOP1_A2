@@ -50,7 +50,7 @@ private:
   bool show_gamefield_ = true;
 
   std::string last_insert_direction_ = "";
-  std::string last_insert_row_col_ = "";
+  size_t last_insert_row_col_ = 0;
 
   //--------------------------------------------------------------------------------------------------------------------
   ///

@@ -148,7 +148,6 @@ void CommandMaster::hideTreasure(std::vector<std::string> tokens)
   if (tokens.size() == 1)
   {
     show_treasure_ = false;
-
     game_.getPrintMaster()->resetUI();
   }
   else
@@ -163,7 +162,7 @@ void CommandMaster::showFreeTile(std::vector<std::string> tokens)
   {
     game_.getPrintMaster()->printFreeTile();
   }
-  else if (tokens.size() > 1)
+  else
   {
     game_.getPrintMaster()->commandTakesNoArguments();
   }
@@ -186,7 +185,7 @@ void CommandMaster::rotateFreeTile(std::vector<std::string> tokens)
       }
       else
       {
-        game_.getPrintMaster()->invalidParameter(direction);
+        game_.getPrintMaster()->invalidParameter(tokens[FIRST_ARGUMENT_INDEX]);
       }
     }
     else
@@ -466,7 +465,7 @@ bool CommandMaster::compareLastInsert(std::string direction, std::string alias, 
 {
   if (last_insert_direction_ == direction || last_insert_direction_ == alias)
   {
-    if (last_insert_row_col_ == row_col)
+    if (last_insert_row_col_ == static_cast<size_t>(std::stoi(row_col)))
     {
       return false;
     }
@@ -492,8 +491,8 @@ void CommandMaster::insertTile(std::vector<std::string> tokens)
   {
     insertRow(tokens);
   }
-  last_insert_row_col_ = tokens[SECOND_ARGUMENT_INDEX];
   last_insert_direction_ = tokens[FIRST_ARGUMENT_INDEX];
+  last_insert_row_col_ = std::stoi(tokens[SECOND_ARGUMENT_INDEX]);
   game_.getPrintMaster()->printGame();
 }
 
