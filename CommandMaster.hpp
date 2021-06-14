@@ -366,6 +366,10 @@ private:
   //
   void useItem(std::vector<std::string> tokens);
 
+  //TODO
+  void checkPathFinding(std::vector<std::string> tokens);
+  void teleportPlayer(Player* current_player, size_t to_row, size_t to_column);
+
 public:
   //--------------------------------------------------------------------------------------------------------------------
   ///

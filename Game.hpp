@@ -37,6 +37,7 @@ class Player;
 class Treasure;
 class CommandMaster;
 class PrintMaster;
+class AIMaster;
 enum class PlayerColor;
 enum class TileType;
 enum class Direction;
@@ -46,6 +47,8 @@ class Game
 private:
   CommandMaster* command_master_;
   PrintMaster* print_master_;
+  AIMaster* ai_master_;
+
 
   std::vector<std::vector<Tile*>> board_;
   std::vector<Treasure*> treasures_;
@@ -300,6 +303,9 @@ public:
   /// @return PrintMaster pointer
   //
   PrintMaster* getPrintMaster();
+
+  // TODO
+  AIMaster* getAIMaster();
 
   //--------------------------------------------------------------------------------------------------------------------
   ///

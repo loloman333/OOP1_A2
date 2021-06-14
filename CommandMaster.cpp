@@ -18,6 +18,7 @@
 #include "Tile.hpp"
 #include "Treasure.hpp"
 #include "TreasureTile.hpp"
+#include "AIMaster.hpp"
 
 #include <algorithm>
 #include <iostream>
@@ -613,12 +614,91 @@ void CommandMaster::movePlayer(std::vector<std::string> tokens)
           game_.getPrintMaster()->invalidParameter(tokens[SECOND_ARGUMENT_INDEX]);
         }
       }
+      else
+      {
+        checkPathFinding(tokens);
+      }
     }
   }
   else
   {
     moveNotAllowed(tokens[COMMAND_INDEX]);
   }
+}
+
+void CommandMaster::checkPathFinding(std::vector<std::string> tokens)
+{
+  if(tokens.size() == 3)
+  {
+    size_t row;
+    size_t column;
+
+    try
+    {
+      stringToSizeT(tokens[FIRST_ARGUMENT_INDEX], row);
+    }
+    catch (...)
+    {
+      game_.getPrintMaster()->invalidParameter(tokens[FIRST_ARGUMENT_INDEX]);
+      return;
+    }
+
+    try
+    {
+      stringToSizeT(tokens[SECOND_ARGUMENT_INDEX], column);
+    }
+    catch (...)
+    {
+      game_.getPrintMaster()->invalidParameter(tokens[SECOND_ARGUMENT_INDEX]);
+      return;
+    }
+
+    if (row > 0 && row <= BOARD_SIZE)
+    {
+      if (column > 0 && column <= BOARD_SIZE)
+      {
+        if (game_.getAIMaster()->isConnected(game_.getCurrentPlayer(), row, column))
+        {
+          teleportPlayer(game_.getCurrentPlayer(), row, column);
+        }
+        else
+        {
+          game_.getPrintMaster()->impossibleMove();
+        }
+      }
+      else
+      {
+        game_.getPrintMaster()->invalidParameter(tokens[SECOND_ARGUMENT_INDEX]);
+      }
+    }
+    else
+    {
+      game_.getPrintMaster()->invalidParameter(tokens[FIRST_ARGUMENT_INDEX]);
+    }
+  }
+  else if (tokens.size() == 2)
+  {
+    game_.getPrintMaster()->invalidParameter(tokens[FIRST_ARGUMENT_INDEX]);
+  }
+  else
+  {
+    game_.getPrintMaster()->wrongNumberArguments();
+  }
+}
+
+void CommandMaster::teleportPlayer(Player* current_player, size_t to_row, size_t to_column)
+{
+  to_row--;
+  to_column--;
+
+  Tile* current_tile = game_.getBoard()[current_player->getRow()][current_player->getCol()];
+  Tile* new_tile = game_.getBoard()[to_row][to_column];
+
+  current_tile->removePlayer(current_player->getPlayerColorAsString());
+  new_tile->addPlayer(current_player);
+
+  current_player->setRowCol(to_row, to_column);
+  game_.getPrintMaster()->printGameIfNecessary();
 }
 
 bool CommandMaster::checkMoveInput(std::vector<std::string> tokens)
@@ -692,7 +772,6 @@ Direction CommandMaster::getDirection(std::vector<std::string> tokens)
       }
     }
   }
-  game_.getPrintMaster()->invalidParameter(tokens[FIRST_ARGUMENT_INDEX]);
   return Direction::UNDEFINED;
 }
 

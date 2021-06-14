@@ -20,6 +20,7 @@
 #include "Tile.hpp"
 #include "Treasure.hpp"
 #include "TreasureTile.hpp"
+#include "AIMaster.hpp"
 
 #include <algorithm>
 
@@ -27,6 +28,7 @@ Game::Game()
 {
   command_master_ = new CommandMaster(*this);
   print_master_ = new PrintMaster(*this);
+  ai_master_ = new AIMaster(*this);
 }
 
 Game::~Game()
@@ -38,6 +40,7 @@ Game::~Game()
   deletePlayers();
   delete command_master_;
   delete print_master_;
+  delete ai_master_;
 }
 
 Game& Game::instance()
@@ -399,6 +402,11 @@ CommandMaster* Game::getCommandMaster()
 PrintMaster* Game::getPrintMaster()
 {
   return print_master_;
+}
+
+AIMaster* Game::getAIMaster()
+{
+  return ai_master_;
 }
 
 void Game::setFreeTile(Tile* tile)
