@@ -345,15 +345,6 @@ private:
 
   //--------------------------------------------------------------------------------------------------------------------
   ///
-  /// gets the direction opposite of the one given
-  ///
-  /// @param direction the direction from which the opposite is needed
-  /// @returns the direction in the opposite direction
-  //
-  Direction getOppositeDirection(Direction direction);
-
-  //--------------------------------------------------------------------------------------------------------------------
-  ///
   /// prints the error Message that the move is not allowed
   ///
   /// @param command the command string that is not allowed and needs to be printed
@@ -461,6 +452,15 @@ public:
   /// @returns the value of showGamefield
   //
   bool getShowGamefield();
+
+  //--------------------------------------------------------------------------------------------------------------------
+  ///
+  /// gets the direction opposite of the one given
+  ///
+  /// @param direction the direction from which the opposite is needed
+  /// @returns the direction in the opposite direction
+  //
+  Direction getOppositeDirection(Direction direction);
 };
 
 #endif // A2_COMMANDMASTER_HPP

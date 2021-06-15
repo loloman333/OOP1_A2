@@ -17,6 +17,8 @@ Tile::Tile(TileType type, Rotation rotation) : type_{type}, rotation_{rotation}
 }
 Tile::Tile(TileType type) : Tile(type, Rotation::DEG0) {}
 
+const std::vector<Direction> Tile::all_directions_{Direction::TOP, Direction::LEFT, Direction::BOTTOM, Direction::RIGHT};
+
 TileType Tile::getType()
 {
   return type_;

@@ -142,6 +142,8 @@ private:
 
 public:
 
+  static const std::vector<Direction> all_directions_;
+
   //--------------------------------------------------------------------------------------------------------------------
   ///
   /// the default tile constructor
