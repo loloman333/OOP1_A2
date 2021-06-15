@@ -28,6 +28,7 @@ public:
   AIMaster& operator=(const AIMaster& ai_master) = delete;
 
   bool isConnected(Player* current_player, size_t to_row, size_t to_column);
+  void playAI();
 };
 
 #endif // A2_AIMASTER_HPP

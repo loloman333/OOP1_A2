@@ -95,6 +95,14 @@ bool CommandMaster::executeCommand(std::vector<std::string>& tokens)
   {
     movePlayer(tokens);
   }
+  else if(command == "play")
+  {
+    play(tokens);
+  }
+  else if(command == "whoami")
+  {
+    whoAmI(tokens);
+  }
   else if (command == "quit" || command == "exit")
   {
     if (tokens.size() == 1)
@@ -964,4 +972,28 @@ void CommandMaster::useItem(std::vector<std::string> tokens)
 bool CommandMaster::is_digits(const std::string& str)
 {
   return std::all_of(str.begin(), str.end(), ::isdigit);
+}
+
+void CommandMaster::play(std::vector<std::string> tokens)
+{
+  if(tokens.size() == 1)
+  {
+    game_.getAIMaster()->playAI();
+  }
+  else
+  {
+    game_.getPrintMaster()->commandTakesNoArguments();
+  }
+}
+
+void CommandMaster::whoAmI(std::vector<std::string> tokens)
+{
+  if(tokens.size() == 1)
+  {
+    game_.getPrintMaster()->printAIName();
+  }
+  else
+  {
+    game_.getPrintMaster()->commandTakesNoArguments();
+  }
 }

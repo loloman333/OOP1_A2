@@ -366,6 +366,18 @@ private:
   //
   void useItem(std::vector<std::string> tokens);
 
+  //--------------------------------------------------------------------------------------------------------------------
+  ///
+  /// activates the AI to play this round
+  //
+  void play(std::vector<std::string> tokens);
+
+  //--------------------------------------------------------------------------------------------------------------------
+  ///
+  /// outputs the AI name
+  //
+  void whoAmI(std::vector<std::string> tokens);
+
   //TODO
   void checkPathFinding(std::vector<std::string> tokens);
   void teleportPlayer(Player* current_player, size_t to_row, size_t to_column);

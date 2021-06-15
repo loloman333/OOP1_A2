@@ -345,3 +345,8 @@ void PrintMaster::invalidInsertPosition()
 {
   std::cout << INVALID_POSITION << std::endl;
 }
+
+void PrintMaster::printAIName()
+{
+  std::cout << UI_INFO << UI_AI_NAME << std::endl;
+}

@@ -52,6 +52,8 @@ const std::string ROPE_NO_PLAYER = "No player to tie up here.";
 const std::string ROPE_TIED_1 = "Player ";
 const std::string ROPE_TIED_2 = " tied up.";
 const std::string UI_BOMB = "BOOOOOOOOOMMMMM!!!!";
+const std::string UI_AI_NAME = " Team: Triochter Bande";
+const std::string UI_INFO = "[INFO]";
 
 const size_t UI_PLAYER_TITLE_OFFSET = 58;
 const size_t UI_ARROW_OFFSET = 17;
@@ -333,6 +335,12 @@ public:
   /// Prints the error message that the insert position is invalid
   //
   void invalidInsertPosition();
+
+  //--------------------------------------------------------------------------------------------------------------------
+  ///
+  /// prints AI name
+  //
+  void printAIName();
 };
 
 #endif // A2_PRINTMASTER_HPP

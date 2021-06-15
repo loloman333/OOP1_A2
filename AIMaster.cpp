@@ -18,3 +18,8 @@ bool AIMaster::isConnected(Player* current_player, size_t to_row, size_t to_colu
 {
   return true;
 }
+
+void AIMaster::playAI()
+{
+  return;
+}
